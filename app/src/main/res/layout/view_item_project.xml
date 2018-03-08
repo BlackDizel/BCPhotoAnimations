@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="?attr/selectableItemBackground"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:background="?attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+
+        app:layout_aspectRatio="100%"
+        app:layout_widthPercent="100%"
+
         tools:text="SOME TEXT" />
 
 
-</FrameLayout>
+</android.support.percent.PercentFrameLayout>
