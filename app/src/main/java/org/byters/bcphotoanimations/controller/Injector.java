@@ -54,7 +54,8 @@ public class Injector {
     }
 
     public IPresenterProjectEdit getPresenterProjectEdit() {
-        if (presenterProjectEdit == null) presenterProjectEdit = new PresenterProjectEdit(getNavigator());
+        if (presenterProjectEdit == null)
+            presenterProjectEdit = new PresenterProjectEdit(getNavigator(), getCacheProjectSelected());
         return presenterProjectEdit;
     }
 }
