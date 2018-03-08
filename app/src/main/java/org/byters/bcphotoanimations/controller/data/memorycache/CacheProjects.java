@@ -1,5 +1,7 @@
 package org.byters.bcphotoanimations.controller.data.memorycache;
 
+import android.text.TextUtils;
+
 import org.byters.bcphotoanimations.controller.data.memorycache.callback.ICacheProjectsCallback;
 import org.byters.bcphotoanimations.model.ProjectObject;
 import org.byters.bcphotoanimations.model.ProjectObjectBase;
@@ -63,6 +65,45 @@ public class CacheProjects implements ICacheProjects {
         if (item == null || !(item instanceof ProjectObject)) return null;
 
         return ((ProjectObject) item).getId();
+    }
+
+    @Override
+    public String editProject(String projectSelectedId, String title) {
+        ProjectObject item = getItemById(projectSelectedId);
+        if (item != null) {
+            item.setTitle(title);
+            notifyListeners();
+            return item.getId();
+        }
+
+        item = ProjectObject.newItem(title);
+        data.add(item);
+        notifyListeners();
+        return item.getId();
+    }
+
+    @Override
+    public String getItemTitle(int position) {
+        ProjectObjectBase item = getItem(position);
+        if (item == null || !(item instanceof ProjectObject)) return null;
+        return ((ProjectObject) item).getTitle();
+    }
+
+    @Override
+    public boolean isProjectNew(int position) {
+        ProjectObjectBase item = getItem(position);
+        return item instanceof ProjectObjectNew;
+    }
+
+    private ProjectObject getItemById(String projectSelectedId) {
+        if (data == null || TextUtils.isEmpty(projectSelectedId)) return null;
+        for (ProjectObjectBase item : data) {
+            if (!(item instanceof ProjectObject)) continue;
+            if (((ProjectObject) item).getId().equals(projectSelectedId))
+                return (ProjectObject) item;
+
+        }
+        return null;
     }
 
     private ProjectObjectBase getItem(int position) {

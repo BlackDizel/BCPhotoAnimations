@@ -10,4 +10,10 @@ public interface ICacheProjects {
     int getItemType(int position);
 
     String getProjectId(int position);
+
+    String editProject(String projectSelectedId, String title);
+
+    String getItemTitle(int position);
+
+    boolean isProjectNew(int position);
 }
