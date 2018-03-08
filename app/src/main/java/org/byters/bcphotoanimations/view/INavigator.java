@@ -15,4 +15,6 @@ public interface INavigator {
     boolean closeProjectEdit();
 
     boolean onBackPressed();
+
+    void navigateProject();
 }

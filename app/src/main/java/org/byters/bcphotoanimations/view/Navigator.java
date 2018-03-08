@@ -4,6 +4,7 @@ package org.byters.bcphotoanimations.view;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import org.byters.bcphotoanimations.view.ui.fragment.FragmentFrames;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjectEdit;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjects;
 
@@ -39,6 +40,16 @@ public class Navigator implements INavigator {
         refFragmentManager.get()
                 .beginTransaction()
                 .add(rootViewRes, new FragmentProjectEdit(), TAG_PROJECT_EDIT)
+                .commit();
+    }
+
+
+    @Override
+    public void navigateProject() {
+        if (refFragmentManager == null || refFragmentManager.get() == null) return;
+        refFragmentManager.get()
+                .beginTransaction()
+                .replace(rootViewRes, new FragmentFrames())
                 .commit();
     }
 
