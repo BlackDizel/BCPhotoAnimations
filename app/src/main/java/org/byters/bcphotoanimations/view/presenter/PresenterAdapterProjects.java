@@ -60,8 +60,18 @@ public class PresenterAdapterProjects implements IPresenterAdapterProjects {
 
     @Override
     public void onClickItem(int position) {
-        refCacheProjectSelected.get().resetCache();
-        refNavigator.get().navigateProjectCreate();
+        if (refCacheProjects.get().isProjectNew(position)) {
+            refCacheProjectSelected.get().resetCache();
+            refNavigator.get().navigateProjectCreate();
+        } else {
+            refCacheProjectSelected.get().setSelectedProject(position);
+            refNavigator.get().navigateProject();
+        }
+    }
+
+    @Override
+    public String getItemTitle(int position) {
+        return refCacheProjects.get().getItemTitle(position);
     }
 
     private class CacheCallback implements ICacheProjectsCallback {

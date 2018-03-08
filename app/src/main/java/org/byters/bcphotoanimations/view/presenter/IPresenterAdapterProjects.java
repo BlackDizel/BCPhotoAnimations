@@ -16,4 +16,6 @@ public interface IPresenterAdapterProjects {
     void onClickLong(int position);
 
     void onClickItem(int position);
+
+    String getItemTitle(int position);
 }
