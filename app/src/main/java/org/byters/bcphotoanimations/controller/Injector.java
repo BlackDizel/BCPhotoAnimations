@@ -6,8 +6,10 @@ import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSel
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.view.INavigator;
 import org.byters.bcphotoanimations.view.Navigator;
+import org.byters.bcphotoanimations.view.presenter.IPresenterAdapterFrames;
 import org.byters.bcphotoanimations.view.presenter.IPresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.IPresenterProjectEdit;
+import org.byters.bcphotoanimations.view.presenter.PresenterAdapterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectEdit;
 
@@ -17,6 +19,7 @@ public class Injector {
 
     private IPresenterAdapterProjects presenterAdapterProjects;
     private IPresenterProjectEdit presenterProjectEdit;
+    private PresenterAdapterFrames presenterAdapterFrames;
 
     private ICacheProjects cacheProjects;
     private ICacheProjectSelected cacheProjectSelected;
@@ -57,5 +60,11 @@ public class Injector {
         if (presenterProjectEdit == null)
             presenterProjectEdit = new PresenterProjectEdit(getNavigator(), getCacheProjectSelected());
         return presenterProjectEdit;
+    }
+
+    public IPresenterAdapterFrames getPresenterAdapterFrames() {
+        if (presenterAdapterFrames == null)
+            presenterAdapterFrames = new PresenterAdapterFrames(getCacheProjects(), getCacheProjectSelected(), getNavigator());
+        return presenterAdapterFrames;
     }
 }
