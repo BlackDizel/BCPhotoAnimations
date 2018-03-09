@@ -16,4 +16,8 @@ public interface ICacheProjects {
     String getItemTitle(int position);
 
     boolean isProjectNew(int position);
+
+    int getItemFramesNum(String projectId);
+
+    String getItemImagePreview(String projectId, int position);
 }

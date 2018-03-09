@@ -95,6 +95,18 @@ public class CacheProjects implements ICacheProjects {
         return item instanceof ProjectObjectNew;
     }
 
+    @Override
+    public int getItemFramesNum(String projectId) {
+        ProjectObject item = getItemById(projectId);
+        return item == null ? 0 : item.getFramesNum();
+    }
+
+    @Override
+    public String getItemImagePreview(String projectId, int position) {
+        ProjectObject item = getItemById(projectId);
+        return item == null ? null : item.getFramePreview(position);
+    }
+
     private ProjectObject getItemById(String projectSelectedId) {
         if (data == null || TextUtils.isEmpty(projectSelectedId)) return null;
         for (ProjectObjectBase item : data) {
