@@ -17,4 +17,6 @@ public interface INavigator {
     boolean onBackPressed();
 
     void navigateProject();
+
+    void navigateCamera();
 }
