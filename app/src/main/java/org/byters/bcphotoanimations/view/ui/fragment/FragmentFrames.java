@@ -9,11 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.byters.bcphotoanimations.R;
-import org.byters.bcphotoanimations.controller.Injector;
 import org.byters.bcphotoanimations.view.ui.adapters.AdapterFrames;
 
 public class FragmentFrames extends FragmentBase
-implements View.OnClickListener{
+        implements View.OnClickListener {
 
     private static final int SPAN_NUM = 4;
 
@@ -29,7 +28,7 @@ implements View.OnClickListener{
     private void setFrames(View view) {
         RecyclerView rvItems = view.findViewById(R.id.rvItems);
         rvItems.setLayoutManager(new GridLayoutManager(getContext(), SPAN_NUM));
-        rvItems.setAdapter(new AdapterFrames(Injector.getInstance().getPresenterAdapterFrames()));
+        rvItems.setAdapter(new AdapterFrames());
     }
 
     @Override

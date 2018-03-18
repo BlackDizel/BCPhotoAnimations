@@ -2,21 +2,25 @@ package org.byters.bcphotoanimations.controller.data.memorycache;
 
 import android.text.TextUtils;
 
-import java.lang.ref.WeakReference;
+import org.byters.bcphotoanimations.ApplicationStopMotion;
+
+import javax.inject.Inject;
 
 public class CacheProjectSelected implements ICacheProjectSelected {
 
-    private WeakReference<ICacheProjects> refCacheProjects;
+    @Inject
+    ICacheProjects cacheProjects;
+
     private String projectSelectedId;
     private String titleEdit;
 
-    public CacheProjectSelected(ICacheProjects cacheProjects) {
-        this.refCacheProjects = new WeakReference<>(cacheProjects);
+    public CacheProjectSelected() {
+        ApplicationStopMotion.getComponent().inject(this);
     }
 
     @Override
     public void setSelectedProject(int position) {
-        this.projectSelectedId = refCacheProjects.get().getProjectId(position);
+        this.projectSelectedId = cacheProjects.getProjectId(position);
     }
 
     @Override
@@ -42,7 +46,7 @@ public class CacheProjectSelected implements ICacheProjectSelected {
     @Override
     public void saveProject() {
         if (TextUtils.isEmpty(titleEdit)) return;
-        projectSelectedId = refCacheProjects.get().editProject(projectSelectedId, titleEdit);
+        projectSelectedId = cacheProjects.editProject(projectSelectedId, titleEdit);
     }
 
     @Override

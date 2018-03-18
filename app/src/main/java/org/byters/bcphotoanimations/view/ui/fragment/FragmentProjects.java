@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.byters.bcphotoanimations.R;
-import org.byters.bcphotoanimations.controller.Injector;
 import org.byters.bcphotoanimations.view.ui.adapters.AdapterProjects;
 
 public class FragmentProjects extends FragmentBase {
@@ -23,7 +22,7 @@ public class FragmentProjects extends FragmentBase {
 
         RecyclerView rvItems = view.findViewById(R.id.rvItems);
         rvItems.setLayoutManager(new GridLayoutManager(getContext(), SPAN_NUM));
-        rvItems.setAdapter(new AdapterProjects(Injector.getInstance().getPresenterAdapterProjects()));
+        rvItems.setAdapter(new AdapterProjects());
 
         return view;
     }

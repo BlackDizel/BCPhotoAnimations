@@ -10,24 +10,26 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
-import org.byters.bcphotoanimations.controller.Injector;
 import org.byters.bcphotoanimations.view.presenter.IPresenterProjectEdit;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterProjectEditCallback;
 
-import java.lang.ref.WeakReference;
+import javax.inject.Inject;
 
 public class FragmentProjectEdit extends FragmentBase
         implements View.OnClickListener {
 
-    private WeakReference<IPresenterProjectEdit> refPresenterProjectEdit;
+    @Inject
+    IPresenterProjectEdit presenterProjectEdit;
+
     private PresenterCallback presenterCallback;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        refPresenterProjectEdit = new WeakReference<>(Injector.getInstance().getPresenterProjectEdit());
+        ApplicationStopMotion.getComponent().inject(this);
         presenterCallback = new PresenterCallback();
     }
 
@@ -50,21 +52,21 @@ public class FragmentProjectEdit extends FragmentBase
     @Override
     public void onStart() {
         super.onStart();
-        refPresenterProjectEdit.get().setCallback(presenterCallback);
-        refPresenterProjectEdit.get().onStart();
+        presenterProjectEdit.setCallback(presenterCallback);
+        presenterProjectEdit.onStart();
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.ivClose) {
-            refPresenterProjectEdit.get().onClickClose();
+            presenterProjectEdit.onClickClose();
         }
 
         if (v.getId() == R.id.tvSave) {
-            refPresenterProjectEdit.get().onClickSave();
+            presenterProjectEdit.onClickSave();
         }
         if (v == getView())
-            refPresenterProjectEdit.get().onClickRoot();
+            presenterProjectEdit.onClickRoot();
     }
 
     private class TextChangeListener implements TextWatcher {
@@ -80,7 +82,7 @@ public class FragmentProjectEdit extends FragmentBase
 
         @Override
         public void afterTextChanged(Editable s) {
-            refPresenterProjectEdit.get().onTitleEdit(s.toString());
+            presenterProjectEdit.onTitleEdit(s.toString());
         }
     }
 

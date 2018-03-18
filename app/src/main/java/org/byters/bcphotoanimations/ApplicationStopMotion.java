@@ -2,17 +2,23 @@ package org.byters.bcphotoanimations;
 
 import android.app.Application;
 
-import org.byters.bcphotoanimations.controller.Injector;
-
 public class ApplicationStopMotion extends Application {
 
-    private Injector injector;
+    private static AppComponent component;
+
+    public static AppComponent getComponent() {
+        return component;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        injector = new Injector();
+        component = buildComponent();
+    }
 
+    private AppComponent buildComponent() {
+        return DaggerAppComponent
+                .builder().build();
     }
 }

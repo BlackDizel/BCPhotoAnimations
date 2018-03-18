@@ -1,5 +1,6 @@
 package org.byters.bcphotoanimations.view.presenter;
 
+import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.callback.ICacheProjectsCallback;
@@ -10,26 +11,29 @@ import org.byters.bcphotoanimations.view.presenter.callback.IPresenterAdapterPro
 
 import java.lang.ref.WeakReference;
 
+import javax.inject.Inject;
+
 public class PresenterAdapterProjects implements IPresenterAdapterProjects {
 
-    private WeakReference<INavigator> refNavigator;
-    private WeakReference<ICacheProjectSelected> refCacheProjectSelected;
-    private WeakReference<ICacheProjects> refCacheProjects;
+    @Inject
+    INavigator navigator;
+    @Inject
+    ICacheProjectSelected cacheProjectSelected;
+    @Inject
+    ICacheProjects cacheProjects;
+
     private WeakReference<IPresenterAdapterProjectsCallback> refCallback;
 
     private CacheCallback cacheCallback;
 
-    public PresenterAdapterProjects(ICacheProjects cacheProjects, ICacheProjectSelected cacheProjectSelected, INavigator navigator) {
-        this.refCacheProjects = new WeakReference<>(cacheProjects);
-        this.refCacheProjectSelected = new WeakReference<>(cacheProjectSelected);
-        this.refNavigator = new WeakReference<>(navigator);
-
-        refCacheProjects.get().addCallback(cacheCallback = new CacheCallback());
+    public PresenterAdapterProjects() {
+        ApplicationStopMotion.getComponent().inject(this);
+        cacheProjects.addCallback(cacheCallback = new CacheCallback());
     }
 
     @Override
     public int getItemsSize() {
-        return refCacheProjects.get().getDataSize();
+        return cacheProjects.getDataSize();
     }
 
     @Override
@@ -49,29 +53,29 @@ public class PresenterAdapterProjects implements IPresenterAdapterProjects {
 
     @Override
     public int getItemViewType(int position) {
-        return refCacheProjects.get().getItemType(position);
+        return cacheProjects.getItemType(position);
     }
 
     @Override
     public void onClickLong(int position) {
-        refCacheProjectSelected.get().setSelectedProject(position);
-        refNavigator.get().navigateProjectEdit();
+        cacheProjectSelected.setSelectedProject(position);
+        navigator.navigateProjectEdit();
     }
 
     @Override
     public void onClickItem(int position) {
-        if (refCacheProjects.get().isProjectNew(position)) {
-            refCacheProjectSelected.get().resetCache();
-            refNavigator.get().navigateProjectCreate();
+        if (cacheProjects.isProjectNew(position)) {
+            cacheProjectSelected.resetCache();
+            navigator.navigateProjectCreate();
         } else {
-            refCacheProjectSelected.get().setSelectedProject(position);
-            refNavigator.get().navigateProject();
+            cacheProjectSelected.setSelectedProject(position);
+            navigator.navigateProject();
         }
     }
 
     @Override
     public String getItemTitle(int position) {
-        return refCacheProjects.get().getItemTitle(position);
+        return cacheProjects.getItemTitle(position);
     }
 
     private class CacheCallback implements ICacheProjectsCallback {

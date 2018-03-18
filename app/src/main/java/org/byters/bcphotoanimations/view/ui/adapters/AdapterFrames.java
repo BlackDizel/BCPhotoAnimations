@@ -8,25 +8,27 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
 import org.byters.bcphotoanimations.view.presenter.IPresenterAdapterFrames;
 
-import java.lang.ref.WeakReference;
+import javax.inject.Inject;
 
 
 public class AdapterFrames extends AdapterBase {
 
-    private WeakReference<IPresenterAdapterFrames> refPresenterAdapterFrames;
+    @Inject
+    IPresenterAdapterFrames presenterAdapterFrames;
 
-    public AdapterFrames(IPresenterAdapterFrames presenterAdapterFrames) {
-        this.refPresenterAdapterFrames = new WeakReference<>(presenterAdapterFrames);
+    public AdapterFrames() {
+        ApplicationStopMotion.getComponent().inject(this);
     }
 
     @Override
     public ViewHolderBase onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (refPresenterAdapterFrames.get().isTypeFrame(viewType))
+        if (presenterAdapterFrames.isTypeFrame(viewType))
             return new ViewHolderItem(parent);
-        if (refPresenterAdapterFrames.get().isTypeFrameAdd(viewType))
+        if (presenterAdapterFrames.isTypeFrameAdd(viewType))
             return new ViewHolderFrameAdd(parent);
 
         return null;
@@ -34,12 +36,12 @@ public class AdapterFrames extends AdapterBase {
 
     @Override
     public int getItemCount() {
-        return refPresenterAdapterFrames.get().getItemsNum();
+        return presenterAdapterFrames.getItemsNum();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return refPresenterAdapterFrames.get().getItemViewType(position);
+        return presenterAdapterFrames.getItemViewType(position);
     }
 
     private class ViewHolderItem extends ViewHolderBase {
@@ -57,7 +59,7 @@ public class AdapterFrames extends AdapterBase {
         void setData(int position) {
             //todo set state setlected
 
-            String imageUri = refPresenterAdapterFrames.get().getItemImageUri(position);
+            String imageUri = presenterAdapterFrames.getItemImageUri(position);
             if (TextUtils.isEmpty(imageUri))
                 ivItem.setImageDrawable(null);
             else Glide.with(itemView.getContext())
@@ -82,7 +84,7 @@ public class AdapterFrames extends AdapterBase {
 
         @Override
         public void onClick(View v) {
-            refPresenterAdapterFrames.get().onClickFrameAdd();
+            presenterAdapterFrames.onClickFrameAdd();
         }
     }
 }

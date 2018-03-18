@@ -2,6 +2,9 @@ package org.byters.bcphotoanimations.view.presenter;
 
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterProjectEditCallback;
 
+import javax.inject.Singleton;
+
+@Singleton
 public interface IPresenterProjectEdit {
     void onClickClose();
 

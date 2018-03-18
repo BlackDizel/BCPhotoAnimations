@@ -3,18 +3,25 @@ package org.byters.bcphotoanimations.view.ui.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
-import org.byters.bcphotoanimations.controller.Injector;
+import org.byters.bcphotoanimations.view.INavigator;
+
+import javax.inject.Inject;
 
 public class ActivityMain extends ActivityBase {
+
+    @Inject
+    INavigator navigator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Injector.getInstance().getNavigator()
-                .setData(getSupportFragmentManager(), R.id.flContent);
+        ApplicationStopMotion.getComponent().inject(this);
+
+        navigator.setData(getSupportFragmentManager(), R.id.flContent);
     }
 
 
@@ -23,14 +30,13 @@ public class ActivityMain extends ActivityBase {
         super.onStart();
         //todo implement presenter
 
-        Injector.getInstance().getNavigator()
-                .navigateProjectsList();
+        navigator.navigateProjectsList();
     }
 
 
     @Override
     public void onBackPressed() {
-        if (!Injector.getInstance().getNavigator().onBackPressed())
+        if (!navigator.onBackPressed())
             super.onBackPressed();
     }
 }

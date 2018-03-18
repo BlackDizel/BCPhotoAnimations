@@ -5,28 +5,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
 import org.byters.bcphotoanimations.view.presenter.IPresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterAdapterProjectsCallback;
 
-import java.lang.ref.WeakReference;
+import javax.inject.Inject;
 
 public class AdapterProjects extends AdapterBase {
 
+    @Inject
+    IPresenterAdapterProjects presenterAdapterProjects;
     private PresenterCallback presenterCallback;
-    private WeakReference<IPresenterAdapterProjects> refPresenterAdapterProjects;
 
-    public AdapterProjects(IPresenterAdapterProjects presenterAdapterProjects) {
-        this.refPresenterAdapterProjects = new WeakReference<>(presenterAdapterProjects);
-        this.refPresenterAdapterProjects.get().setCallback(presenterCallback = new PresenterCallback());
+    public AdapterProjects() {
+        ApplicationStopMotion.getComponent().inject(this);
+        presenterAdapterProjects.setCallback(presenterCallback = new PresenterCallback());
     }
 
     @Override
     public ViewHolderBase onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (refPresenterAdapterProjects.get().isTypeProject(viewType))
+        if (presenterAdapterProjects.isTypeProject(viewType))
             return new ViewHolderProject(parent);
 
-        if (refPresenterAdapterProjects.get().isTypeProjectNew(viewType))
+        if (presenterAdapterProjects.isTypeProjectNew(viewType))
             return new ViewHolderProjectNew(parent);
 
         return null;
@@ -34,12 +36,12 @@ public class AdapterProjects extends AdapterBase {
 
     @Override
     public int getItemViewType(int position) {
-        return refPresenterAdapterProjects.get().getItemViewType(position);
+        return presenterAdapterProjects.getItemViewType(position);
     }
 
     @Override
     public int getItemCount() {
-        return refPresenterAdapterProjects.get().getItemsSize();
+        return presenterAdapterProjects.getItemsSize();
     }
 
     private class ViewHolderProject extends ViewHolderItem implements View.OnLongClickListener {
@@ -55,13 +57,13 @@ public class AdapterProjects extends AdapterBase {
 
         @Override
         void setData(int position) {
-            String title = refPresenterAdapterProjects.get().getItemTitle(position);
+            String title = presenterAdapterProjects.getItemTitle(position);
             tvTitle.setText(TextUtils.isEmpty(title) ? "" : title);
         }
 
         @Override
         public boolean onLongClick(View v) {
-            refPresenterAdapterProjects.get().onClickLong(getAdapterPosition());
+            presenterAdapterProjects.onClickLong(getAdapterPosition());
             return true;
         }
     }
@@ -93,7 +95,7 @@ public class AdapterProjects extends AdapterBase {
 
         @Override
         public void onClick(View v) {
-            refPresenterAdapterProjects.get().onClickItem(getAdapterPosition());
+            presenterAdapterProjects.onClickItem(getAdapterPosition());
         }
     }
 }

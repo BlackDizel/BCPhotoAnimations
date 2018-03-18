@@ -2,6 +2,9 @@ package org.byters.bcphotoanimations.view.presenter;
 
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterAdapterProjectsCallback;
 
+import javax.inject.Singleton;
+
+@Singleton
 public interface IPresenterAdapterProjects {
     int getItemsSize();
 

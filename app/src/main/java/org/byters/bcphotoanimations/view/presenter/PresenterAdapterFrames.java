@@ -1,24 +1,26 @@
 package org.byters.bcphotoanimations.view.presenter;
 
+import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.view.INavigator;
 
-import java.lang.ref.WeakReference;
+import javax.inject.Inject;
 
 public class PresenterAdapterFrames implements IPresenterAdapterFrames {
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_ITEM_ADD = 1;
 
-    private WeakReference<INavigator> refNavigator;
-    private WeakReference<ICacheProjectSelected> cacheProjectSelected;
-    private WeakReference<ICacheProjects> refCacheProjects;
+    @Inject
+    INavigator navigator;
+    @Inject
+    ICacheProjectSelected cacheProjectSelected;
+    @Inject
+    ICacheProjects cacheProjects;
 
-    public PresenterAdapterFrames(ICacheProjects cacheProjects, ICacheProjectSelected cacheProjectSelected, INavigator navigator) {
-        this.refCacheProjects = new WeakReference<>(cacheProjects);
-        this.cacheProjectSelected = new WeakReference<>(cacheProjectSelected);
-        this.refNavigator = new WeakReference<>(navigator);
+    public PresenterAdapterFrames() {
+        ApplicationStopMotion.getComponent().inject(this);
     }
 
     @Override
@@ -33,17 +35,17 @@ public class PresenterAdapterFrames implements IPresenterAdapterFrames {
 
     @Override
     public void onClickFrameAdd() {
-        refNavigator.get().navigateCamera();
+        navigator.navigateCamera();
     }
 
     @Override
     public int getItemsNum() {
-        return refCacheProjects.get().getItemFramesNum(cacheProjectSelected.get().getProjectSelectedId()) + 1;
+        return cacheProjects.getItemFramesNum(cacheProjectSelected.getProjectSelectedId()) + 1;
     }
 
     @Override
     public String getItemImageUri(int position) {
-        return refCacheProjects.get().getItemImagePreview(cacheProjectSelected.get().getProjectSelectedId(), position);
+        return cacheProjects.getItemImagePreview(cacheProjectSelected.getProjectSelectedId(), position);
     }
 
     @Override

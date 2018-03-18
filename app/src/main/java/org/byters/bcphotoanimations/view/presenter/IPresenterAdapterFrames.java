@@ -1,5 +1,8 @@
 package org.byters.bcphotoanimations.view.presenter;
 
+import javax.inject.Singleton;
+
+@Singleton
 public interface IPresenterAdapterFrames {
     boolean isTypeFrame(int viewType);
 

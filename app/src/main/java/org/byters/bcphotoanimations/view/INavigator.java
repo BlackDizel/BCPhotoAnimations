@@ -2,6 +2,9 @@ package org.byters.bcphotoanimations.view;
 
 import android.support.v4.app.FragmentManager;
 
+import javax.inject.Singleton;
+
+@Singleton
 public interface INavigator {
 
     void setData(FragmentManager fragmentManager, int flContent);
