@@ -14,4 +14,6 @@ public interface ICacheProjectSelected {
     void saveProject();
 
     String getProjectSelectedId();
+
+    void addFrame(byte[] data);
 }

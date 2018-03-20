@@ -3,6 +3,7 @@ package org.byters.bcphotoanimations.controller.data.memorycache;
 import android.text.TextUtils;
 
 import org.byters.bcphotoanimations.controller.data.memorycache.callback.ICacheProjectsCallback;
+import org.byters.bcphotoanimations.model.FrameObject;
 import org.byters.bcphotoanimations.model.ProjectObject;
 import org.byters.bcphotoanimations.model.ProjectObjectBase;
 import org.byters.bcphotoanimations.model.ProjectObjectNew;
@@ -105,6 +106,14 @@ public class CacheProjects implements ICacheProjects {
     public String getItemImagePreview(String projectId, int position) {
         ProjectObject item = getItemById(projectId);
         return item == null ? null : item.getFramePreview(position);
+    }
+
+    @Override
+    public void addFrame(String projectId, FrameObject frameObject) {
+        ProjectObject item = getItemById(projectId);
+        if (item == null) return;
+        item.addFrame(frameObject);
+        notifyListeners();
     }
 
     private ProjectObject getItemById(String projectSelectedId) {

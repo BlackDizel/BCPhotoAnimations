@@ -51,4 +51,9 @@ public class ProjectObject extends ProjectObjectBase {
         if (frames == null || frames.size() <= position || position < 0) return null;
         return frames.get(position);
     }
+
+    public void addFrame(FrameObject frameObject) {
+        if (frames == null) frames = new ArrayList<>();
+        frames.add(frameObject);
+    }
 }

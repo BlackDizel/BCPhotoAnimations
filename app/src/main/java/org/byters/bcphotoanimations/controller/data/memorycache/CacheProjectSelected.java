@@ -3,6 +3,10 @@ package org.byters.bcphotoanimations.controller.data.memorycache;
 import android.text.TextUtils;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
+import org.byters.bcphotoanimations.model.FrameObject;
+
+import java.io.File;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -10,6 +14,9 @@ public class CacheProjectSelected implements ICacheProjectSelected {
 
     @Inject
     ICacheProjects cacheProjects;
+
+    @Inject
+    ICacheStorage cacheStorage;
 
     private String projectSelectedId;
     private String titleEdit;
@@ -52,5 +59,24 @@ public class CacheProjectSelected implements ICacheProjectSelected {
     @Override
     public String getProjectSelectedId() {
         return projectSelectedId;
+    }
+
+    @Override
+    public void addFrame(byte[] data) {
+        FrameObject frameObject = new FrameObject();
+
+        String path = cacheStorage.getAppFolder()
+                + File.separator
+                + projectSelectedId
+                + File.separator
+                + UUID.randomUUID()
+                + cacheStorage.getImageExt();
+
+        frameObject.setUrlFile(path);
+
+        cacheProjects.addFrame(projectSelectedId, frameObject);
+
+        cacheStorage.writeObjectToFile(data, path);
+
     }
 }

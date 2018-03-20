@@ -1,6 +1,7 @@
 package org.byters.bcphotoanimations.controller.data.memorycache;
 
 import org.byters.bcphotoanimations.controller.data.memorycache.callback.ICacheProjectsCallback;
+import org.byters.bcphotoanimations.model.FrameObject;
 
 public interface ICacheProjects {
     void addCallback(ICacheProjectsCallback callback);
@@ -20,4 +21,6 @@ public interface ICacheProjects {
     int getItemFramesNum(String projectId);
 
     String getItemImagePreview(String projectId, int position);
+
+    void addFrame(String projectSelectedId, FrameObject frameObject);
 }
