@@ -1,8 +1,9 @@
 package org.byters.bcphotoanimations.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class FrameObject {
+public class FrameObject implements Serializable{
 
     private String urlFile;
     private String id;

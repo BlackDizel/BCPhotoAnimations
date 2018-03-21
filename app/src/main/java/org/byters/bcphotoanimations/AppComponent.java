@@ -2,6 +2,7 @@ package org.byters.bcphotoanimations;
 
 import org.byters.bcphotoanimations.controller.AppModule;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjectSelected;
+import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheStorage;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterProjects;
@@ -42,4 +43,7 @@ public interface AppComponent {
     void inject(PresenterCamera param);
 
     void inject(CacheStorage param);
+
+    void inject(CacheProjects param);
+
 }

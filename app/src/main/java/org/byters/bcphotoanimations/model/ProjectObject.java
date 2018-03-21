@@ -1,8 +1,9 @@
 package org.byters.bcphotoanimations.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ProjectObject extends ProjectObjectBase {
+public class ProjectObject extends ProjectObjectBase implements Serializable {
 
     private String UUID;
     private String title;

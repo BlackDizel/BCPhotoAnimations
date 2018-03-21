@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
+import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.view.ui.view.CameraPreview;
 import org.byters.bcphotoanimations.view.ui.view.callback.ICameraPreviewCallback;
 
@@ -16,8 +17,13 @@ import javax.inject.Inject;
 
 public class PresenterCamera extends PresenterCameraBase {
     private static final int CAMERA_UNDEFINED = -1;
+
     @Inject
     ICacheProjectSelected cacheProjectSelected;
+    @Inject
+    ICacheProjects cacheProjects;
+
+
     @Nullable
     private Camera camera;
     private CameraCallback cameraCallback;
@@ -60,6 +66,8 @@ public class PresenterCamera extends PresenterCameraBase {
 
     @Override
     public void onPause() {
+        cacheProjects.storeCache();
+
         if (camera == null) return;
         camera.release();
         camera = null;
