@@ -139,6 +139,14 @@ public class CacheProjects implements ICacheProjects {
         return item == null ? null : item.getTitle();
     }
 
+    @Override
+    public void removeProject(String projectSelectedId) {
+        if (!model.removeProject(projectSelectedId)) return;
+        storeCache();
+        cacheStorage.removeFolder(cacheStorage.getProjectFolder(projectSelectedId));
+        notifyListeners();
+    }
+
     private ProjectObject getItemById(String projectSelectedId) {
         if (model == null || TextUtils.isEmpty(projectSelectedId)) return null;
         return model.getItemById(projectSelectedId);

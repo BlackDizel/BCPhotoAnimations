@@ -49,7 +49,7 @@ public class FragmentProjectEdit extends FragmentBase
         view.setOnClickListener(this);
         view.findViewById(R.id.ivClose).setOnClickListener(this);
         view.findViewById(R.id.tvSave).setOnClickListener(this);
-
+        view.findViewById(R.id.tvRemove).setOnClickListener(this);
         return view;
     }
 
@@ -68,6 +68,10 @@ public class FragmentProjectEdit extends FragmentBase
 
         if (v.getId() == R.id.tvSave) {
             presenterProjectEdit.onClickSave();
+        }
+
+        if (v.getId() == R.id.tvRemove) {
+            presenterProjectEdit.onClickRemove();
         }
         if (v == getView())
             presenterProjectEdit.onClickRoot();
@@ -122,6 +126,11 @@ public class FragmentProjectEdit extends FragmentBase
         @Override
         public void hideKeyboard() {
             FragmentProjectEdit.this.hideKeyboard();
+        }
+
+        @Override
+        public void setButtonRemoveVisibility(boolean isVisible) {
+            getView().findViewById(R.id.tvRemove).setVisibility(isVisible ? View.VISIBLE : View.GONE);
         }
     }
 }

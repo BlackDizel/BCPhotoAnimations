@@ -42,13 +42,21 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
             return;
         }
 
-        boolean isProjectNew = cacheProjectSelected.getProjectSelectedId() == null;
+        boolean isProjectNew = !cacheProjectSelected.isEdit();
         cacheProjectSelected.saveProject();
         navigator.closeProjectEdit();
 
         if (isProjectNew)
             navigator.navigateProject();
 
+        if (refCallback != null && refCallback.get() != null)
+            refCallback.get().hideKeyboard();
+    }
+
+    @Override
+    public void onClickRemove() {
+        cacheProjectSelected.removeProject();
+        navigator.closeProjectEdit();
         if (refCallback != null && refCallback.get() != null)
             refCallback.get().hideKeyboard();
     }
@@ -66,8 +74,11 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
     @Override
     public void onStart() {
         cacheProjectSelected.resetTitleEdit();
-        if (refCallback != null && refCallback.get() != null)
+
+        if (refCallback != null && refCallback.get() != null) {
             refCallback.get().setTitle(cacheProjectSelected.getProjectTitleEdit());
+            refCallback.get().setButtonRemoveVisibility(cacheProjectSelected.isEdit());
+        }
     }
 
     @Override

@@ -3,4 +3,5 @@
     <string name="project_new">new project</string>
     <string name="save">Save</string>
     <string name="error_title_empty">empty project title</string>
+    <string name="remove">remove</string>
 </resources>

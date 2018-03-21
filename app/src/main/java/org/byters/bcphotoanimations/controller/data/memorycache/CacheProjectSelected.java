@@ -79,4 +79,14 @@ public class CacheProjectSelected implements ICacheProjectSelected {
         cacheStorage.writeObjectToFile(data, path);
 
     }
+
+    @Override
+    public boolean isEdit() {
+        return !TextUtils.isEmpty(getProjectSelectedId());
+    }
+
+    @Override
+    public void removeProject() {
+        cacheProjects.removeProject(projectSelectedId);
+    }
 }

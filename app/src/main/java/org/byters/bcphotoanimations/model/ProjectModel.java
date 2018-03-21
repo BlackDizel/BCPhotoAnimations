@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ProjectModel implements Serializable {
     ArrayList<ProjectObjectBase> data;
@@ -11,7 +12,7 @@ public class ProjectModel implements Serializable {
     public ProjectModel() {
     }
 
-    public void init(){
+    public void init() {
         data = new ArrayList<>();
         data.add(new ProjectObjectNew());
     }
@@ -40,5 +41,27 @@ public class ProjectModel implements Serializable {
         if (data == null || data.size() == 0 || position < 0 || position >= data.size())
             return null;
         return data.get(position);
+    }
+
+    public boolean removeProject(String projectSelectedId) {
+        if (TextUtils.isEmpty(projectSelectedId) || data == null) return false;
+
+        Iterator itr = data.iterator();
+        ProjectObject item;
+        while (itr.hasNext()) {
+
+            Object itemObject = itr.next();
+            if (!(itemObject instanceof ProjectObject))
+                continue;
+
+            item = (ProjectObject) itemObject;
+            if (item.getId().equals(projectSelectedId)) {
+                itr.remove();
+                return true;
+
+            }
+        }
+
+        return false;
     }
 }

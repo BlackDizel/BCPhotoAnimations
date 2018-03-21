@@ -7,4 +7,6 @@ public interface IPresenterProjectEditCallback {
     void setTitle(String title);
 
     void hideKeyboard();
+
+    void setButtonRemoveVisibility(boolean isVisible);
 }

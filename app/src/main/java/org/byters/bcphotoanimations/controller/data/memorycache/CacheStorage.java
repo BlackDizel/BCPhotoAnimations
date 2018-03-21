@@ -123,6 +123,27 @@ public class CacheStorage implements ICacheStorage {
         return (T) object;
     }
 
+    @Override
+    public String getProjectFolder(String projectSelectedId) {
+        return getAppFolder()
+                + File.separator
+                + projectSelectedId;
+    }
+
+    @Override
+    public void removeFolder(String projectFolder) {
+        File folder = new File(projectFolder);
+        deleteRecursive(folder);
+    }
+
+    private void deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                deleteRecursive(child);
+
+        fileOrDirectory.delete();
+    }
+
     private void throwExceptionType() {
         throw new ClassCastException("can't get this enum item type value. Check type in PreferenceHelperEnum");
     }

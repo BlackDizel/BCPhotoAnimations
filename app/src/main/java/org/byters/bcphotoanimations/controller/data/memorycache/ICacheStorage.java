@@ -15,4 +15,8 @@ public interface ICacheStorage {
     void writeObjectToFile(Object data, String appFolder, PreferenceHelperEnum item);
 
     <T> T readObjectFromFile(String folder, PreferenceHelperEnum item, Class<T> class_);
+
+    String getProjectFolder(String projectSelectedId);
+
+    void removeFolder(String projectFolder);
 }

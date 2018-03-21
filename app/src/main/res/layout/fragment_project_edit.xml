@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_transparent"
@@ -25,13 +26,13 @@
 
 
         <EditText
-            android:gravity="center"
             android:id="@+id/etTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:ellipsize="end"
+            android:gravity="center"
             android:inputType="text"
             android:lines="1"
             android:minWidth="96dp"
@@ -47,6 +48,20 @@
             android:padding="12dp"
             android:text="@string/save"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Button" />
+
+
+        <TextView
+            android:id="@+id/tvRemove"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="@string/remove"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
     </LinearLayout>
 

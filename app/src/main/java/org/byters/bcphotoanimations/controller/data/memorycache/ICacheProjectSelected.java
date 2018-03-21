@@ -16,4 +16,8 @@ public interface ICacheProjectSelected {
     String getProjectSelectedId();
 
     void addFrame(byte[] data);
+
+    boolean isEdit();
+
+    void removeProject();
 }

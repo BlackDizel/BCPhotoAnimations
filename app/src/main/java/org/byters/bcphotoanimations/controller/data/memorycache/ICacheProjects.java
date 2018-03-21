@@ -27,4 +27,6 @@ public interface ICacheProjects {
     void storeCache();
 
     String getItemTitleById(String projectSelectedId);
+
+    void removeProject(String projectSelectedId);
 }
