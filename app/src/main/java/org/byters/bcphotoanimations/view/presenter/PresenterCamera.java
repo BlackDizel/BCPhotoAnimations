@@ -76,7 +76,10 @@ public class PresenterCamera extends PresenterCameraBase {
     @Override
     public void takePicture() {
         if (camera == null) return;
-        camera.takePicture(null, null, pictureCallback);
+        try {
+            camera.takePicture(null, null, pictureCallback);
+        } catch (RuntimeException e) {
+        }
     }
 
     private void initCamera(View view) {
