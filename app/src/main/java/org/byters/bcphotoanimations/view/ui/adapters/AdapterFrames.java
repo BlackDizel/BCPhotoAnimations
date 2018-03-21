@@ -44,7 +44,8 @@ public class AdapterFrames extends AdapterBase {
         return presenterAdapterFrames.getItemViewType(position);
     }
 
-    private class ViewHolderItem extends ViewHolderBase {
+    private class ViewHolderItem extends ViewHolderBase
+            implements View.OnClickListener {
 
         private ImageView ivItem;
         private TextView tvTitle;
@@ -53,6 +54,7 @@ public class AdapterFrames extends AdapterBase {
             super(parent, R.layout.view_frame);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             ivItem = itemView.findViewById(R.id.ivItem);
+            itemView.setOnClickListener(this);
         }
 
         @Override
@@ -66,7 +68,16 @@ public class AdapterFrames extends AdapterBase {
                     .load(imageUri)
                     .into(ivItem);
 
-            tvTitle.setText(String.valueOf(position));
+            tvTitle.setText(getTextPosition(position));
+        }
+
+        private String getTextPosition(int position) {
+            return String.valueOf(position + 1);
+        }
+
+        @Override
+        public void onClick(View v) {
+
         }
     }
 
