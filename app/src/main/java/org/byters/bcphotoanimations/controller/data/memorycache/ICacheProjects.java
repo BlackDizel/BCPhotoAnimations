@@ -25,4 +25,6 @@ public interface ICacheProjects {
     void addFrame(String projectSelectedId, FrameObject frameObject);
 
     void storeCache();
+
+    String getItemTitleById(String projectSelectedId);
 }

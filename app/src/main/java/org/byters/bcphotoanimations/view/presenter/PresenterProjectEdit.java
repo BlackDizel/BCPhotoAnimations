@@ -27,6 +27,9 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
     @Override
     public void onClickClose() {
         navigator.closeProjectEdit();
+
+        if (refCallback != null && refCallback.get() != null)
+            refCallback.get().hideKeyboard();
     }
 
     @Override
@@ -45,6 +48,9 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
 
         if (isProjectNew)
             navigator.navigateProject();
+
+        if (refCallback != null && refCallback.get() != null)
+            refCallback.get().hideKeyboard();
     }
 
     @Override
@@ -60,6 +66,8 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
     @Override
     public void onStart() {
         cacheProjectSelected.resetTitleEdit();
+        if (refCallback != null && refCallback.get() != null)
+            refCallback.get().setTitle(cacheProjectSelected.getProjectTitleEdit());
     }
 
     @Override

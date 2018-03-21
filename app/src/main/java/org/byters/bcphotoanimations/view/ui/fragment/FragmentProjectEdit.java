@@ -1,12 +1,15 @@
 package org.byters.bcphotoanimations.view.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,8 @@ public class FragmentProjectEdit extends FragmentBase
     IPresenterProjectEdit presenterProjectEdit;
 
     private PresenterCallback presenterCallback;
+    private TextView etTitle;
+    private TextChangeListener textChangeListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class FragmentProjectEdit extends FragmentBase
 
         ApplicationStopMotion.getComponent().inject(this);
         presenterCallback = new PresenterCallback();
+        textChangeListener = new TextChangeListener();
     }
 
     @Nullable
@@ -38,9 +44,7 @@ public class FragmentProjectEdit extends FragmentBase
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_edit, container, false);
 
-        TextView etTitle = view.findViewById(R.id.etTitle);
-        etTitle.addTextChangedListener(new TextChangeListener());
-
+        etTitle = view.findViewById(R.id.etTitle);
 
         view.setOnClickListener(this);
         view.findViewById(R.id.ivClose).setOnClickListener(this);
@@ -69,6 +73,19 @@ public class FragmentProjectEdit extends FragmentBase
             presenterProjectEdit.onClickRoot();
     }
 
+    private void showKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    private void hideKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     private class TextChangeListener implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -90,6 +107,21 @@ public class FragmentProjectEdit extends FragmentBase
         @Override
         public void showErrorTitleEmpty() {
             Toast.makeText(getContext(), R.string.error_title_empty, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void setTitle(String title) {
+            etTitle.removeTextChangedListener(textChangeListener);
+            etTitle.setText(TextUtils.isEmpty(title) ? "" : title);
+            etTitle.addTextChangedListener(textChangeListener);
+
+            etTitle.requestFocus();
+            showKeyboard(etTitle);
+        }
+
+        @Override
+        public void hideKeyboard() {
+            FragmentProjectEdit.this.hideKeyboard();
         }
     }
 }

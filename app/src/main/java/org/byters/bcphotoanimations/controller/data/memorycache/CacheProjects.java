@@ -81,14 +81,13 @@ public class CacheProjects implements ICacheProjects {
     @Override
     public String editProject(String projectSelectedId, String title) {
         ProjectObject item = getItemById(projectSelectedId);
-        if (item != null) {
-            item.setTitle(title);
-            notifyListeners();
-            return item.getId();
+
+        if (item == null) {
+            item = ProjectObject.newItem(title);
+            model.addItem(item);
         }
 
-        item = ProjectObject.newItem(title);
-        model.addItem(item);
+        item.setTitle(title);
 
         storeCache();
 
@@ -132,6 +131,12 @@ public class CacheProjects implements ICacheProjects {
     @Override
     public void storeCache() {
         cacheStorage.writeObjectToFile(model, cacheStorage.getAppFolder(), PreferenceHelperEnum.PROJECTS_CACHE);
+    }
+
+    @Override
+    public String getItemTitleById(String projectSelectedId) {
+        ProjectObject item = getItemById(projectSelectedId);
+        return item == null ? null : item.getTitle();
     }
 
     private ProjectObject getItemById(String projectSelectedId) {

@@ -46,7 +46,12 @@ public class CacheProjectSelected implements ICacheProjectSelected {
 
     @Override
     public void resetTitleEdit() {
-        this.titleEdit = null;
+        if (TextUtils.isEmpty(getProjectSelectedId())) {
+            this.titleEdit = null;
+            return;
+        }
+
+        this.titleEdit = cacheProjects.getItemTitleById(projectSelectedId);
     }
 
     @Override
