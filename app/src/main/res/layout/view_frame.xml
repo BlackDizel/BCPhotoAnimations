@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:padding="2dp">
+    android:background="?attr/selectableItemBackground">
 
     <LinearLayout
         android:orientation="vertical"
@@ -16,7 +15,8 @@
             android:id="@+id/ivItem"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:padding="2dp" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -28,5 +28,20 @@
             tools:text="SOME TEXT" />
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/flSelected"
+        android:background="@color/white_transparent"
+        android:visibility="gone"
+        app:layout_aspectRatio="100%"
+        app:layout_widthPercent="100%">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_check_white_24dp" />
+
+    </FrameLayout>
 
 </android.support.percent.PercentFrameLayout>

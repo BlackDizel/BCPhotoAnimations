@@ -29,4 +29,6 @@ public interface ICacheProjects {
     String getItemTitleById(String projectSelectedId);
 
     void removeProject(String projectSelectedId);
+
+    String getFrameId(String projectSelectedId, int position);
 }

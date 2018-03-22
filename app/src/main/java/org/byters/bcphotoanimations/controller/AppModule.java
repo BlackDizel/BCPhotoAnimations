@@ -2,9 +2,11 @@ package org.byters.bcphotoanimations.controller;
 
 import android.content.Context;
 
+import org.byters.bcphotoanimations.controller.data.memorycache.CacheFramesSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheStorage;
+import org.byters.bcphotoanimations.controller.data.memorycache.ICacheFramesSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheStorage;
@@ -86,6 +88,12 @@ public class AppModule {
     @Provides
     WeakReference<Context> getContext() {
         return refContext;
+    }
+
+    @Provides
+    @Singleton
+    ICacheFramesSelected getCacheFramesSelected() {
+        return new CacheFramesSelected();
     }
 
 }

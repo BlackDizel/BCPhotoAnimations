@@ -57,4 +57,10 @@ public class ProjectObject extends ProjectObjectBase implements Serializable {
         if (frames == null) frames = new ArrayList<>();
         frames.add(frameObject);
     }
+
+    public String getFrameId(int position) {
+        if (frames == null || position < 0 || position >= getFramesNum())
+            return null;
+        return frames.get(position).getId();
+    }
 }

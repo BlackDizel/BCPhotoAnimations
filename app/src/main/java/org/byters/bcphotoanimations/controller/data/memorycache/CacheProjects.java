@@ -147,6 +147,12 @@ public class CacheProjects implements ICacheProjects {
         notifyListeners();
     }
 
+    @Override
+    public String getFrameId(String projectSelectedId, int position) {
+        if (model == null) return null;
+        return model.getFrameId(projectSelectedId, position);
+    }
+
     private ProjectObject getItemById(String projectSelectedId) {
         if (model == null || TextUtils.isEmpty(projectSelectedId)) return null;
         return model.getItemById(projectSelectedId);

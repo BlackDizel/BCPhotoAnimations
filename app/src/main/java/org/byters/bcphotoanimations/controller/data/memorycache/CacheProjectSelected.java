@@ -17,6 +17,9 @@ public class CacheProjectSelected implements ICacheProjectSelected {
     @Inject
     ICacheStorage cacheStorage;
 
+    @Inject
+    ICacheFramesSelected cacheFramesSelected;
+
     private String projectSelectedId;
     private String titleEdit;
 
@@ -26,7 +29,12 @@ public class CacheProjectSelected implements ICacheProjectSelected {
 
     @Override
     public void setSelectedProject(int position) {
-        this.projectSelectedId = cacheProjects.getProjectId(position);
+        String projectId = cacheProjects.getProjectId(position);
+        if (projectId != null && projectId.equals(this.projectSelectedId))
+            return;
+
+        this.projectSelectedId = projectId;
+        cacheFramesSelected.resetCache();
     }
 
     @Override
@@ -88,5 +96,10 @@ public class CacheProjectSelected implements ICacheProjectSelected {
     @Override
     public void removeProject() {
         cacheProjects.removeProject(projectSelectedId);
+    }
+
+    @Override
+    public String getFrameId(int position) {
+        return cacheProjects.getFrameId(projectSelectedId, position);
     }
 }

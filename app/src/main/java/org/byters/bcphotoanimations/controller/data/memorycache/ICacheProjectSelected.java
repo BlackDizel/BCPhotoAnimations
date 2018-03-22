@@ -20,4 +20,6 @@ public interface ICacheProjectSelected {
     boolean isEdit();
 
     void removeProject();
+
+    String getFrameId(int position);
 }

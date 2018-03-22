@@ -19,4 +19,8 @@ public class FrameObject implements Serializable{
     public void setUrlFile(String urlFile) {
         this.urlFile = urlFile;
     }
+
+    public String getId() {
+        return id;
+    }
 }

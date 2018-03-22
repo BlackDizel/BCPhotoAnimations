@@ -11,17 +11,20 @@ import com.bumptech.glide.Glide;
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
 import org.byters.bcphotoanimations.view.presenter.IPresenterAdapterFrames;
+import org.byters.bcphotoanimations.view.presenter.callback.IPresenterAdapterFramesCallback;
 
 import javax.inject.Inject;
 
-
 public class AdapterFrames extends AdapterBase {
+
+    private final PresenterCallback presenterCallback;
 
     @Inject
     IPresenterAdapterFrames presenterAdapterFrames;
 
     public AdapterFrames() {
         ApplicationStopMotion.getComponent().inject(this);
+        presenterAdapterFrames.setCallback(presenterCallback = new PresenterCallback());
     }
 
     @Override
@@ -45,16 +48,20 @@ public class AdapterFrames extends AdapterBase {
     }
 
     private class ViewHolderItem extends ViewHolderBase
-            implements View.OnClickListener {
+            implements View.OnClickListener, View.OnLongClickListener {
 
         private ImageView ivItem;
         private TextView tvTitle;
+        private View vSelected;
 
         ViewHolderItem(ViewGroup parent) {
             super(parent, R.layout.view_frame);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             ivItem = itemView.findViewById(R.id.ivItem);
+            vSelected = itemView.findViewById(R.id.flSelected);
+
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -69,6 +76,8 @@ public class AdapterFrames extends AdapterBase {
                     .into(ivItem);
 
             tvTitle.setText(getTextPosition(position));
+
+            vSelected.setVisibility(presenterAdapterFrames.isSelected(position) ? View.VISIBLE : View.GONE);
         }
 
         private String getTextPosition(int position) {
@@ -77,7 +86,13 @@ public class AdapterFrames extends AdapterBase {
 
         @Override
         public void onClick(View v) {
+            presenterAdapterFrames.onClickItem(getAdapterPosition());
+        }
 
+        @Override
+        public boolean onLongClick(View v) {
+            presenterAdapterFrames.onLongClickItem(getAdapterPosition());
+            return true;
         }
     }
 
@@ -96,6 +111,13 @@ public class AdapterFrames extends AdapterBase {
         @Override
         public void onClick(View v) {
             presenterAdapterFrames.onClickFrameAdd();
+        }
+    }
+
+    private class PresenterCallback implements IPresenterAdapterFramesCallback {
+        @Override
+        public void onUpdate() {
+            notifyDataSetChanged();
         }
     }
 }

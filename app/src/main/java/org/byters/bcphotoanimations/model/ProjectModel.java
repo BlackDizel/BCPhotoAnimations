@@ -64,4 +64,9 @@ public class ProjectModel implements Serializable {
 
         return false;
     }
+
+    public String getFrameId(String projectSelectedId, int position) {
+        ProjectObject item = getItemById(projectSelectedId);
+        return item == null ? null : item.getFrameId(position);
+    }
 }
