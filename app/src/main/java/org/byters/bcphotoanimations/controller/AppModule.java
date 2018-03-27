@@ -15,10 +15,12 @@ import org.byters.bcphotoanimations.view.Navigator;
 import org.byters.bcphotoanimations.view.presenter.IPresenterAdapterFrames;
 import org.byters.bcphotoanimations.view.presenter.IPresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.IPresenterCamera;
+import org.byters.bcphotoanimations.view.presenter.IPresenterFrames;
 import org.byters.bcphotoanimations.view.presenter.IPresenterProjectEdit;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.PresenterCamera;
+import org.byters.bcphotoanimations.view.presenter.PresenterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectEdit;
 
 import java.lang.ref.WeakReference;
@@ -94,6 +96,12 @@ public class AppModule {
     @Singleton
     ICacheFramesSelected getCacheFramesSelected() {
         return new CacheFramesSelected();
+    }
+
+    @Provides
+    @Singleton
+    IPresenterFrames getPresenterFrames() {
+        return new PresenterFrames();
     }
 
 }

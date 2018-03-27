@@ -22,4 +22,8 @@ public interface ICacheProjectSelected {
     void removeProject();
 
     String getFrameId(int position);
+
+    void removeSelected();
+
+    void revertSelected();
 }

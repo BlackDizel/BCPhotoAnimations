@@ -56,4 +56,9 @@ public class CacheFramesSelected implements ICacheFramesSelected {
 
         callbacks.put(callback.getClass().getName(), new WeakReference<>(callback));
     }
+
+    @Override
+    public void selectCancel() {
+        resetCache();
+    }
 }

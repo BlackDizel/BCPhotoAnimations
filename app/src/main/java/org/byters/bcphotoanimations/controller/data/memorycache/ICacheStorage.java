@@ -10,7 +10,7 @@ public interface ICacheStorage {
 
     String getImageExt();
 
-    String getProjectFolderFile(String projectSelectedId, String filename);
+    String getProjectFolderFile(String projectSelectedId, String filename, String extension);
 
     void writeObjectToFile(Object data, String appFolder, PreferenceHelperEnum item);
 
@@ -19,4 +19,6 @@ public interface ICacheStorage {
     String getProjectFolder(String projectSelectedId);
 
     void removeFolder(String projectFolder);
+
+    void removeFile(String path);
 }

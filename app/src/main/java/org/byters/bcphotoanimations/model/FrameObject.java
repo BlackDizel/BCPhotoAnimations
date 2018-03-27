@@ -3,7 +3,7 @@ package org.byters.bcphotoanimations.model;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class FrameObject implements Serializable{
+public class FrameObject implements Serializable {
 
     private String urlFile;
     private String id;
@@ -22,5 +22,9 @@ public class FrameObject implements Serializable{
 
     public String getId() {
         return id;
+    }
+
+    public String getFileUrl() {
+        return urlFile;
     }
 }

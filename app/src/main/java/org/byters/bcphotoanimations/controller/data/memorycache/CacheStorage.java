@@ -45,12 +45,13 @@ public class CacheStorage implements ICacheStorage {
     }
 
     @Override
-    public String getProjectFolderFile(String projectSelectedId, String filename) {
+    public String getProjectFolderFile(String projectSelectedId, String filename, String extension) {
         return getAppFolder()
                 + File.separator
                 + projectSelectedId
                 + File.separator
-                + filename;
+                + filename
+                + extension;
     }
 
     @Override
@@ -134,6 +135,12 @@ public class CacheStorage implements ICacheStorage {
     public void removeFolder(String projectFolder) {
         File folder = new File(projectFolder);
         deleteRecursive(folder);
+    }
+
+    @Override
+    public void removeFile(String path) {
+        File file = new File(path);
+        file.delete();
     }
 
     private void deleteRecursive(File fileOrDirectory) {

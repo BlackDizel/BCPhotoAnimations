@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.model.FrameObject;
 
+import java.util.Iterator;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -77,8 +78,7 @@ public class CacheProjectSelected implements ICacheProjectSelected {
     public void addFrame(byte[] data) {
         FrameObject frameObject = new FrameObject();
 
-        String path = cacheStorage.getProjectFolderFile(projectSelectedId,
-                UUID.randomUUID() + cacheStorage.getImageExt());
+        String path = cacheStorage.getProjectFolderFile(projectSelectedId, UUID.randomUUID().toString(), cacheStorage.getImageExt());
 
         frameObject.setUrlFile(path);
 
@@ -101,5 +101,32 @@ public class CacheProjectSelected implements ICacheProjectSelected {
     @Override
     public String getFrameId(int position) {
         return cacheProjects.getFrameId(projectSelectedId, position);
+    }
+
+    @Override
+    public void removeSelected() {
+
+        Iterator itr = cacheProjects.getFramesIterator(projectSelectedId);
+        if (itr == null) return;
+
+        while (itr.hasNext()) {
+
+            FrameObject frame = (FrameObject) itr.next();
+
+            if (cacheFramesSelected.isSelected(frame.getId())) {
+                cacheFramesSelected.changeSelected(frame.getId());
+                cacheStorage.removeFile(frame.getFileUrl());
+                itr.remove();
+            }
+
+        }
+
+        cacheProjects.storeCache();
+
+    }
+
+    @Override
+    public void revertSelected() {
+        //todo implement
     }
 }

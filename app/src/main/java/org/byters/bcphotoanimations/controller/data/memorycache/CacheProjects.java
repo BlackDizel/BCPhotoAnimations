@@ -13,6 +13,7 @@ import org.byters.bcphotoanimations.model.ProjectObjectNew;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.inject.Inject;
 
@@ -151,6 +152,12 @@ public class CacheProjects implements ICacheProjects {
     public String getFrameId(String projectSelectedId, int position) {
         if (model == null) return null;
         return model.getFrameId(projectSelectedId, position);
+    }
+
+    @Override
+    public Iterator getFramesIterator(String projectId) {
+        ProjectObject item = getItemById(projectId);
+        return item == null ? null : item.getFramesIterator();
     }
 
     private ProjectObject getItemById(String projectSelectedId) {
