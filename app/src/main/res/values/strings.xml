@@ -4,4 +4,10 @@
     <string name="save">Save</string>
     <string name="error_title_empty">empty project title</string>
     <string name="remove">remove</string>
+    <string name="button_frames_select_cancel">select cancel</string>
+    <string name="button_frames_select_range">select range</string>
+    <string name="button_frames_copy">copy</string>
+    <string name="button_frames_move">move</string>
+    <string name="button_frames_revert">revert</string>
+    <string name="button_frames_remove">remove</string>
 </resources>

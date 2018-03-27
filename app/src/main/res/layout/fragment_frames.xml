@@ -20,4 +20,10 @@
         android:layout_marginTop="56dp" />
 
 
+    <include
+        android:layout_gravity="bottom"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/view_frames_actions"/>
+
 </FrameLayout>
