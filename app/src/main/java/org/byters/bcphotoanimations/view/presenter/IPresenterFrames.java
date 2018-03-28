@@ -27,4 +27,6 @@ public interface IPresenterFrames {
     void onSelectRange(int from, int to);
 
     void onSelectCopyPosition(int position);
+
+    void onSelectMovePosition(int position);
 }

@@ -31,5 +31,7 @@ public interface ICacheProjectSelected {
 
     void copySelectedFramesTo(int position);
 
+    void moveSelectedFramesTo(int position);
+
     void selectRange(int val1, int val2);
 }

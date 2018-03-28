@@ -115,7 +115,7 @@ public class CacheProjectSelected implements ICacheProjectSelected {
             FrameObject frame = (FrameObject) itr.next();
 
             if (cacheFramesSelected.isSelected(frame.getId())) {
-                cacheFramesSelected.changeSelected(frame.getId());
+                cacheFramesSelected.setSelected(frame.getId(), false);
                 //cacheStorage.removeFile(frame.getFileUrl()); //fixme several frames can link to same file
                 itr.remove();
             }
@@ -138,11 +138,36 @@ public class CacheProjectSelected implements ICacheProjectSelected {
 
     @Override
     public void copySelectedFramesTo(int position) {
+        ArrayList<FrameObject> result = copySelectedTo(position);
 
+        cacheFramesSelected.selectCancel();
+        setSelected(result);
+
+        cacheProjects.storeCache();
+    }
+
+    @Override
+    public void moveSelectedFramesTo(int position) {
+        ArrayList<FrameObject> result = copySelectedTo(position);
+
+        removeSelected();
+        setSelected(result);
+
+        cacheProjects.storeCache();
+    }
+
+    private void setSelected(ArrayList<FrameObject> result) {
+        if (result == null) return;
+        for (FrameObject item : result)
+            cacheFramesSelected.setSelected(item.getId(), true);
+    }
+
+
+    private ArrayList<FrameObject> copySelectedTo(int position) {
         ArrayList<FrameObject> result = null;
 
         Iterator itr = cacheProjects.getFramesIterator(projectSelectedId);
-        if (itr == null) return;
+        if (itr == null) return null;
 
         while (itr.hasNext()) {
 
@@ -153,15 +178,14 @@ public class CacheProjectSelected implements ICacheProjectSelected {
                 if (result == null) result = new ArrayList<>();
                 FrameObject item = FrameObject.newInstance(frame);
                 result.add(item);
-                cacheFramesSelected.setSelected(frame.getId(), false);
-                cacheFramesSelected.setSelected(item.getId(), true);
             }
         }
 
-        if (result == null) return;
+        if (result == null) return null;
 
         cacheProjects.addFrames(projectSelectedId, result, position);
-        cacheProjects.storeCache();
+
+        return result;
     }
 
     @Override

@@ -72,7 +72,10 @@ public class PresenterFrames implements IPresenterFrames {
 
     @Override
     public void onClickMove() {
-//todo move to
+        if (refCallback == null || refCallback.get() == null) return;
+        int framesNum = cacheProjectSelected.getFramesNum();
+        if (framesNum == 0) return;
+        refCallback.get().showAlertMoveToPosition(framesNum);
     }
 
     @Override
@@ -88,6 +91,11 @@ public class PresenterFrames implements IPresenterFrames {
     @Override
     public void onSelectCopyPosition(int position) {
         cacheProjectSelected.copySelectedFramesTo(position);
+    }
+
+    @Override
+    public void onSelectMovePosition(int position) {
+        cacheProjectSelected.moveSelectedFramesTo(position);
     }
 
     private class CacheFramesSelectedCallback implements ICacheFramesSelectedCallback {
