@@ -12,6 +12,14 @@ public class FrameObject implements Serializable {
         id = UUID.randomUUID().toString();
     }
 
+    public static FrameObject newInstance(FrameObject frame) {
+        if (frame == null) return null;
+
+        FrameObject result = new FrameObject();
+        result.urlFile = frame.urlFile;
+        return result;
+    }
+
     public String getPreview() {
         return urlFile;
     }
