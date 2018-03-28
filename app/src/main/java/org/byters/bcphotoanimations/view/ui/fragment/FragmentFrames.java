@@ -16,6 +16,8 @@ import org.byters.bcphotoanimations.R;
 import org.byters.bcphotoanimations.view.presenter.IPresenterFrames;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterFramesCallback;
 import org.byters.bcphotoanimations.view.ui.adapters.AdapterFrames;
+import org.byters.bcphotoanimations.view.ui.utils.DialogFramesPosition;
+import org.byters.bcphotoanimations.view.ui.utils.DialogFramesRange;
 
 import javax.inject.Inject;
 
@@ -92,13 +94,16 @@ public class FragmentFrames extends FragmentBase
 
     private class Presentercallback implements IPresenterFramesCallback {
 
-        private ListenerPositionPositive listenerPositionPositive;
-        private ListenerRangePositive listenerRangePositive;
+        final int TYPE_COPY = 1;
+        final int TYPE_MOVE = 2;
+
+        private DialogInterface.OnClickListener listenerMovePositionPositive, listenerCopyPositionPositive, listenerSelectRangePositive;
         private AlertDialog dialogRange, dialogPosition;
 
         Presentercallback() {
-            listenerRangePositive = new ListenerRangePositive();
-            listenerPositionPositive = new ListenerPositionPositive();
+            listenerSelectRangePositive = new ListenerRangePositive();
+            listenerCopyPositionPositive = new ListenerPositionPositive(TYPE_COPY);
+            listenerMovePositionPositive = new ListenerPositionPositive(TYPE_MOVE);
         }
 
         @Override
@@ -116,24 +121,7 @@ public class FragmentFrames extends FragmentBase
             if (dialogRange != null && dialogRange.isShowing())
                 return;
 
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_range, null);
-
-            NumberPicker pickerFrom = view.findViewById(R.id.npFrom);
-            pickerFrom.setMaxValue(framesNum);
-            pickerFrom.setMinValue(1);
-
-            NumberPicker pickerTo = view.findViewById(R.id.npTo);
-            pickerTo.setMaxValue(framesNum);
-            pickerTo.setMinValue(1);
-
-            dialogRange = new AlertDialog.Builder(getContext())
-                    .setView(view)
-                    .setTitle(R.string.dialog_range_title)
-                    .setPositiveButton(R.string.dialog_ok, listenerRangePositive)
-                    .setNegativeButton(R.string.dialog_cancel, null)
-                    .setCancelable(true)
-                    .create();
-
+            dialogRange = new DialogFramesRange(getContext(), framesNum, listenerSelectRangePositive).getDialog();
             dialogRange.show();
         }
 
@@ -142,20 +130,16 @@ public class FragmentFrames extends FragmentBase
             if (dialogPosition != null && dialogPosition.isShowing())
                 return;
 
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_position, null);
+            dialogPosition = new DialogFramesPosition(getContext(), framesNum, listenerCopyPositionPositive).getDialog();
+            dialogPosition.show();
+        }
 
-            NumberPicker pickerTo = view.findViewById(R.id.npPosition);
-            pickerTo.setMaxValue(framesNum);
-            pickerTo.setMinValue(0);
+        @Override
+        public void showAlertMoveToPosition(int framesNum) {
+            if (dialogPosition != null && dialogPosition.isShowing())
+                return;
 
-            dialogPosition = new AlertDialog.Builder(getContext())
-                    .setView(view)
-                    .setTitle(R.string.dialog_position_title)
-                    .setPositiveButton(R.string.dialog_ok, listenerPositionPositive)
-                    .setNegativeButton(R.string.dialog_cancel, null)
-                    .setCancelable(true)
-                    .create();
-
+            dialogPosition = new DialogFramesPosition(getContext(), framesNum, listenerMovePositionPositive).getDialog();
             dialogPosition.show();
         }
 
@@ -172,12 +156,23 @@ public class FragmentFrames extends FragmentBase
         }
 
         private class ListenerPositionPositive implements DialogInterface.OnClickListener {
+
+            private int type;
+
+            ListenerPositionPositive(int type) {
+                this.type = type;
+            }
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (dialogPosition == null) return;
                 NumberPicker pickerTo = dialogPosition.findViewById(R.id.npPosition);
 
-                presenterFrames.onSelectCopyPosition(pickerTo.getValue());
+                if (type == TYPE_COPY)
+                    presenterFrames.onSelectCopyPosition(pickerTo.getValue());
+
+                if (type == TYPE_MOVE)
+                    presenterFrames.onSelectMovePosition(pickerTo.getValue());
 
             }
         }

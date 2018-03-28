@@ -7,4 +7,6 @@ public interface IPresenterFramesCallback {
     void showAlertSelectRange(int framesNum);
 
     void showAlertCopyToPosition(int framesNum);
+
+    void showAlertMoveToPosition(int framesNum);
 }
