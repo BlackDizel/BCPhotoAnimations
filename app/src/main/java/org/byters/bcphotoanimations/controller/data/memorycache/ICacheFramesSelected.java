@@ -17,4 +17,6 @@ public interface ICacheFramesSelected {
     void addCallback(ICacheFramesSelectedCallback callback);
 
     void selectCancel();
+
+    void setSelected(String id, boolean isSelected);
 }

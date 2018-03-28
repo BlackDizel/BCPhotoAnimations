@@ -23,4 +23,8 @@ public interface IPresenterFrames {
     void onClickMove();
 
     void onClickRevert();
+
+    void onSelectRange(int from, int to);
+
+    void onSelectCopyPosition(int position);
 }

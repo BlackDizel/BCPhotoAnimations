@@ -68,4 +68,17 @@ public class ProjectObject extends ProjectObjectBase implements Serializable {
     public Iterator getFramesIterator() {
         return frames == null ? null : frames.iterator();
     }
+
+    public void addFrames(ArrayList<FrameObject> param, int position) {
+        if (param == null) return;
+
+        if (this.frames == null) {
+            this.frames = param;
+            return;
+        }
+
+        if (position > this.frames.size() || position < 0) return;
+
+        this.frames.addAll(position, param);
+    }
 }

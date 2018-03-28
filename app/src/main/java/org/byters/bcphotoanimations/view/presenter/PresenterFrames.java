@@ -51,7 +51,10 @@ public class PresenterFrames implements IPresenterFrames {
 
     @Override
     public void onClickSelectRange() {
-//todo select range
+        if (refCallback == null || refCallback.get() == null) return;
+        int framesNum = cacheProjectSelected.getFramesNum();
+        if (framesNum == 0) return;
+        refCallback.get().showAlertSelectRange(framesNum);
     }
 
     @Override
@@ -61,7 +64,10 @@ public class PresenterFrames implements IPresenterFrames {
 
     @Override
     public void onClickCopy() {
-//todo copy to
+        if (refCallback == null || refCallback.get() == null) return;
+        int framesNum = cacheProjectSelected.getFramesNum();
+        if (framesNum == 0) return;
+        refCallback.get().showAlertCopyToPosition(framesNum);
     }
 
     @Override
@@ -72,6 +78,16 @@ public class PresenterFrames implements IPresenterFrames {
     @Override
     public void onClickRevert() {
         cacheProjectSelected.revertSelected();
+    }
+
+    @Override
+    public void onSelectRange(int from, int to) {
+        cacheProjectSelected.selectRange(from-1,to-1);
+    }
+
+    @Override
+    public void onSelectCopyPosition(int position) {
+        cacheProjectSelected.copySelectedFramesTo(position);
     }
 
     private class CacheFramesSelectedCallback implements ICacheFramesSelectedCallback {

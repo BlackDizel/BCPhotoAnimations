@@ -3,6 +3,7 @@ package org.byters.bcphotoanimations.controller.data.memorycache;
 import org.byters.bcphotoanimations.controller.data.memorycache.callback.ICacheProjectsCallback;
 import org.byters.bcphotoanimations.model.FrameObject;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public interface ICacheProjects {
@@ -35,4 +36,6 @@ public interface ICacheProjects {
     String getFrameId(String projectSelectedId, int position);
 
     Iterator getFramesIterator(String projectId);
+
+    void addFrames(String projectId, ArrayList<FrameObject> frames, int position);
 }

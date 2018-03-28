@@ -40,6 +40,20 @@ public class CacheFramesSelected implements ICacheFramesSelected {
     }
 
     @Override
+    public void setSelected(String id, boolean isSelected) {
+        if (isSelected && selectedIds == null)
+            selectedIds = new ArrayList<>();
+
+        if (isSelected && !selectedIds.contains(id))
+            selectedIds.add(id);
+
+        if (!isSelected)
+            selectedIds.remove(id);
+
+        notifyListeners();
+    }
+
+    @Override
     public boolean isModeSelect() {
         return selectedIds != null && selectedIds.size() > 0;
     }

@@ -10,4 +10,10 @@
     <string name="button_frames_move">move</string>
     <string name="button_frames_revert">revert</string>
     <string name="button_frames_remove">remove</string>
+    <string name="dialog_from">from</string>
+    <string name="dialog_to">to</string>
+    <string name="dialog_range_title">Select frames range</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">cancel</string>
+    <string name="dialog_position_title">Select position</string>
 </resources>

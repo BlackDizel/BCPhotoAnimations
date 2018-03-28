@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.model.FrameObject;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -115,7 +116,7 @@ public class CacheProjectSelected implements ICacheProjectSelected {
 
             if (cacheFramesSelected.isSelected(frame.getId())) {
                 cacheFramesSelected.changeSelected(frame.getId());
-                cacheStorage.removeFile(frame.getFileUrl());
+                //cacheStorage.removeFile(frame.getFileUrl()); //fixme several frames can link to same file
                 itr.remove();
             }
 
@@ -128,5 +129,56 @@ public class CacheProjectSelected implements ICacheProjectSelected {
     @Override
     public void revertSelected() {
         //todo implement
+    }
+
+    @Override
+    public int getFramesNum() {
+        return cacheProjects.getItemFramesNum(projectSelectedId);
+    }
+
+    @Override
+    public void copySelectedFramesTo(int position) {
+
+        ArrayList<FrameObject> result = null;
+
+        Iterator itr = cacheProjects.getFramesIterator(projectSelectedId);
+        if (itr == null) return;
+
+        while (itr.hasNext()) {
+
+            FrameObject frame = (FrameObject) itr.next();
+
+            if (cacheFramesSelected.isSelected(frame.getId())) {
+
+                if (result == null) result = new ArrayList<>();
+                FrameObject item = FrameObject.newInstance(frame);
+                result.add(item);
+                cacheFramesSelected.setSelected(frame.getId(), false);
+                cacheFramesSelected.setSelected(item.getId(), true);
+            }
+        }
+
+        if (result == null) return;
+
+        cacheProjects.addFrames(projectSelectedId, result, position);
+        cacheProjects.storeCache();
+    }
+
+    @Override
+    public void selectRange(int val1, int val2) {
+        int size = cacheProjects.getItemFramesNum(projectSelectedId);
+        if (size == 0) return;
+
+        int from, to;
+        from = Math.max(Math.min(val1, val2), 0);
+        to = Math.min(Math.max(val1, val2), size - 1);
+
+        for (int i = from; i <= to; ++i) {
+            String id = cacheProjects.getFrameId(projectSelectedId, i);
+            if (TextUtils.isEmpty(id))
+                continue;
+
+            cacheFramesSelected.setSelected(id, true);
+        }
     }
 }

@@ -26,4 +26,10 @@ public interface ICacheProjectSelected {
     void removeSelected();
 
     void revertSelected();
+
+    int getFramesNum();
+
+    void copySelectedFramesTo(int position);
+
+    void selectRange(int val1, int val2);
 }

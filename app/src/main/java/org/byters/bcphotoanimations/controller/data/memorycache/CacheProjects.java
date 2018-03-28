@@ -12,6 +12,7 @@ import org.byters.bcphotoanimations.model.ProjectObjectBase;
 import org.byters.bcphotoanimations.model.ProjectObjectNew;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -126,6 +127,14 @@ public class CacheProjects implements ICacheProjects {
         ProjectObject item = getItemById(projectId);
         if (item == null) return;
         item.addFrame(frameObject);
+        notifyListeners();
+    }
+
+    @Override
+    public void addFrames(String projectId, ArrayList<FrameObject> frames, int position) {
+        ProjectObject item = getItemById(projectId);
+        if (item == null) return;
+        item.addFrames(frames, position);
         notifyListeners();
     }
 
