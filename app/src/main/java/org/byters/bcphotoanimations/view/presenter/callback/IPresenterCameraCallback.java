@@ -13,4 +13,6 @@ public interface IPresenterCameraCallback {
     int getScreenOrientation();
 
     void getDisplaySize(Point displaySize);
+
+    void showFlash();
 }

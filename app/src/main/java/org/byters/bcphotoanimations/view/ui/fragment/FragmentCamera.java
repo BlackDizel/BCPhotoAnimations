@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
@@ -114,6 +115,16 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         public void getDisplaySize(Point displaySize) {
             if (getActivity() == null) return;
             getActivity().getWindowManager().getDefaultDisplay().getSize(displaySize);
+        }
+
+        @Override
+        public void showFlash() {
+            View view = getView().findViewById(R.id.vFlash);
+            AlphaAnimation animation = new AlphaAnimation(1, 0);
+            animation.setDuration(250);
+            animation.setFillAfter(true);
+            view.setVisibility(View.VISIBLE);
+            view.startAnimation(animation);
         }
     }
 

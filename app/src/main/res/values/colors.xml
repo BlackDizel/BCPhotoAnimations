@@ -6,4 +6,5 @@
     <color name="gray">#aaa</color>
     <color name="black_transparent">#a000</color>
     <color name="white_transparent">#3fff</color>
+    <color name="white">#fff</color>
 </resources>

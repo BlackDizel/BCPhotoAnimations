@@ -78,8 +78,14 @@ public class PresenterCamera extends PresenterCameraBase {
         if (camera == null) return;
         try {
             camera.takePicture(null, null, pictureCallback);
+            showFlash();
         } catch (RuntimeException e) {
         }
+    }
+
+    private void showFlash() {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().showFlash();
     }
 
     private void initCamera(View view) {
