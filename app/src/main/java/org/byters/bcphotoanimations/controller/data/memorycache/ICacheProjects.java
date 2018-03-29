@@ -4,7 +4,7 @@ import org.byters.bcphotoanimations.controller.data.memorycache.callback.ICacheP
 import org.byters.bcphotoanimations.model.FrameObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.ListIterator;
 
 public interface ICacheProjects {
     void addCallback(ICacheProjectsCallback callback);
@@ -35,7 +35,11 @@ public interface ICacheProjects {
 
     String getFrameId(String projectSelectedId, int position);
 
-    Iterator getFramesIterator(String projectId);
+    ListIterator<FrameObject> getFramesIteratorList(String id);
+
+    ListIterator<FrameObject> getFramesIteratorListReverse(String id);
 
     void addFrames(String projectId, ArrayList<FrameObject> frames, int position);
+
+    void notifyListeners();
 }

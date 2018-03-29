@@ -19,4 +19,6 @@ public interface ICacheFramesSelected {
     void selectCancel();
 
     void setSelected(String id, boolean isSelected);
+
+    void notifyListeners();
 }

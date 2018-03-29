@@ -17,7 +17,8 @@ public class CacheFramesSelected implements ICacheFramesSelected {
         notifyListeners();
     }
 
-    private void notifyListeners() {
+    @Override
+    public void notifyListeners() {
         if (callbacks == null || callbacks.keySet() == null) return;
         for (String key : callbacks.keySet()) {
             if (key == null) continue;

@@ -15,6 +15,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 import javax.inject.Inject;
 
@@ -39,7 +40,8 @@ public class CacheProjects implements ICacheProjects {
         notifyListeners();
     }
 
-    private void notifyListeners() {
+    @Override
+    public void notifyListeners() {
         if (refListeners == null || refListeners.keySet() == null) return;
         for (String key : refListeners.keySet()) {
             if (key == null) continue;
@@ -164,9 +166,15 @@ public class CacheProjects implements ICacheProjects {
     }
 
     @Override
-    public Iterator getFramesIterator(String projectId) {
+    public ListIterator<FrameObject> getFramesIteratorList(String projectId) {
         ProjectObject item = getItemById(projectId);
-        return item == null ? null : item.getFramesIterator();
+        return item == null ? null : item.getFramesIteratorList();
+    }
+
+    @Override
+    public ListIterator<FrameObject> getFramesIteratorListReverse(String projectId) {
+        ProjectObject item = getItemById(projectId);
+        return item == null ? null : item.getFramesIteratorListReverse();
     }
 
     private ProjectObject getItemById(String projectSelectedId) {

@@ -6,7 +6,7 @@ import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.model.FrameObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -107,12 +107,12 @@ public class CacheProjectSelected implements ICacheProjectSelected {
     @Override
     public void removeSelected() {
 
-        Iterator itr = cacheProjects.getFramesIterator(projectSelectedId);
+        ListIterator<FrameObject> itr = cacheProjects.getFramesIteratorList(projectSelectedId);
         if (itr == null) return;
 
         while (itr.hasNext()) {
 
-            FrameObject frame = (FrameObject) itr.next();
+            FrameObject frame = itr.next();
 
             if (cacheFramesSelected.isSelected(frame.getId())) {
                 cacheFramesSelected.setSelected(frame.getId(), false);
@@ -128,8 +128,41 @@ public class CacheProjectSelected implements ICacheProjectSelected {
 
     @Override
     public void revertSelected() {
-        //todo implement
+
+        ListIterator<FrameObject> itr = cacheProjects.getFramesIteratorList(projectSelectedId);
+        ListIterator<FrameObject> itrReverse = cacheProjects.getFramesIteratorListReverse(projectSelectedId);
+        if (itr == null || itrReverse == null) return;
+
+        while (itr.nextIndex() < itrReverse.previousIndex()) {
+            FrameObject frame = itr.next();
+
+            if (!cacheFramesSelected.isSelected(frame.getId()))
+                continue;
+
+            FrameObject otherFrame = getPreviousSelectedFrame(itrReverse);
+
+            if (otherFrame == null || otherFrame.getId().equals(frame.getId()))
+                return;
+
+            itrReverse.set(frame);
+            itr.set(otherFrame);
+        }
+
+        cacheFramesSelected.notifyListeners();
+        cacheProjects.notifyListeners();
+        cacheProjects.storeCache();
     }
+
+    private FrameObject getPreviousSelectedFrame(ListIterator itrReverse) {
+        while (itrReverse.hasPrevious()) {
+            FrameObject item = (FrameObject) itrReverse.previous();
+            if (!cacheFramesSelected.isSelected(item.getId()))
+                continue;
+            return item;
+        }
+        return null;
+    }
+
 
     @Override
     public int getFramesNum() {
@@ -143,6 +176,7 @@ public class CacheProjectSelected implements ICacheProjectSelected {
         cacheFramesSelected.selectCancel();
         setSelected(result);
 
+        cacheProjects.notifyListeners();
         cacheProjects.storeCache();
     }
 
@@ -153,6 +187,7 @@ public class CacheProjectSelected implements ICacheProjectSelected {
         removeSelected();
         setSelected(result);
 
+        cacheProjects.notifyListeners();
         cacheProjects.storeCache();
     }
 
@@ -166,12 +201,12 @@ public class CacheProjectSelected implements ICacheProjectSelected {
     private ArrayList<FrameObject> copySelectedTo(int position) {
         ArrayList<FrameObject> result = null;
 
-        Iterator itr = cacheProjects.getFramesIterator(projectSelectedId);
+        ListIterator<FrameObject> itr = cacheProjects.getFramesIteratorList(projectSelectedId);
         if (itr == null) return null;
 
         while (itr.hasNext()) {
 
-            FrameObject frame = (FrameObject) itr.next();
+            FrameObject frame = itr.next();
 
             if (cacheFramesSelected.isSelected(frame.getId())) {
 

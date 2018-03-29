@@ -2,7 +2,7 @@ package org.byters.bcphotoanimations.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.ListIterator;
 
 public class ProjectObject extends ProjectObjectBase implements Serializable {
 
@@ -65,10 +65,6 @@ public class ProjectObject extends ProjectObjectBase implements Serializable {
         return frames.get(position).getId();
     }
 
-    public Iterator getFramesIterator() {
-        return frames == null ? null : frames.iterator();
-    }
-
     public void addFrames(ArrayList<FrameObject> param, int position) {
         if (param == null) return;
 
@@ -80,5 +76,13 @@ public class ProjectObject extends ProjectObjectBase implements Serializable {
         if (position > this.frames.size() || position < 0) return;
 
         this.frames.addAll(position, param);
+    }
+
+    public ListIterator<FrameObject> getFramesIteratorList() {
+        return frames == null ? null : frames.listIterator();
+    }
+
+    public ListIterator<FrameObject> getFramesIteratorListReverse() {
+        return frames == null ? null : frames.listIterator(frames.size());
     }
 }
