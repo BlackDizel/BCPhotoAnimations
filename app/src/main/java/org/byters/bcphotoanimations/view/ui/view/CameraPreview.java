@@ -57,8 +57,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
 
         try {
-            checkCameraOrientation();
-            checkPreviewSize();
+            int rotation = checkCameraOrientation();
+            checkPreviewSize(rotation);
             camera.setPreviewDisplay(this.holder);
             camera.startPreview();
 
@@ -67,7 +67,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    private void checkCameraOrientation() {
+    private int checkCameraOrientation() {
         Camera.CameraInfo info = new Camera.CameraInfo();
         android.hardware.Camera.getCameraInfo(cameraId, info);
 
@@ -92,10 +92,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         int result;
         result = (info.orientation - degrees + 360) % 360;
         camera.setDisplayOrientation(result);
+        return result;
     }
 
-
-    private void checkPreviewSize() {
+    private void checkPreviewSize(int rotation) {
         if (refCallback == null || refCallback.get() == null)
             return;
 
@@ -130,6 +130,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         if (parameters.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_MACRO))
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_MACRO);
+
+        parameters.setRotation(rotation);
 
         camera.setParameters(parameters);
 

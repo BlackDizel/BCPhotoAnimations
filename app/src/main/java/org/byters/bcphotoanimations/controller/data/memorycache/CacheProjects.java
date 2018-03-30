@@ -14,7 +14,6 @@ import org.byters.bcphotoanimations.model.ProjectObjectNew;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.ListIterator;
 
 import javax.inject.Inject;
@@ -185,4 +184,11 @@ public class CacheProjects implements ICacheProjects {
     private ProjectObjectBase getItem(int position) {
         return model == null ? null : model.getItem(position);
     }
+
+    @Override
+    public String getFrameLastPreview(String projectSelectedId) {
+        ProjectObject item = getItemById(projectSelectedId);
+        return item == null ? null : item.getFrameLastPreview();
+    }
+
 }

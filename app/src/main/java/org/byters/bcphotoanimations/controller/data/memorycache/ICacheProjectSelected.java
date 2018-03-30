@@ -34,4 +34,6 @@ public interface ICacheProjectSelected {
     void moveSelectedFramesTo(int position);
 
     void selectRange(int val1, int val2);
+
+    String getLastFramePreview();
 }

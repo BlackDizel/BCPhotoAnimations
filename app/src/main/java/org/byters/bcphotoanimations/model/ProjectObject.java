@@ -85,4 +85,8 @@ public class ProjectObject extends ProjectObjectBase implements Serializable {
     public ListIterator<FrameObject> getFramesIteratorListReverse() {
         return frames == null ? null : frames.listIterator(frames.size());
     }
+
+    public String getFrameLastPreview() {
+        return frames == null || frames.size() == 0 ? null : frames.get(frames.size() - 1).getPreview();
+    }
 }

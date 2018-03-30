@@ -61,6 +61,7 @@ public class PresenterCamera extends PresenterCameraBase {
 
     @Override
     public void onResume(View view) {
+        setShowLastFrame();
         initCamera(view);
     }
 
@@ -118,10 +119,21 @@ public class PresenterCamera extends PresenterCameraBase {
         //todo implement
     }
 
+    private void setShowLastFrame() {
+        //todo show only if settings enabled
+        //todo set last frame alpha
+
+        if (refCallback == null || refCallback.get() == null) return;
+        String lastFramePath = cacheProjectSelected.getLastFramePreview();
+        refCallback.get().showLastFrame(lastFramePath);
+    }
+
+
     private class CameraPictureCallback implements Camera.PictureCallback {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             cacheProjectSelected.addFrame(data);
+            setShowLastFrame();
             camera.startPreview();
         }
     }

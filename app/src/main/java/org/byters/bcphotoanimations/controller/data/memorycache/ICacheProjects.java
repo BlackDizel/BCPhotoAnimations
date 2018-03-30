@@ -42,4 +42,6 @@ public interface ICacheProjects {
     void addFrames(String projectId, ArrayList<FrameObject> frames, int position);
 
     void notifyListeners();
+
+    String getFrameLastPreview(String projectSelectedId);
 }

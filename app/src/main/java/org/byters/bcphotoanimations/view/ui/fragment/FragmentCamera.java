@@ -4,11 +4,15 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
@@ -119,12 +123,24 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
 
         @Override
         public void showFlash() {
+            if (getView() == null) return;
             View view = getView().findViewById(R.id.vFlash);
             AlphaAnimation animation = new AlphaAnimation(1, 0);
             animation.setDuration(250);
             animation.setFillAfter(true);
             view.setVisibility(View.VISIBLE);
             view.startAnimation(animation);
+        }
+
+        @Override
+        public void showLastFrame(String path) {
+            if (getView() == null || getContext() == null) return;
+            ImageView ivLastFrame = getView().findViewById(R.id.ivLastFrame);
+            if (TextUtils.isEmpty(path))
+                ivLastFrame.setImageDrawable(null);
+            else Glide.with(getContext())
+                    .load(path)
+                    .into(ivLastFrame);
         }
     }
 

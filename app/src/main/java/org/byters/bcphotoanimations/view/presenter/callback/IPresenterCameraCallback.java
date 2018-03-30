@@ -15,4 +15,6 @@ public interface IPresenterCameraCallback {
     void getDisplaySize(Point displaySize);
 
     void showFlash();
+
+    void showLastFrame(String path);
 }

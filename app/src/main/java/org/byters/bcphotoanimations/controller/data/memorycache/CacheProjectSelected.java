@@ -240,4 +240,9 @@ public class CacheProjectSelected implements ICacheProjectSelected {
             cacheFramesSelected.setSelected(id, true);
         }
     }
+
+    @Override
+    public String getLastFramePreview() {
+        return cacheProjects.getFrameLastPreview(projectSelectedId);
+    }
 }
