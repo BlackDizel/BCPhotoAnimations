@@ -5,6 +5,7 @@ import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheFramesSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.callback.ICacheFramesSelectedCallback;
+import org.byters.bcphotoanimations.view.INavigator;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterFramesCallback;
 
 import java.lang.ref.WeakReference;
@@ -18,6 +19,9 @@ public class PresenterFrames implements IPresenterFrames {
 
     @Inject
     ICacheProjectSelected cacheProjectSelected;
+
+    @Inject
+    INavigator navigator;
 
     private CacheFramesSelectedCallback cacheFramesSelectedCallback;
 
@@ -41,7 +45,7 @@ public class PresenterFrames implements IPresenterFrames {
 
     @Override
     public void onClickPlay() {
-        //todo preview
+        navigator.navigatePlay();
     }
 
     @Override

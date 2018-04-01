@@ -22,4 +22,6 @@ public interface INavigator {
     void navigateProject();
 
     void navigateCamera();
+
+    void navigatePlay();
 }

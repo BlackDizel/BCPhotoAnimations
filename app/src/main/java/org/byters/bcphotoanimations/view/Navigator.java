@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentCamera;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentFrames;
+import org.byters.bcphotoanimations.view.ui.fragment.FragmentPreview;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjectEdit;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjects;
 
@@ -61,6 +62,16 @@ public class Navigator implements INavigator {
         refFragmentManager.get()
                 .beginTransaction()
                 .replace(rootViewRes, new FragmentCamera())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void navigatePlay() {
+        if (refFragmentManager == null || refFragmentManager.get() == null) return;
+        refFragmentManager.get()
+                .beginTransaction()
+                .replace(rootViewRes, new FragmentPreview())
                 .addToBackStack(null)
                 .commit();
     }

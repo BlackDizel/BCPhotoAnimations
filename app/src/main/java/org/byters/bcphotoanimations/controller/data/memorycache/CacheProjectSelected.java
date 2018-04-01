@@ -245,4 +245,14 @@ public class CacheProjectSelected implements ICacheProjectSelected {
     public String getLastFramePreview() {
         return cacheProjects.getFrameLastPreview(projectSelectedId);
     }
+
+    @Override
+    public String getFrameUrl(int position) {
+        return cacheProjects.getFrameUrl(projectSelectedId, position);
+    }
+
+    @Override
+    public int getProjectSelectedFramesNum() {
+        return cacheProjects.getItemFramesNum(projectSelectedId);
+    }
 }

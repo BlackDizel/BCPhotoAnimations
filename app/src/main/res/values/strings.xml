@@ -16,4 +16,5 @@
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">cancel</string>
     <string name="dialog_position_title">Select position</string>
+    <string name="label_fps" formatted="false">%sfps</string>
 </resources>

@@ -3,10 +3,12 @@ package org.byters.bcphotoanimations.controller;
 import android.content.Context;
 
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheFramesSelected;
+import org.byters.bcphotoanimations.controller.data.memorycache.CachePreview;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheStorage;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheFramesSelected;
+import org.byters.bcphotoanimations.controller.data.memorycache.ICachePreview;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheStorage;
@@ -16,10 +18,12 @@ import org.byters.bcphotoanimations.view.presenter.IPresenterAdapterFrames;
 import org.byters.bcphotoanimations.view.presenter.IPresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.IPresenterCamera;
 import org.byters.bcphotoanimations.view.presenter.IPresenterFrames;
+import org.byters.bcphotoanimations.view.presenter.IPresenterPreview;
 import org.byters.bcphotoanimations.view.presenter.IPresenterProjectEdit;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.PresenterCamera;
+import org.byters.bcphotoanimations.view.presenter.PresenterPreview;
 import org.byters.bcphotoanimations.view.presenter.PresenterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectEdit;
 
@@ -104,4 +108,15 @@ public class AppModule {
         return new PresenterFrames();
     }
 
+    @Provides
+    @Singleton
+    IPresenterPreview getPresenterPreview() {
+        return new PresenterPreview();
+    }
+
+    @Provides
+    @Singleton
+    ICachePreview getCachePreview(){
+        return new CachePreview();
+    }
 }

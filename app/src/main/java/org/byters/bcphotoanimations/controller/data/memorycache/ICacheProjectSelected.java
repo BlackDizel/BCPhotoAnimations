@@ -36,4 +36,8 @@ public interface ICacheProjectSelected {
     void selectRange(int val1, int val2);
 
     String getLastFramePreview();
+
+    String getFrameUrl(int position);
+
+    int getProjectSelectedFramesNum();
 }

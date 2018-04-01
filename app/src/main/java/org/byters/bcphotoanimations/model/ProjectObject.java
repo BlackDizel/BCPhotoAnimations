@@ -89,4 +89,8 @@ public class ProjectObject extends ProjectObjectBase implements Serializable {
     public String getFrameLastPreview() {
         return frames == null || frames.size() == 0 ? null : frames.get(frames.size() - 1).getPreview();
     }
+
+    public String getFrameUrl(int position) {
+        return frames == null || position >= frames.size() || position < 0 ? null : frames.get(position).getFileUrl();
+    }
 }

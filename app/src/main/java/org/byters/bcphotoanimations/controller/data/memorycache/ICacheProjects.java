@@ -44,4 +44,6 @@ public interface ICacheProjects {
     void notifyListeners();
 
     String getFrameLastPreview(String projectSelectedId);
+
+    String getFrameUrl(String projectSelectedId, int position);
 }
