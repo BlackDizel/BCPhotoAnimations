@@ -1,13 +1,16 @@
 package org.byters.bcphotoanimations.view.ui.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -18,6 +21,7 @@ import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
 import org.byters.bcphotoanimations.view.presenter.IPresenterPreview;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterPreviewCallback;
+import org.byters.bcphotoanimations.view.ui.utils.DialogFramesRange;
 
 import javax.inject.Inject;
 
@@ -33,6 +37,8 @@ public class FragmentPreview extends FragmentBase
     private TextView tvFrameFrom, tvFrameCurrent, tvFrameTo;
     private SeekBar seekBar;
     private ListenerSeekbar listenerSeekbar;
+    private DialogInterface.OnClickListener listenerDialogFramesRange;
+    private AlertDialog dialogFramesRange;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +48,7 @@ public class FragmentPreview extends FragmentBase
 
         presenterPreviewCallback = new PresenterPreviewCallback();
         presenterPreview.selCallback(presenterPreviewCallback);
+        listenerDialogFramesRange = new ListenerDialogFramesRange();
     }
 
     @Nullable
@@ -129,20 +136,25 @@ public class FragmentPreview extends FragmentBase
         }
 
         @Override
-        public void setFrameCurrent(int to, int current, boolean isUpdateSeekbar) {
+        public void setFrameCurrent(int frameRangeIndexFrom, int to, int current, boolean isUpdateSeekbar) {
             if (isUpdateSeekbar) {
-                seekBar.setMax(to);
-                seekBar.setProgress(current);
+                seekBar.setMax(to - frameRangeIndexFrom);
+                seekBar.setProgress(current - frameRangeIndexFrom);
             }
-            tvFrameCurrent.setText(String.valueOf(current));
+            tvFrameCurrent.setText(String.valueOf(current + 1));
         }
 
         @Override
         public void setFramesRange(int from, int to) {
-            tvFrameFrom.setText(String.valueOf(from));
-            tvFrameTo.setText(String.valueOf(to));
+            tvFrameFrom.setText(String.valueOf(from + 1));
+            tvFrameTo.setText(String.valueOf(to + 1));
         }
 
+        @Override
+        public void showAlertFrameRange(int frameRangeFrom, int frameRangeTo, int projectSelectedFramesNum) {
+            dialogFramesRange = new DialogFramesRange(getContext(), projectSelectedFramesNum, 1, frameRangeFrom + 1, 1, frameRangeTo + 1, listenerDialogFramesRange).getDialog();
+            dialogFramesRange.show();
+        }
     }
 
     private class ListenerSeekbar implements SeekBar.OnSeekBarChangeListener {
@@ -161,6 +173,17 @@ public class FragmentPreview extends FragmentBase
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             presenterPreview.onTrackingStop();
+        }
+    }
+
+    private class ListenerDialogFramesRange implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if (dialogFramesRange == null) return;
+            NumberPicker pickerFrom = dialogFramesRange.findViewById(R.id.npFrom);
+            NumberPicker pickerTo = dialogFramesRange.findViewById(R.id.npTo);
+
+            presenterPreview.onSelectRange(pickerFrom.getValue(), pickerTo.getValue());
         }
     }
 

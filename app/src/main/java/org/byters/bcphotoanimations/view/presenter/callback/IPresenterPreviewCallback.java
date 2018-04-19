@@ -8,7 +8,9 @@ public interface IPresenterPreviewCallback {
 
     void setFPS(int fps);
 
-    void setFrameCurrent(int to, int current, boolean b);
+    void setFrameCurrent(int frameRangeIndexFrom, int to, int current, boolean b);
 
     void setFramesRange(int from, int to);
+
+    void showAlertFrameRange(int frameRangeFrom, int frameRangeTo, int projectSelectedFramesNum);
 }

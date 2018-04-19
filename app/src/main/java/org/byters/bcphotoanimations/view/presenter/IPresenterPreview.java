@@ -24,4 +24,6 @@ public interface IPresenterPreview {
     void onTrackingStop();
 
     void onFrameSelected(int position);
+
+    void onSelectRange(int value1, int value2);
 }

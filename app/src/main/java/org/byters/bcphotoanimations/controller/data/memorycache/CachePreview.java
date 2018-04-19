@@ -8,8 +8,8 @@ public class CachePreview implements ICachePreview {
     private long frameDurationMillis;
 
     private int[] arrDuration = {100, 200, 500, 1000};
-    private int frameRangeFrom;
-    private int frameRangeTo;
+    private int frameRangeIndexFrom;
+    private int frameRangeIndexTo;
 
     public CachePreview() {
         resetCache(0);
@@ -20,8 +20,8 @@ public class CachePreview implements ICachePreview {
         isPlaying = false;
         currentFrame = 0;
         frameDurationMillis = arrDuration[0];
-        frameRangeFrom = 0;
-        frameRangeTo = projectSelectedFramesNum;
+        frameRangeIndexFrom = 0;
+        frameRangeIndexTo = projectSelectedFramesNum - 1;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class CachePreview implements ICachePreview {
     @Override
     public int getNextFrameIndex() {
         ++currentFrame;
-        currentFrame = currentFrame >= frameRangeTo ? frameRangeFrom : currentFrame;
+        currentFrame = currentFrame > frameRangeIndexTo ? frameRangeIndexFrom : currentFrame;
         return currentFrame;
     }
 
@@ -64,13 +64,13 @@ public class CachePreview implements ICachePreview {
     }
 
     @Override
-    public int getFrameRangeFrom() {
-        return frameRangeFrom;
+    public int getFrameRangeIndexFrom() {
+        return frameRangeIndexFrom;
     }
 
     @Override
-    public int getFrameRangeTo() {
-        return frameRangeTo;
+    public int getFrameRangeIndexTo() {
+        return frameRangeIndexTo;
     }
 
     @Override
@@ -80,6 +80,14 @@ public class CachePreview implements ICachePreview {
 
     @Override
     public void setFrameFromView(int position) {
-        currentFrame = frameRangeFrom + position;
+        currentFrame = frameRangeIndexFrom + position;
+    }
+
+    @Override
+    public void selectRange(int from, int to) {
+        if (from == to) return;
+        frameRangeIndexFrom = Math.min(from, to);
+        frameRangeIndexTo = Math.max(from, to);
+        currentFrame = frameRangeIndexFrom;
     }
 }

@@ -71,14 +71,15 @@ public class PresenterPreview implements IPresenterPreview {
 
     private void setViewFramesRange() {
         if (refCallback == null || refCallback.get() == null) return;
-        refCallback.get().setFramesRange(cachePreview.getFrameRangeFrom(), cachePreview.getFrameRangeTo());
+        refCallback.get().setFramesRange(cachePreview.getFrameRangeIndexFrom(), cachePreview.getFrameRangeIndexTo());
     }
 
     private void setViewFrameCurrent() {
         if (refCallback == null || refCallback.get() == null) return;
         refCallback.get().setFrameCurrent(
-                cachePreview.getFrameRangeTo() - cachePreview.getFrameRangeFrom(),
-                cachePreview.getFrameCurrentIndex() - cachePreview.getFrameRangeFrom(),
+                cachePreview.getFrameRangeIndexFrom(),
+                cachePreview.getFrameRangeIndexTo(),
+                cachePreview.getFrameCurrentIndex(),
                 !isTracking);
     }
 
@@ -100,7 +101,9 @@ public class PresenterPreview implements IPresenterPreview {
 
     @Override
     public void onClickFrameRange() {
-        //todo show alert
+        if (refCallback == null || refCallback.get() == null) return;
+        onClickFrame();
+        refCallback.get().showAlertFrameRange(cachePreview.getFrameRangeIndexFrom(), cachePreview.getFrameRangeIndexTo(), cacheProjectSelected.getProjectSelectedFramesNum());
     }
 
     @Override
@@ -119,6 +122,14 @@ public class PresenterPreview implements IPresenterPreview {
         cachePreview.setFrameFromView(position);
         setViewFrame();
         setViewFrameCurrent();
+    }
+
+    @Override
+    public void onSelectRange(int value1, int value2) {
+        cachePreview.selectRange(value1 - 1, value2 - 1);
+        setViewFrame();
+        setViewFrameCurrent();
+        setViewFramesRange();
     }
 
     private void setViewFrame() {

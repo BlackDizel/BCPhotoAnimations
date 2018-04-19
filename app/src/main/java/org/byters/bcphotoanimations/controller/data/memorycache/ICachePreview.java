@@ -15,11 +15,13 @@ public interface ICachePreview {
 
     void changeFPS();
 
-    int getFrameRangeFrom();
+    int getFrameRangeIndexFrom();
 
-    int getFrameRangeTo();
+    int getFrameRangeIndexTo();
 
     int getFrameCurrentIndex();
 
     void setFrameFromView(int position);
+
+    void selectRange(int from, int to);
 }
