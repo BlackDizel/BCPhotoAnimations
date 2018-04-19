@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -23,15 +24,15 @@ import javax.inject.Inject;
 public class FragmentPreview extends FragmentBase
         implements View.OnClickListener {
 
-    //todo preview range select
-
     @Inject
     IPresenterPreview presenterPreview;
 
     private PresenterPreviewCallback presenterPreviewCallback;
 
-
     private ImageView ivFrame;
+    private TextView tvFrameFrom, tvFrameCurrent, tvFrameTo;
+    private SeekBar seekBar;
+    private ListenerSeekbar listenerSeekbar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,9 +50,18 @@ public class FragmentPreview extends FragmentBase
         View view = inflater.inflate(R.layout.fragment_preview, container, false);
 
         ivFrame = view.findViewById(R.id.ivFrame);
+        seekBar = view.findViewById(R.id.sbPreview);
+        tvFrameFrom = view.findViewById(R.id.tvFrameFrom);
+        tvFrameCurrent = view.findViewById(R.id.tvFrameCurrent);
+        tvFrameTo = view.findViewById(R.id.tvFrameTo);
+
         view.findViewById(R.id.ivFrame).setOnClickListener(this);
         view.findViewById(R.id.ivPlay).setOnClickListener(this);
         view.findViewById(R.id.tvFPS).setOnClickListener(this);
+        tvFrameFrom.setOnClickListener(this);
+        tvFrameTo.setOnClickListener(this);
+
+        seekBar.setOnSeekBarChangeListener(listenerSeekbar = new ListenerSeekbar());
 
         presenterPreview.onCreateView();
 
@@ -78,8 +88,14 @@ public class FragmentPreview extends FragmentBase
         if (v.getId() == R.id.ivPlay) {
             presenterPreview.onClickPlay();
         }
-        if (v.getId()==R.id.tvFPS){
+        if (v.getId() == R.id.tvFPS) {
             presenterPreview.onClickFPS();
+        }
+        if (v.getId() == R.id.tvFrameFrom) {
+            presenterPreview.onClickFrameRange();
+        }
+        if (v.getId() == R.id.tvFrameTo) {
+            presenterPreview.onClickFrameRange();
         }
     }
 
@@ -106,10 +122,45 @@ public class FragmentPreview extends FragmentBase
         }
 
         @Override
-        public void setFPS(int fps){
-            if (getView()==null) return;
-            TextView tvFPS= getView().findViewById(R.id.tvFPS);
+        public void setFPS(int fps) {
+            if (getView() == null) return;
+            TextView tvFPS = getView().findViewById(R.id.tvFPS);
             tvFPS.setText(String.format(getString(R.string.label_fps), String.valueOf(fps)));
+        }
+
+        @Override
+        public void setFrameCurrent(int to, int current, boolean isUpdateSeekbar) {
+            if (isUpdateSeekbar) {
+                seekBar.setMax(to);
+                seekBar.setProgress(current);
+            }
+            tvFrameCurrent.setText(String.valueOf(current));
+        }
+
+        @Override
+        public void setFramesRange(int from, int to) {
+            tvFrameFrom.setText(String.valueOf(from));
+            tvFrameTo.setText(String.valueOf(to));
+        }
+
+    }
+
+    private class ListenerSeekbar implements SeekBar.OnSeekBarChangeListener {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if (!fromUser) return;
+            presenterPreview.onFrameSelected(progress);
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            presenterPreview.onTrackingStart();
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            presenterPreview.onTrackingStop();
         }
     }
 

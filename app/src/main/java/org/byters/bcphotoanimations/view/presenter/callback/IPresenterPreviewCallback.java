@@ -7,4 +7,8 @@ public interface IPresenterPreviewCallback {
     void setImage(String path);
 
     void setFPS(int fps);
+
+    void setFrameCurrent(int to, int current, boolean b);
+
+    void setFramesRange(int from, int to);
 }

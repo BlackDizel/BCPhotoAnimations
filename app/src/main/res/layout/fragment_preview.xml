@@ -2,8 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/ivFrame"
@@ -28,4 +27,63 @@
         tools:text="1fps" />
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white_transparent"
+        android:orientation="vertical">
+
+        <SeekBar
+            android:id="@+id/sbPreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvFrameFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                tools:text="0" />
+
+            <TextView
+                android:id="@+id/tvFrameCurrent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                tools:text="3" />
+
+            <TextView
+                android:id="@+id/tvFrameTo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                tools:text="10" />
+
+        </FrameLayout>
+    </LinearLayout>
 </FrameLayout>

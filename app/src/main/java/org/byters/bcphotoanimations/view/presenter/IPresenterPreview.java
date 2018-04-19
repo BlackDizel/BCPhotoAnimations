@@ -16,4 +16,12 @@ public interface IPresenterPreview {
     void onStop();
 
     void onClickFPS();
+
+    void onClickFrameRange();
+
+    void onTrackingStart();
+
+    void onTrackingStop();
+
+    void onFrameSelected(int position);
 }

@@ -1,7 +1,7 @@
 package org.byters.bcphotoanimations.controller.data.memorycache;
 
 public interface ICachePreview {
-    void resetCache();
+    void resetCache(int projectSelectedFramesNum);
 
     void stop();
 
@@ -9,9 +9,17 @@ public interface ICachePreview {
 
     boolean isPlaying();
 
-    int getNextFrameIndex(int framesNum);
+    int getNextFrameIndex();
 
     long getFrameDuration();
 
     void changeFPS();
+
+    int getFrameRangeFrom();
+
+    int getFrameRangeTo();
+
+    int getFrameCurrentIndex();
+
+    void setFrameFromView(int position);
 }

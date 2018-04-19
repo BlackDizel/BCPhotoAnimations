@@ -22,6 +22,7 @@ public class PresenterPreview implements IPresenterPreview {
     private Handler handler;
     private Runnable taskUpdate;
     private WeakReference<IPresenterPreviewCallback> refCallback;
+    private boolean isTracking;
 
     public PresenterPreview() {
         ApplicationStopMotion.getComponent().inject(this);
@@ -38,7 +39,7 @@ public class PresenterPreview implements IPresenterPreview {
 
     @Override
     public void onCreateView() {
-        cachePreview.resetCache();
+        cachePreview.resetCache(cacheProjectSelected.getProjectSelectedFramesNum());
     }
 
     @Override
@@ -61,11 +62,27 @@ public class PresenterPreview implements IPresenterPreview {
 
     @Override
     public void onStart() {
+        onTrackingStop();
         onClickPlay();
-        updateView();
+        updateViewFPS();
+        setViewFrameCurrent();
+        setViewFramesRange();
     }
 
-    private void updateView() {
+    private void setViewFramesRange() {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().setFramesRange(cachePreview.getFrameRangeFrom(), cachePreview.getFrameRangeTo());
+    }
+
+    private void setViewFrameCurrent() {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().setFrameCurrent(
+                cachePreview.getFrameRangeTo() - cachePreview.getFrameRangeFrom(),
+                cachePreview.getFrameCurrentIndex() - cachePreview.getFrameRangeFrom(),
+                !isTracking);
+    }
+
+    private void updateViewFPS() {
         if (refCallback == null || refCallback.get() == null) return;
         refCallback.get().setFPS((int) (1000 / cachePreview.getFrameDuration()));
     }
@@ -78,15 +95,36 @@ public class PresenterPreview implements IPresenterPreview {
     @Override
     public void onClickFPS() {
         cachePreview.changeFPS();
-        updateView();
+        updateViewFPS();
     }
 
-    private void updateImage() {
+    @Override
+    public void onClickFrameRange() {
+        //todo show alert
+    }
+
+    @Override
+    public void onTrackingStart() {
+        isTracking = true;
+        onClickFrame();
+    }
+
+    @Override
+    public void onTrackingStop() {
+        isTracking = false;
+    }
+
+    @Override
+    public void onFrameSelected(int position) {
+        cachePreview.setFrameFromView(position);
+        setViewFrame();
+        setViewFrameCurrent();
+    }
+
+    private void setViewFrame() {
         if (refCallback == null || refCallback.get() == null) return;
 
-        int position = cachePreview.getNextFrameIndex(cacheProjectSelected.getProjectSelectedFramesNum());
-
-        refCallback.get().setImage(cacheProjectSelected.getFrameUrl(position));
+        refCallback.get().setImage(cacheProjectSelected.getFrameUrl(cachePreview.getFrameCurrentIndex()));
     }
 
     private class TaskUpdate implements Runnable {
@@ -94,7 +132,10 @@ public class PresenterPreview implements IPresenterPreview {
         public void run() {
 
             if (!cachePreview.isPlaying()) return;
-            updateImage();
+
+            cachePreview.getNextFrameIndex();
+            setViewFrame();
+            setViewFrameCurrent();
             handler.postDelayed(this, cachePreview.getFrameDuration());
         }
     }
