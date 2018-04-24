@@ -19,4 +19,6 @@ public interface IPresenterProjectEdit {
     void setCallback(IPresenterProjectEditCallback callback);
 
     void onClickRemove();
+
+    void onClickExport();
 }

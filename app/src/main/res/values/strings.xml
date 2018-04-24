@@ -17,4 +17,9 @@
     <string name="dialog_cancel">cancel</string>
     <string name="dialog_position_title">Select position</string>
     <string name="label_fps" formatted="false">%sfps</string>
+    <string name="export">Export</string>
+    <string name="export_project_format" formatted="false">export project %s</string>
+    <string name="export_project_error">error project export</string>
+    <string name="export_project_success_format" formatted="false">project %s export success to folder: %s</string>
+    <string name="action_open_folder">Open folder</string>
 </resources>

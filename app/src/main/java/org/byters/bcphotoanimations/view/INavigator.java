@@ -1,5 +1,7 @@
 package org.byters.bcphotoanimations.view;
 
+import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 import javax.inject.Singleton;
@@ -24,4 +26,6 @@ public interface INavigator {
     void navigateCamera();
 
     void navigatePlay();
+
+    void chooseFolder(Activity activity, String projectOutputFolder);
 }

@@ -4,8 +4,12 @@ import android.text.TextUtils;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
+import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
+import org.byters.bcphotoanimations.controller.data.memorycache.ICacheStorage;
 import org.byters.bcphotoanimations.view.INavigator;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterProjectEditCallback;
+import org.byters.bcphotoanimations.view.presenter.util.BackgroundHelper;
+import org.byters.bcphotoanimations.view.presenter.util.IBackgroundHelperCallback;
 
 import java.lang.ref.WeakReference;
 
@@ -17,11 +21,20 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
     ICacheProjectSelected cacheProjectSelected;
     @Inject
     INavigator navigator;
+    @Inject
+    ICacheStorage cacheStorage;
+    @Inject
+    ICacheProjects cacheProjects;
+
+    private ExportCallback exportCallback;
+    private BackgroundHelper backgroundHelper;
 
     private WeakReference<IPresenterProjectEditCallback> refCallback;
 
     public PresenterProjectEdit() {
         ApplicationStopMotion.getComponent().inject(this);
+        backgroundHelper = new BackgroundHelper();
+        backgroundHelper.setListener(exportCallback = new ExportCallback());
     }
 
     @Override
@@ -62,6 +75,15 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
     }
 
     @Override
+    public void onClickExport() {
+        if (refCallback != null && refCallback.get() != null) {
+            refCallback.get().showDialogProgressExport(cacheProjectSelected.getProjectTitle());
+        }
+
+        backgroundHelper.writeProjectBackground(cacheStorage, cacheProjectSelected);
+    }
+
+    @Override
     public void onClickRoot() {
         navigator.closeProjectEdit();
     }
@@ -77,12 +99,29 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
 
         if (refCallback != null && refCallback.get() != null) {
             refCallback.get().setTitle(cacheProjectSelected.getProjectTitleEdit());
-            refCallback.get().setButtonRemoveVisibility(cacheProjectSelected.isEdit());
+            refCallback.get().setProjectEditVisibility(cacheProjectSelected.isEdit());
         }
     }
 
     @Override
     public void setCallback(IPresenterProjectEditCallback callback) {
         this.refCallback = new WeakReference<>(callback);
+    }
+
+    private class ExportCallback implements IBackgroundHelperCallback {
+        @Override
+        public void onError() {
+            if (refCallback == null || refCallback.get() == null) return;
+            refCallback.get().onExportError();
+        }
+
+        @Override
+        public void onSuccess(String id) {
+            if (refCallback == null || refCallback.get() == null) return;
+
+            String title = cacheProjects.getItemTitleById(id);
+            refCallback.get().onExportSuccess(title,
+                    cacheStorage.getProjectOutputFolder(title));
+        }
     }
 }

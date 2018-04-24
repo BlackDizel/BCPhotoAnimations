@@ -40,4 +40,6 @@ public interface ICacheProjectSelected {
     String getFrameUrl(int position);
 
     int getProjectSelectedFramesNum();
+
+    String getProjectTitle();
 }

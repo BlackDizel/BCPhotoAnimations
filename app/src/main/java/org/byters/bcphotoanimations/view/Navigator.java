@@ -1,9 +1,14 @@
 package org.byters.bcphotoanimations.view;
 
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import org.byters.bcphotoanimations.R;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentCamera;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentFrames;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentPreview;
@@ -100,5 +105,17 @@ public class Navigator implements INavigator {
         if (closeProjectEdit()) return true;
 
         return false;
+    }
+
+    @Override
+    public void chooseFolder(Activity activity, String folder) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(folder);
+        intent.setDataAndType(uri, "*/*");
+
+        PackageManager packageManager = activity.getPackageManager();
+        if (intent.resolveActivity(packageManager) == null) return;
+
+        activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.action_open_folder)));
     }
 }

@@ -21,4 +21,8 @@ public interface ICacheStorage {
     void removeFolder(String projectFolder);
 
     void removeFile(String path);
+
+    void writeProject(ICacheProjectSelected cacheProjectSelected);
+
+    String getProjectOutputFolder(String title);
 }

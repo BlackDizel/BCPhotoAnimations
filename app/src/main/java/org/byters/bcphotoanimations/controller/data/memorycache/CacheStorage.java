@@ -2,6 +2,7 @@ package org.byters.bcphotoanimations.controller.data.memorycache;
 
 
 import android.os.Environment;
+import android.text.TextUtils;
 
 import org.byters.bcphotoanimations.BuildConfig;
 import org.byters.bcphotoanimations.model.PreferenceHelperEnum;
@@ -11,8 +12,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 
 public class CacheStorage implements ICacheStorage {
 
@@ -141,6 +144,59 @@ public class CacheStorage implements ICacheStorage {
     public void removeFile(String path) {
         File file = new File(path);
         file.delete();
+    }
+
+    @Override
+    public void writeProject(ICacheProjectSelected cacheProjectSelected) {
+
+        String title = cacheProjectSelected.getProjectTitle();
+        if (TextUtils.isEmpty(title)) return;
+
+        String appFolder = getProjectOutputFolder(title);
+
+        File folder = new File(appFolder);
+        removeFolder(appFolder);
+
+        for (int i = 0; i < cacheProjectSelected.getFramesNum(); ++i) {
+            String fileUrl = cacheProjectSelected.getFrameUrl(i);
+            if (TextUtils.isEmpty(fileUrl)) continue;
+            copyFile(fileUrl, folder + File.separator + i + getImageExt());
+        }
+    }
+
+    @Override
+    public String getProjectOutputFolder(String title) {
+        return getAppFolder()
+                + File.separator
+                + title;
+    }
+
+    private void copyFile(String fileUrl, String outFileUrl) {
+        File fileIn = new File(fileUrl);
+        if (!fileIn.exists()) return;
+        File fileOut = new File(outFileUrl);
+
+        if (!fileOut.getParentFile().exists() && !fileOut.getParentFile().mkdirs())
+            return;
+
+        try {
+            InputStream in = new FileInputStream(fileIn);
+            try {
+                OutputStream out = new FileOutputStream(fileOut);
+                try {
+                    byte[] buf = new byte[1024];
+                    int len;
+                    while ((len = in.read(buf)) > 0) {
+                        out.write(buf, 0, len);
+                    }
+                } finally {
+                    out.close();
+                }
+            } finally {
+                in.close();
+            }
+        } catch (IOException e) {
+        }
     }
 
     private void deleteRecursive(File fileOrDirectory) {

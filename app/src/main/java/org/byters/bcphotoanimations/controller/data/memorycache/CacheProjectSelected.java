@@ -255,4 +255,9 @@ public class CacheProjectSelected implements ICacheProjectSelected {
     public int getProjectSelectedFramesNum() {
         return cacheProjects.getItemFramesNum(projectSelectedId);
     }
+
+    @Override
+    public String getProjectTitle() {
+        return cacheProjects.getItemTitleById(projectSelectedId);
+    }
 }
