@@ -66,7 +66,6 @@ public class AdapterFrames extends AdapterBase {
 
         @Override
         void setData(int position) {
-            //todo set state setlected
 
             String imageUri = presenterAdapterFrames.getItemImageUri(position);
             if (TextUtils.isEmpty(imageUri))
