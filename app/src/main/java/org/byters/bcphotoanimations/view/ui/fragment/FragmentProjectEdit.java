@@ -148,30 +148,8 @@ public class FragmentProjectEdit extends FragmentBase
         }
 
         @Override
-        public void onExportError() {
-            if (getActivity() == null) return;
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getContext(), R.string.export_project_error, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
-
-        @Override
-        public void onExportSuccess(final String title, final String projectOutputFolder) {
-            if (getActivity() == null) return;
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getContext(), String.format(getString(R.string.export_project_success_format), title, projectOutputFolder), Toast.LENGTH_SHORT).show();
-
-                    navigator.chooseFolder(getActivity(), projectOutputFolder);
-
-                }
-            });
-
+        public void exportProject(String projectSelectedId) {
+            navigator.startExportService(getContext(), projectSelectedId);
         }
     }
 }

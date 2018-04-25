@@ -1,6 +1,7 @@
 package org.byters.bcphotoanimations.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
@@ -28,4 +29,6 @@ public interface INavigator {
     void navigatePlay();
 
     void chooseFolder(Activity activity, String projectOutputFolder);
+
+    void startExportService(Context context, String projectSelectedId);
 }

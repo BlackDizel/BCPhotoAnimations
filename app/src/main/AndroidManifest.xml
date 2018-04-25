@@ -24,6 +24,8 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".view.ui.service.ServiceProjectExport" />
+
     </application>
 
 </manifest>

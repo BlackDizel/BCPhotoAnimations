@@ -147,15 +147,40 @@ public class CacheStorage implements ICacheStorage {
     }
 
     @Override
-    public void writeProject(ICacheProjectSelected cacheProjectSelected) {
+    public void copyFrame(ICacheProjects cacheProjects, String projectId, int i) {
 
-        String title = cacheProjectSelected.getProjectTitle();
+        String title = cacheProjects.getItemTitleById(projectId);
         if (TextUtils.isEmpty(title)) return;
 
         String appFolder = getProjectOutputFolder(title);
 
         File folder = new File(appFolder);
-        removeFolder(appFolder);
+
+        String fileUrl = cacheProjects.getFrameUrl(projectId, i);
+        if (TextUtils.isEmpty(fileUrl)) return;
+        copyFile(fileUrl, folder + File.separator + i + getImageExt());
+    }
+
+    @Override
+    public void removeFolder(ICacheProjects cacheProjects, String projectId) {
+
+        String title = cacheProjects.getItemTitleById(projectId);
+        if (TextUtils.isEmpty(title)) return;
+
+        String projectFolder = getProjectOutputFolder(title);
+        removeFolder(projectFolder);
+    }
+
+    @Override
+    public void writeProject(ICacheProjectSelected cacheProjectSelected) {
+
+        String title = cacheProjectSelected.getProjectTitle();
+        if (TextUtils.isEmpty(title)) return;
+
+        String projectFolder = getProjectOutputFolder(title);
+
+        File folder = new File(projectFolder);
+        removeFolder(projectFolder);
 
         for (int i = 0; i < cacheProjectSelected.getFramesNum(); ++i) {
             String fileUrl = cacheProjectSelected.getFrameUrl(i);

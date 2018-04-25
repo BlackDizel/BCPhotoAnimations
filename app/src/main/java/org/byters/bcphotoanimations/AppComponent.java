@@ -7,8 +7,8 @@ import org.byters.bcphotoanimations.controller.data.memorycache.CacheStorage;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.PresenterCamera;
-import org.byters.bcphotoanimations.view.presenter.PresenterPreview;
 import org.byters.bcphotoanimations.view.presenter.PresenterFrames;
+import org.byters.bcphotoanimations.view.presenter.PresenterPreview;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectEdit;
 import org.byters.bcphotoanimations.view.ui.activity.ActivityMain;
 import org.byters.bcphotoanimations.view.ui.adapters.AdapterFrames;
@@ -17,6 +17,7 @@ import org.byters.bcphotoanimations.view.ui.fragment.FragmentCamera;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentFrames;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentPreview;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjectEdit;
+import org.byters.bcphotoanimations.view.ui.service.ServiceProjectExport;
 
 import javax.inject.Singleton;
 
@@ -57,4 +58,6 @@ public interface AppComponent {
     void inject(FragmentPreview params);
 
     void inject(PresenterPreview presenterPreview);
+
+    void inject(ServiceProjectExport param);
 }

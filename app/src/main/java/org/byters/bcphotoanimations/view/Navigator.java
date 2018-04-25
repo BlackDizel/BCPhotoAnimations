@@ -2,6 +2,7 @@ package org.byters.bcphotoanimations.view;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import org.byters.bcphotoanimations.view.ui.fragment.FragmentFrames;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentPreview;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjectEdit;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjects;
+import org.byters.bcphotoanimations.view.ui.service.ServiceProjectExport;
 
 import java.lang.ref.WeakReference;
 
@@ -117,5 +119,10 @@ public class Navigator implements INavigator {
         if (intent.resolveActivity(packageManager) == null) return;
 
         activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.action_open_folder)));
+    }
+
+    @Override
+    public void startExportService(Context context, String projectSelectedId) {
+        ServiceProjectExport.start(context,projectSelectedId);
     }
 }

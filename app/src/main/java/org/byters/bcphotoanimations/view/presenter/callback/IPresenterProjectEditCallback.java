@@ -12,7 +12,5 @@ public interface IPresenterProjectEditCallback {
 
     void showDialogProgressExport(String projectTitle);
 
-    void onExportError();
-
-    void onExportSuccess(String title, String projectOutputFolder);
+    void exportProject(String projectSelectedId);
 }
