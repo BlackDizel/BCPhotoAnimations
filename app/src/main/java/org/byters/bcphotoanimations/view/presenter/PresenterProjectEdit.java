@@ -3,17 +3,25 @@ package org.byters.bcphotoanimations.view.presenter;
 import android.text.TextUtils;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
+import org.byters.bcphotoanimations.controller.data.memorycache.ICacheExportAttempts;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheStorage;
 import org.byters.bcphotoanimations.view.INavigator;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterProjectEditCallback;
+import org.byters.dataplaybilling.LibDataPlayBilling;
+import org.byters.dataplaybilling.controller.data.device.callback.ICacheBillingCallback;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 
 import javax.inject.Inject;
 
 public class PresenterProjectEdit implements IPresenterProjectEdit {
+
+    private static final String SKU_NAME = "subscription_project_export_unlimited_monthly";
+
+    private CacheBillingCallback listenerCacheBilling;
 
     @Inject
     ICacheProjectSelected cacheProjectSelected;
@@ -23,11 +31,18 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
     ICacheStorage cacheStorage;
     @Inject
     ICacheProjects cacheProjects;
+    @Inject
+    ICacheExportAttempts cacheExportAttempts;
+
+    @Inject
+    LibDataPlayBilling libDataPlayBilling;
+
 
     private WeakReference<IPresenterProjectEditCallback> refCallback;
 
     public PresenterProjectEdit() {
         ApplicationStopMotion.getComponent().inject(this);
+        libDataPlayBilling.addListener(listenerCacheBilling = new CacheBillingCallback());
     }
 
     @Override
@@ -69,6 +84,11 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
 
     @Override
     public void onClickExport() {
+        if (!cacheExportAttempts.isEnoughAttempts()) {
+            libDataPlayBilling.requestList(Arrays.asList(SKU_NAME),LibDataPlayBilling.getTypeSubs());
+            return;
+        }
+
         if (refCallback != null && refCallback.get() != null) {
             refCallback.get().showDialogProgressExport(cacheProjectSelected.getProjectTitle());
             refCallback.get().exportProject(cacheProjectSelected.getProjectSelectedId());
@@ -89,14 +109,68 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
     public void onStart() {
         cacheProjectSelected.resetTitleEdit();
 
+        checkExport();
+
         if (refCallback != null && refCallback.get() != null) {
             refCallback.get().setTitle(cacheProjectSelected.getProjectTitleEdit());
             refCallback.get().setProjectEditVisibility(cacheProjectSelected.isEdit());
         }
     }
 
+    private void checkExport() {
+        if (!cacheProjectSelected.isEdit()) return;
+
+        if (libDataPlayBilling.isPurchased(SKU_NAME)) {
+            setViewExportUnlimited();
+            return;
+        }
+
+        libDataPlayBilling.requestPurchases();
+    }
+
     @Override
     public void setCallback(IPresenterProjectEditCallback callback) {
         this.refCallback = new WeakReference<>(callback);
+    }
+
+    private void setExportAttempts(int attempts) {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().setExportAttempts(attempts);
+    }
+
+    private void setViewExportUnlimited() {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().setExportAttemptsUnlimited();
+    }
+
+    private void setExportAttemptsNotEnough() {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().setExportAttemptsNotEnough();
+    }
+
+    private class CacheBillingCallback implements ICacheBillingCallback {
+
+        @Override
+        public void onUpdatePurchases() {
+            if (libDataPlayBilling.isPurchased(SKU_NAME)) {
+                cacheExportAttempts.setAttemptsUnlimited();
+                setViewExportUnlimited();
+                return;
+            }
+
+            if (cacheExportAttempts.isEnoughAttempts()) {
+                setExportAttempts(cacheExportAttempts.getAttempts());
+                return;
+            }
+
+            setExportAttemptsNotEnough();
+
+        }
+
+        @Override
+        public void onUpdateSkuList(boolean isSingle) {
+            if (isSingle)
+                libDataPlayBilling.requestBuy();
+        }
     }
 }

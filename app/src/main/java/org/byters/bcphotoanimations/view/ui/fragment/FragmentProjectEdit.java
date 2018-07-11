@@ -53,7 +53,7 @@ public class FragmentProjectEdit extends FragmentBase
         view.findViewById(R.id.ivClose).setOnClickListener(this);
         view.findViewById(R.id.tvSave).setOnClickListener(this);
         view.findViewById(R.id.tvRemove).setOnClickListener(this);
-        view.findViewById(R.id.tvExport).setOnClickListener(this);
+        view.findViewById(R.id.llExport).setOnClickListener(this);
         return view;
     }
 
@@ -77,7 +77,7 @@ public class FragmentProjectEdit extends FragmentBase
         if (v.getId() == R.id.tvRemove) {
             presenterProjectEdit.onClickRemove();
         }
-        if (v.getId() == R.id.tvExport) {
+        if (v.getId() == R.id.llExport) {
             presenterProjectEdit.onClickExport();
         }
 
@@ -138,8 +138,9 @@ public class FragmentProjectEdit extends FragmentBase
 
         @Override
         public void setProjectEditVisibility(boolean isVisible) {
+            if (getView() == null) return;
             getView().findViewById(R.id.tvRemove).setVisibility(isVisible ? View.VISIBLE : View.GONE);
-            getView().findViewById(R.id.tvExport).setVisibility(isVisible ? View.VISIBLE : View.GONE);
+            getView().findViewById(R.id.llExport).setVisibility(isVisible ? View.VISIBLE : View.GONE);
         }
 
         @Override
@@ -151,5 +152,27 @@ public class FragmentProjectEdit extends FragmentBase
         public void exportProject(String projectSelectedId) {
             navigator.startExportService(getContext(), projectSelectedId);
         }
+
+        @Override
+        public void setExportAttemptsUnlimited() {
+            if (getView() == null) return;
+            TextView tvAttempts = getView().findViewById(R.id.tvExportAttempts);
+            tvAttempts.setText("Unlimited");
+        }
+
+        @Override
+        public void setExportAttemptsNotEnough() {
+            if (getView() == null) return;
+            TextView tvAttempts = getView().findViewById(R.id.tvExportAttempts);
+            tvAttempts.setText(R.string.export_attempts_not_enough);
+        }
+
+        @Override
+        public void setExportAttempts(int attempts) {
+            if (getView() == null) return;
+            TextView tvAttempts = getView().findViewById(R.id.tvExportAttempts);
+            tvAttempts.setText(attempts > 0 ? String.format(getString(R.string.export_attempts_remaining), attempts) : getString(R.string.export_attempts_not_enough));
+        }
+
     }
 }

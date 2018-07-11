@@ -13,4 +13,10 @@ public interface IPresenterProjectEditCallback {
     void showDialogProgressExport(String projectTitle);
 
     void exportProject(String projectSelectedId);
+
+    void setExportAttempts(int attempts);
+
+    void setExportAttemptsUnlimited();
+
+    void setExportAttemptsNotEnough();
 }
