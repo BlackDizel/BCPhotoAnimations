@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
+import org.byters.bcphotoanimations.controller.data.memorycache.ICacheExportAttempts;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheStorage;
 import org.byters.bcphotoanimations.view.ui.activity.ActivityMain;
@@ -31,10 +32,16 @@ public class ServiceProjectExport extends Service {
     private static final String SERVICE_NOTIFICATION_CHANNEL_ID = "service_notification";
 
     private static final String EXTRA_PROJECT_ID = "project_id";
+
     @Inject
     ICacheProjects cacheProjects;
+
     @Inject
     ICacheStorage cacheStorage;
+
+    @Inject
+    ICacheExportAttempts cacheExportAttempts;
+
     private AsyncTaskProjectExport worker;
     private NotificationCompat.Builder notificationBuilder;
     private ListenerExportTask listenerExportTask;
@@ -62,6 +69,11 @@ public class ServiceProjectExport extends Service {
         String title = cacheProjects.getItemTitleById(projectId);
 
         initNotificationBuilder(title);
+
+        if (!cacheExportAttempts.isEnoughAttempts()) {
+            stopSelf();
+            return START_NOT_STICKY;
+        }
 
         startForeground(SERVICE_NOTIFICATION_ID, notificationBuilder.build());
 
@@ -134,6 +146,7 @@ public class ServiceProjectExport extends Service {
         @Override
         public void onComplete() {
             Toast.makeText(ServiceProjectExport.this, R.string.export_project_success, Toast.LENGTH_SHORT).show();
+            cacheExportAttempts.decreaseAttempts();
             completeNotification();
             stopService();
         }
