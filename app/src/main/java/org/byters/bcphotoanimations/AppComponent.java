@@ -1,6 +1,8 @@
 package org.byters.bcphotoanimations;
 
 import org.byters.bcphotoanimations.controller.AppModule;
+import org.byters.bcphotoanimations.controller.data.device.CachePreference;
+import org.byters.bcphotoanimations.controller.data.memorycache.CacheExportAttempts;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheStorage;
@@ -60,4 +62,8 @@ public interface AppComponent {
     void inject(PresenterPreview presenterPreview);
 
     void inject(ServiceProjectExport param);
+
+    void inject(CacheExportAttempts cacheExportAttempts);
+
+    void inject(CachePreference cachePreference);
 }

@@ -2,11 +2,15 @@ package org.byters.bcphotoanimations.controller;
 
 import android.content.Context;
 
+import org.byters.bcphotoanimations.controller.data.device.CachePreference;
+import org.byters.bcphotoanimations.controller.data.device.ICachePreference;
+import org.byters.bcphotoanimations.controller.data.memorycache.CacheExportAttempts;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheFramesSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.CachePreview;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheStorage;
+import org.byters.bcphotoanimations.controller.data.memorycache.ICacheExportAttempts;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheFramesSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICachePreview;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
@@ -23,9 +27,10 @@ import org.byters.bcphotoanimations.view.presenter.IPresenterProjectEdit;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.PresenterCamera;
-import org.byters.bcphotoanimations.view.presenter.PresenterPreview;
 import org.byters.bcphotoanimations.view.presenter.PresenterFrames;
+import org.byters.bcphotoanimations.view.presenter.PresenterPreview;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectEdit;
+import org.byters.dataplaybilling.LibDataPlayBilling;
 
 import java.lang.ref.WeakReference;
 
@@ -37,10 +42,18 @@ import dagger.Provides;
 @Module
 public class AppModule {
 
+    private LibDataPlayBilling libBilling;
     private WeakReference<Context> refContext;
 
-    public AppModule(Context context) {
+    public AppModule(Context context, LibDataPlayBilling libDataPlayBilling) {
         this.refContext = new WeakReference<>(context);
+        this.libBilling = libDataPlayBilling;
+    }
+
+    @Provides
+    @Singleton
+    LibDataPlayBilling getLibBilling() {
+        return libBilling;
     }
 
     @Provides
@@ -116,7 +129,19 @@ public class AppModule {
 
     @Provides
     @Singleton
-    ICachePreview getCachePreview(){
+    ICachePreview getCachePreview() {
         return new CachePreview();
+    }
+
+    @Provides
+    @Singleton
+    ICacheExportAttempts getCacheExposrtAttempts() {
+        return new CacheExportAttempts();
+    }
+
+    @Provides
+    @Singleton
+    ICachePreference getCachePreference() {
+        return new CachePreference();
     }
 }
