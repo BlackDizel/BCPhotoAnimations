@@ -11,7 +11,7 @@
         android:layout_gravity="center_horizontal"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="8dp"
-        android:src="@drawable/ic_play_circle_outline_white_24dp" />
+        android:src="@drawable/ic_play_circle_outline_white_40dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvItems"
