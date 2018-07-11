@@ -2,6 +2,8 @@ package org.byters.bcphotoanimations;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import org.byters.bcphotoanimations.controller.AppModule;
 import org.byters.dataplaybilling.LibDataPlayBilling;
 
@@ -16,6 +18,7 @@ public class ApplicationStopMotion extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         component = buildComponent();
     }
