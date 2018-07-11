@@ -1,1 +1,6 @@
-<manifest package="org.byters.dataplaybilling" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.byters.dataplaybilling">
+
+    <uses-permission android:name="com.android.vending.BILLING" />
+
+</manifest>
