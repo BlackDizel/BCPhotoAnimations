@@ -147,7 +147,7 @@ public class CacheStorage implements ICacheStorage {
     }
 
     @Override
-    public void copyFrame(ICacheProjects cacheProjects, String projectId, int i) {
+    public void copyFrame(ICacheProjects cacheProjects, String projectId, int i, int framesNum) {
 
         String title = cacheProjects.getItemTitleById(projectId);
         if (TextUtils.isEmpty(title)) return;
@@ -158,7 +158,9 @@ public class CacheStorage implements ICacheStorage {
 
         String fileUrl = cacheProjects.getFrameUrl(projectId, i);
         if (TextUtils.isEmpty(fileUrl)) return;
-        copyFile(fileUrl, folder + File.separator + i + getImageExt());
+
+        String format = "%0" + String.valueOf(framesNum + 1).length() + "d";
+        copyFile(fileUrl, folder + File.separator + String.format(format, i + 1) + getImageExt());
     }
 
     @Override

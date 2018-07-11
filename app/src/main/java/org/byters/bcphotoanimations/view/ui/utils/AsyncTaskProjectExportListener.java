@@ -1,7 +1,7 @@
 package org.byters.bcphotoanimations.view.ui.utils;
 
 public interface AsyncTaskProjectExportListener {
-    void onUpdate(Integer[] values);
+    void onUpdate(String projectId, Integer[] values);
 
-    void onComplete();
+    void onComplete(String projectId);
 }

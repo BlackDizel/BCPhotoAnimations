@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
@@ -135,17 +136,25 @@ public class ServiceProjectExport extends Service {
     private class ListenerExportTask implements AsyncTaskProjectExportListener {
 
         @Override
-        public void onUpdate(Integer[] values) {
+        public void onUpdate(String projectId, Integer[] values) {
             if (values == null
                     || values.length != 2) return;
 
             notificationBuilder.setProgress(values[0], values[1], false);
+            String title = cacheProjects.getItemTitleById(projectId);
+            if (!TextUtils.isEmpty(projectId))
+                notificationBuilder.setContentText(String.format(getString(R.string.notification_project_export_title_progress_format), title, values[1] + 1));
             updateNotification();
         }
 
         @Override
-        public void onComplete() {
-            Toast.makeText(ServiceProjectExport.this, R.string.export_project_success, Toast.LENGTH_SHORT).show();
+        public void onComplete(String projectId) {
+            String title = cacheProjects.getItemTitleById(projectId);
+            if (!TextUtils.isEmpty(title))
+                Toast.makeText(ServiceProjectExport.this,
+                        String.format(getString(R.string.export_project_success_success), cacheStorage.getProjectOutputFolder(title)),
+                        Toast.LENGTH_LONG)
+                        .show();
             cacheExportAttempts.decreaseAttempts();
             completeNotification();
             stopService();

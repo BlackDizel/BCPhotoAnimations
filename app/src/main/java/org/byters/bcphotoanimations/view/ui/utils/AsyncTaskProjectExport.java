@@ -31,7 +31,7 @@ public class AsyncTaskProjectExport extends AsyncTask<Void, Integer, Boolean> {
 
         refCacheStorage.get().removeFolder(refCacheProjects.get(), projectId);
         for (int i = 0; i < framesNum; ++i) {
-            refCacheStorage.get().copyFrame(refCacheProjects.get(), projectId, i);
+            refCacheStorage.get().copyFrame(refCacheProjects.get(), projectId, i, framesNum);
             onProgressUpdate(framesNum, i);
         }
 
@@ -42,7 +42,7 @@ public class AsyncTaskProjectExport extends AsyncTask<Void, Integer, Boolean> {
     protected void onProgressUpdate(Integer... values) {
         if (refListener == null
                 || refListener.get() == null) return;
-        refListener.get().onUpdate(values);
+        refListener.get().onUpdate(projectId, values);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class AsyncTaskProjectExport extends AsyncTask<Void, Integer, Boolean> {
         super.onPostExecute(aBoolean);
 
         if (refListener == null || refListener.get() == null) return;
-        refListener.get().onComplete();
+        refListener.get().onComplete(projectId);
     }
 
 }

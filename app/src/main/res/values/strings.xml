@@ -23,9 +23,10 @@
     <string name="export_project_success_format" formatted="false">project %s export success to folder: %s</string>
     <string name="action_open_folder">Open folder</string>
     <string name="notification_project_export_title_format">export project %s</string>
+    <string name="notification_project_export_title_progress_format">project %s. Copy frame %d</string>
     <string name="notification_project_export_channel_name">Photo Animation</string>
     <string name="notification_project_export_channel_description">Photo animation app notifications</string>
-    <string name="export_project_success">Project export complete</string>
+    <string name="export_project_success_success">Project export complete. Saved to %s</string>
     <string name="export_attempts_remaining" formatted="false">Free export attempts %d</string>
     <string name="export_attempts_not_enough">Tap to purchase</string>
 </resources>
