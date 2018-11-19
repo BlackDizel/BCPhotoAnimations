@@ -91,6 +91,7 @@ public class FragmentProjectEdit extends FragmentBase
     }
 
     private void hideKeyboard() {
+        if (getActivity() == null) return;
         View view = getActivity().getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);

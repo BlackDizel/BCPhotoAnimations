@@ -90,6 +90,7 @@ public class PresenterCamera extends PresenterCameraBase {
     }
 
     private void initCamera(View view) {
+        if (view == null) return;
 
         if (!isPermissionExist(view.getContext())) {
             requestCameraPermission();
@@ -134,7 +135,11 @@ public class PresenterCamera extends PresenterCameraBase {
         public void onPictureTaken(byte[] data, Camera camera) {
             cacheProjectSelected.addFrame(data);
             setShowLastFrame();
-            camera.startPreview();
+
+            try {
+                camera.startPreview();
+            } catch (RuntimeException e) {
+            }
         }
     }
 

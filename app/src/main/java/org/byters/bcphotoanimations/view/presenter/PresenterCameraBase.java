@@ -42,6 +42,7 @@ abstract class PresenterCameraBase implements IPresenterCamera {
                                               int requestCode,
                                               @NonNull String[] permissions,
                                               @NonNull int[] grantResults) {
+        if (view == null) return false;
 
         if (requestCode != REQUEST_CAMERA_PERMISSION) return false;
 

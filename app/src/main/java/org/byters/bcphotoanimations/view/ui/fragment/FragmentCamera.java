@@ -96,6 +96,7 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
     private class PresenterCallback implements IPresenterCameraCallback {
         @Override
         public void requestPermissionCamera(String[] permissions, int requestCode) {
+            if (!isAdded()) return;
             requestPermissions(permissions, requestCode);
         }
 
