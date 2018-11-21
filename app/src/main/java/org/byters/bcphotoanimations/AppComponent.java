@@ -3,6 +3,7 @@ package org.byters.bcphotoanimations;
 import org.byters.bcphotoanimations.controller.AppModule;
 import org.byters.bcphotoanimations.controller.data.device.CachePreference;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheExportAttempts;
+import org.byters.bcphotoanimations.controller.data.memorycache.CacheInterfaceState;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheStorage;
@@ -32,6 +33,8 @@ import dagger.Component;
 public interface AppComponent {
 
     void inject(FragmentCamera param);
+
+    void inject(CacheInterfaceState param);
 
     void inject(FragmentProjects param);
 

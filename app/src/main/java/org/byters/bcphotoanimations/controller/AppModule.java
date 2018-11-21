@@ -6,12 +6,14 @@ import org.byters.bcphotoanimations.controller.data.device.CachePreference;
 import org.byters.bcphotoanimations.controller.data.device.ICachePreference;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheExportAttempts;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheFramesSelected;
+import org.byters.bcphotoanimations.controller.data.memorycache.CacheInterfaceState;
 import org.byters.bcphotoanimations.controller.data.memorycache.CachePreview;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheStorage;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheExportAttempts;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheFramesSelected;
+import org.byters.bcphotoanimations.controller.data.memorycache.ICacheInterfaceState;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICachePreview;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
@@ -66,6 +68,12 @@ public class AppModule {
     @Singleton
     ICacheProjectSelected getCacheProjectSelected() {
         return new CacheProjectSelected();
+    }
+
+    @Provides
+    @Singleton
+    ICacheInterfaceState getCacheInterfaceState() {
+        return new CacheInterfaceState();
     }
 
     @Provides

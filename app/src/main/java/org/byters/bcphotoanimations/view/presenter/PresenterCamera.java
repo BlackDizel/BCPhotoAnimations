@@ -119,10 +119,9 @@ public class PresenterCamera extends PresenterCameraBase {
         //todo implement
     }
 
-    private void setShowLastFrame() {
-        //todo show only if settings enabled
-        //todo set last frame alpha
-
+    @Override
+    void setShowLastFrame() {
+        if (!cacheInterfaceState.isShowLastFrame()) return;
         if (refCallback == null || refCallback.get() == null) return;
         String lastFramePath = cacheProjectSelected.getLastFramePreview();
         refCallback.get().showLastFrame(lastFramePath);

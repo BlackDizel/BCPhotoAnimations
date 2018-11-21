@@ -26,4 +26,6 @@ public interface IPresenterCamera {
     void onCreateView(View view);
 
     void onClickSettings();
+
+    void onClickLastFrameShow();
 }

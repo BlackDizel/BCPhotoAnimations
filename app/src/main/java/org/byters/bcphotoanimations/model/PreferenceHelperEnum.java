@@ -1,7 +1,8 @@
 package org.byters.bcphotoanimations.model;
 
 public enum PreferenceHelperEnum {
-    PROJECTS_CACHE("cache_projects", ProjectModel.class);
+    PROJECTS_CACHE("cache_projects", ProjectModel.class),
+    INTERFACE_STATE("interface_state", ModelInterfaceState.class);
 
     private final String name;
     private final Class type;

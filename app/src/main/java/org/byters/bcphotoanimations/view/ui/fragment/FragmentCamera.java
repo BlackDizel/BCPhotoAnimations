@@ -1,6 +1,5 @@
 package org.byters.bcphotoanimations.view.ui.fragment;
 
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,26 +23,29 @@ import javax.inject.Inject;
 public class FragmentCamera extends FragmentBase implements View.OnClickListener {
 
     //todo show frame num
-    //todo show prev frame transparent
     //todo show camera settings (frame size, flash)
 
     @Inject
     IPresenterCamera presenterCamera;
 
     private IPresenterCameraCallback presenterCallback;
+    private ImageView ivCamera;
+    private ImageView ivLastFrame;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ApplicationStopMotion.getComponent().inject(this);
-
-        presenterCallback = new PresenterCallback();
+        presenterCamera.setCallback(presenterCallback = new PresenterCallback());
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
+        ivCamera = view.findViewById(R.id.ivLastFrameShow);
+        ivLastFrame = view.findViewById(R.id.ivLastFrame);
+        ivCamera.setOnClickListener(this);
         presenterCamera.onCreateView(view);
 
         return view;
@@ -67,12 +69,13 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
             presenterCamera.takePicture();
         if (view.getId() == R.id.ivSettings)
             presenterCamera.onClickSettings();
+        if (view.getId() == R.id.ivLastFrameShow)
+            presenterCamera.onClickLastFrameShow();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        presenterCamera.setCallback(presenterCallback);
     }
 
     @Override
@@ -130,12 +133,21 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         @Override
         public void showLastFrame(String path) {
             if (getView() == null || getContext() == null) return;
-            ImageView ivLastFrame = getView().findViewById(R.id.ivLastFrame);
             if (TextUtils.isEmpty(path))
                 ivLastFrame.setImageDrawable(null);
             else Glide.with(getContext())
                     .load(path)
                     .into(ivLastFrame);
+        }
+
+        @Override
+        public void setLastFrameShowDrawable(int drawableRes) {
+            ivCamera.setImageResource(drawableRes);
+        }
+
+        @Override
+        public void setLastFrameVisibility(boolean isVisible) {
+            ivLastFrame.setVisibility(isVisible ? View.VISIBLE : View.GONE);
         }
     }
 

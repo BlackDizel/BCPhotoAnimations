@@ -8,15 +8,22 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
+import org.byters.bcphotoanimations.R;
+import org.byters.bcphotoanimations.controller.data.memorycache.ICacheInterfaceState;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterCameraCallback;
 
 import java.lang.ref.WeakReference;
+
+import javax.inject.Inject;
 
 abstract class PresenterCameraBase implements IPresenterCamera {
 
     private static final int REQUEST_CAMERA_PERMISSION = 1;
 
     WeakReference<IPresenterCameraCallback> refCallback;
+
+    @Inject
+    ICacheInterfaceState cacheInterfaceState;
 
     @Override
     public void onActivityCreated(FragmentActivity activity) {
@@ -25,8 +32,23 @@ abstract class PresenterCameraBase implements IPresenterCamera {
 
     @Override
     public void onCreateView(View view) {
-
+        setLastFrameState();
     }
+
+    private void setLastFrameState() {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().setLastFrameShowDrawable(cacheInterfaceState.isShowLastFrame() ? R.drawable.ic_filter_white_24dp : R.drawable.ic_image_white_24dp);
+        refCallback.get().setLastFrameVisibility(cacheInterfaceState.isShowLastFrame());
+        if (cacheInterfaceState.isShowLastFrame())
+            setShowLastFrame();
+    }
+
+    @Override
+    public void onClickLastFrameShow() {
+        cacheInterfaceState.setLastFrameShow(!cacheInterfaceState.isShowLastFrame());
+        setLastFrameState();
+    }
+
 
     @Override
     public void onClickSettings() {
@@ -75,4 +97,5 @@ abstract class PresenterCameraBase implements IPresenterCamera {
                 && ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
+    abstract void setShowLastFrame();
 }

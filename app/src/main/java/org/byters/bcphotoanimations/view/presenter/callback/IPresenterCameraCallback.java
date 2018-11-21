@@ -13,4 +13,8 @@ public interface IPresenterCameraCallback {
     void showFlash();
 
     void showLastFrame(String path);
+
+    void setLastFrameShowDrawable(int drawableRes);
+
+    void setLastFrameVisibility(boolean isVisible);
 }
