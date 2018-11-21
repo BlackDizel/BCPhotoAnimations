@@ -6,10 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.widget.Toast;
 
 import org.byters.bcphotoanimations.R;
+import org.byters.bcphotoanimations.view.ui.fragment.FragmentAbout;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentCamera;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentFrames;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentPreview;
@@ -52,7 +55,6 @@ public class Navigator implements INavigator {
                 .commit();
     }
 
-
     @Override
     public void navigateProject() {
         if (refFragmentManager == null || refFragmentManager.get() == null) return;
@@ -79,6 +81,16 @@ public class Navigator implements INavigator {
         refFragmentManager.get()
                 .beginTransaction()
                 .replace(rootViewRes, new FragmentPreview())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void navigateAbout() {
+        if (refFragmentManager == null || refFragmentManager.get() == null) return;
+        refFragmentManager.get()
+                .beginTransaction()
+                .replace(rootViewRes, new FragmentAbout())
                 .addToBackStack(null)
                 .commit();
     }
@@ -123,6 +135,32 @@ public class Navigator implements INavigator {
 
     @Override
     public void startExportService(Context context, String projectSelectedId) {
-        ServiceProjectExport.start(context,projectSelectedId);
+        ServiceProjectExport.start(context, projectSelectedId);
     }
+
+    @Override
+    public void navigateFeedback(Context context) {
+        if (context == null) return;
+        Intent intentSend = getIntentSendEmail(
+                context.getString(R.string.email_support)
+                , context.getString(R.string.email_support_title)
+                , context.getString(R.string.email_support_message));
+
+        if (intentSend.resolveActivity(context.getPackageManager()) == null) {
+            Toast.makeText(context, R.string.email_app_error_no_found, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        context.startActivity(intentSend);
+    }
+
+    @NonNull
+    private Intent getIntentSendEmail(String email_url, String title, String body) {
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse(email_url));
+        intent.putExtra(Intent.EXTRA_SUBJECT, title);
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+
+        return intent;
+    }
+
 }

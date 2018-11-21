@@ -8,12 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
+import org.byters.bcphotoanimations.view.INavigator;
 import org.byters.bcphotoanimations.view.ui.adapters.AdapterProjects;
 
-public class FragmentProjects extends FragmentBase {
+import javax.inject.Inject;
+
+public class FragmentProjects extends FragmentBase implements View.OnClickListener {
 
     public static final int SPAN_NUM = 2;
+
+    @Inject
+    INavigator navigator;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ApplicationStopMotion.getComponent().inject(this);
+    }
 
     @Nullable
     @Override
@@ -24,6 +37,13 @@ public class FragmentProjects extends FragmentBase {
         rvItems.setLayoutManager(new GridLayoutManager(getContext(), SPAN_NUM));
         rvItems.setAdapter(new AdapterProjects());
 
+        view.findViewById(R.id.ivAbout).setOnClickListener(this);
+
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        navigator.navigateAbout();
     }
 }

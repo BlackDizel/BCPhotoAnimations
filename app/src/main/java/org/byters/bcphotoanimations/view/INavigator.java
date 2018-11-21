@@ -2,7 +2,6 @@ package org.byters.bcphotoanimations.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 import javax.inject.Singleton;
@@ -15,6 +14,8 @@ public interface INavigator {
     void navigateProjectsList();
 
     void navigateProjectEdit();
+
+    void navigateAbout();
 
     void navigateProjectCreate();
 
@@ -31,4 +32,6 @@ public interface INavigator {
     void chooseFolder(Activity activity, String projectOutputFolder);
 
     void startExportService(Context context, String projectSelectedId);
+
+    void navigateFeedback(Context context);
 }

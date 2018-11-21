@@ -15,10 +15,12 @@ import org.byters.bcphotoanimations.view.presenter.PresenterProjectEdit;
 import org.byters.bcphotoanimations.view.ui.activity.ActivityMain;
 import org.byters.bcphotoanimations.view.ui.adapters.AdapterFrames;
 import org.byters.bcphotoanimations.view.ui.adapters.AdapterProjects;
+import org.byters.bcphotoanimations.view.ui.fragment.FragmentAbout;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentCamera;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentFrames;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentPreview;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjectEdit;
+import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjects;
 import org.byters.bcphotoanimations.view.ui.service.ServiceProjectExport;
 
 import javax.inject.Singleton;
@@ -30,6 +32,10 @@ import dagger.Component;
 public interface AppComponent {
 
     void inject(FragmentCamera param);
+
+    void inject(FragmentProjects param);
+
+    void inject(FragmentAbout param);
 
     void inject(FragmentFrames param);
 

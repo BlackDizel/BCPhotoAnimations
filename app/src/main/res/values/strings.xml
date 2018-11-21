@@ -1,4 +1,5 @@
 <resources>
+    <string name="email_support" translatable="false">mailto:FeedbackByters@yandex.com</string>
     <string name="app_name">BCPhotoAnimations</string>
     <string name="project_new">new project</string>
     <string name="save">Save</string>
@@ -29,4 +30,10 @@
     <string name="export_project_success_success">Project export complete. Saved to %s</string>
     <string name="export_attempts_remaining" formatted="false">Free export attempts %d</string>
     <string name="export_attempts_not_enough">Tap to purchase</string>
+    <string name="about_title">Created by Byters</string>
+    <string name="about_feedback">Write us some words</string>
+    <string name="about_message">Want to support or send feedback?</string>
+    <string name="email_app_error_no_found">No email app found</string>
+    <string name="email_support_title">Photo animation support</string>
+    <string name="email_support_message">Hi!</string>
 </resources>
