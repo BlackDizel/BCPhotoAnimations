@@ -117,12 +117,6 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         }
 
         @Override
-        public void getDisplaySize(Point displaySize) {
-            if (getActivity() == null) return;
-            getActivity().getWindowManager().getDefaultDisplay().getSize(displaySize);
-        }
-
-        @Override
         public void showFlash() {
             if (getView() == null) return;
             View view = getView().findViewById(R.id.vFlash);

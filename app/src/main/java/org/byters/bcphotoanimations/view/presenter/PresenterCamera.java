@@ -1,6 +1,5 @@
 package org.byters.bcphotoanimations.view.presenter;
 
-import android.graphics.Point;
 import android.hardware.Camera;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -147,12 +146,6 @@ public class PresenterCamera extends PresenterCameraBase {
         @Override
         public int requestRotation() {
             return refCallback != null && refCallback.get() != null ? refCallback.get().getScreenRotation() : 0;
-        }
-
-        @Override
-        public void getDisplaySize(Point displaySize) {
-            if (refCallback == null || refCallback.get() == null) return;
-            refCallback.get().getDisplaySize(displaySize);
         }
     }
 }

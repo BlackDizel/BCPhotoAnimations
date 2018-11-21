@@ -3,10 +3,11 @@ package org.byters.bcphotoanimations.view.ui.view;
 import android.content.Context;
 import android.graphics.Point;
 import android.hardware.Camera;
+import android.view.Gravity;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import org.byters.bcphotoanimations.view.ui.view.callback.ICameraPreviewCallback;
 
@@ -47,18 +48,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+        updateView(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+    }
 
+    private void updateView(String focusMode) {
         if (this.holder.getSurface() == null)
             return;
 
         try {
             camera.stopPreview();
-        } catch (Exception e) {
-        }
-
-        try {
             int rotation = checkCameraOrientation();
-            checkPreviewSize(rotation);
+            checkPreviewSize(rotation, focusMode);
             camera.setPreviewDisplay(this.holder);
             camera.startPreview();
 
@@ -95,17 +95,16 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         return result;
     }
 
-    private void checkPreviewSize(int rotation) {
+    private void checkPreviewSize(int rotation, String focusMode) {
         if (refCallback == null || refCallback.get() == null)
             return;
 
-        Point displaySize = new Point();
-        refCallback.get().getDisplaySize(displaySize);
+        int w = getResources().getDisplayMetrics().widthPixels;
+        int h = getResources().getDisplayMetrics().heightPixels;
+        if (w == 0 || h == 0) return;
 
-        if (displaySize.x == 0 || displaySize.y == 0) return;
-
-        int maxPreviewWidth = Math.max(displaySize.x, displaySize.y);
-        int maxPreviewHeight = Math.min(displaySize.x, displaySize.y);
+        int maxPreviewWidth = Math.max(w, h);
+        int maxPreviewHeight = Math.min(w, h);
 
         Camera.Size bestSize = null;
         for (Camera.Size item : camera.getParameters().getSupportedPreviewSizes()) {
@@ -128,17 +127,22 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Camera.Parameters parameters = camera.getParameters();
         parameters.setPreviewSize(bestSize.width, bestSize.height);
 
-        if (parameters.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_MACRO))
-            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_MACRO);
+        setFocusMode(parameters, focusMode);
 
         parameters.setRotation(rotation);
 
         camera.setParameters(parameters);
 
-        ViewGroup.LayoutParams params = this.getLayoutParams();
-        params.width = displaySize.x > displaySize.y ? Math.max(bestSize.width, bestSize.height) : Math.min(bestSize.width, bestSize.height);
-        params.height = displaySize.x > displaySize.y ? Math.min(bestSize.width, bestSize.height) : Math.max(bestSize.width, bestSize.height);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) this.getLayoutParams();
+        params.width = w > h ? Math.max(bestSize.width, bestSize.height) : Math.min(bestSize.width, bestSize.height);
+        params.height = w > h ? Math.min(bestSize.width, bestSize.height) : Math.max(bestSize.width, bestSize.height);
+        params.gravity = Gravity.CENTER;
         this.setLayoutParams(params);
 
+    }
+
+    private void setFocusMode(Camera.Parameters parameters, String mode) {
+        if (parameters.getSupportedFocusModes().contains(mode))
+            parameters.setFocusMode(mode);
     }
 }

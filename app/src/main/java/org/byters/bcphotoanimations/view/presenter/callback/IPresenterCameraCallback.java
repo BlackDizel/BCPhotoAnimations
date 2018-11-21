@@ -1,8 +1,6 @@
 package org.byters.bcphotoanimations.view.presenter.callback;
 
 
-import android.graphics.Point;
-
 public interface IPresenterCameraCallback {
     void requestPermissionCamera(String[] permissions, int requestCameraPermission);
 
@@ -11,8 +9,6 @@ public interface IPresenterCameraCallback {
     int getScreenRotation();
 
     int getScreenOrientation();
-
-    void getDisplaySize(Point displaySize);
 
     void showFlash();
 
