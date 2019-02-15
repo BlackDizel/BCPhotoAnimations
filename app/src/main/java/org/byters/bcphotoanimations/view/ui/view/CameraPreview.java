@@ -174,7 +174,16 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 currentSize = size;
         }
 
+        if (currentSize == null) return;
+
         parameters.setPictureSize(currentSize.width, currentSize.height);
+        notifyPictureSize(currentSize.width, currentSize.height);
+    }
+
+    private void notifyPictureSize(int width, int height) {
+        if (refCallback == null || refCallback.get() == null)
+            return;
+        refCallback.get().onGetPictureSize(width, height);
     }
 
     private boolean ratioIsEqual(Camera.Size size, Camera.Size previewSize) {

@@ -23,4 +23,6 @@ public interface IPresenterCameraCallback {
     void setFlashVisible(boolean isFlashSupported);
 
     void setButtonFlashImage(int drawableRes);
+
+    void setPictureSize(int width, int height);
 }

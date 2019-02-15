@@ -51,7 +51,7 @@ public class PresenterCamera extends PresenterCameraBase {
     public void onClickFlash() {
         super.onClickFlash();
         if (camera != null) {
-            Camera.Parameters parameters =  camera.getParameters();
+            Camera.Parameters parameters = camera.getParameters();
             parameters.setFlashMode(cacheInterfaceState.isFlashEnabled() ? CAMERA_FLASH_ON : CAMERA_FLASH_OFF);
             camera.setParameters(parameters);
         }
@@ -153,6 +153,12 @@ public class PresenterCamera extends PresenterCameraBase {
                     && supportedFlashModes.contains(CAMERA_FLASH_OFF);
 
             refCallback.get().setFlashVisible(isFlashSupported);
+        }
+
+        @Override
+        public void onGetPictureSize(int width, int height) {
+            if (refCallback == null || refCallback.get() == null) return;
+            refCallback.get().setPictureSize(width, height);
         }
     }
 }

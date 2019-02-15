@@ -10,4 +10,5 @@ public interface ICameraPreviewCallback {
 
     void onFlashModesGet(List<String> supportedFlashModes);
 
+    void onGetPictureSize(int width, int height);
 }

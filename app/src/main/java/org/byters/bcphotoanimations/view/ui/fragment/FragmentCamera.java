@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -30,9 +31,11 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
     IPresenterCamera presenterCamera;
 
     private IPresenterCameraCallback presenterCallback;
+
     private ImageView ivCamera;
     private ImageView ivLastFrame;
     private ImageView ivFlash;
+    private TextView tvCameraPictureSize;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,8 +51,9 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         ivCamera = view.findViewById(R.id.ivLastFrameShow);
         ivLastFrame = view.findViewById(R.id.ivLastFrame);
         ivFlash = view.findViewById(R.id.ivFlash);
-        ivCamera.setOnClickListener(this);
+        tvCameraPictureSize = view.findViewById(R.id.tvCameraPictureSize);
         presenterCamera.onCreateView(view);
+        ivCamera.setOnClickListener(this);
 
         return view;
     }
@@ -174,6 +178,12 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         public void setButtonFlashImage(int drawableRes) {
             if (!isAdded()) return;
             ivFlash.setImageResource(drawableRes);
+        }
+
+        @Override
+        public void setPictureSize(int width, int height) {
+            if (!isAdded()) return;
+            tvCameraPictureSize.setText(String.format("%sx%s", width, height));
         }
     }
 
