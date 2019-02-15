@@ -17,4 +17,6 @@ public interface IPresenterCameraCallback {
     void setLastFrameShowDrawable(int drawableRes);
 
     void setLastFrameVisibility(boolean isVisible);
+
+    void setLastFrameSize(int width, int height);
 }

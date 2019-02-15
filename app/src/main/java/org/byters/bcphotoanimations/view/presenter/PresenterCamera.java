@@ -146,5 +146,11 @@ public class PresenterCamera extends PresenterCameraBase {
         public int requestRotation() {
             return refCallback != null && refCallback.get() != null ? refCallback.get().getScreenRotation() : 0;
         }
+
+        @Override
+        public void onSizeChanged(int width, int height) {
+            if (refCallback == null || refCallback.get() == null) return;
+            refCallback.get().setLastFrameSize(width, height);
+        }
     }
 }

@@ -13,6 +13,7 @@ import org.byters.bcphotoanimations.view.ui.view.callback.ICameraPreviewCallback
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -103,6 +104,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         int h = getResources().getDisplayMetrics().heightPixels;
         if (w == 0 || h == 0) return;
 
+        //FIXME на highscreen высота превью равна высоте экрана, ширина превью больше ширины экрана
+
         int maxPreviewWidth = Math.max(w, h);
         int maxPreviewHeight = Math.min(w, h);
 
@@ -126,6 +129,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         Camera.Parameters parameters = camera.getParameters();
         parameters.setPreviewSize(bestSize.width, bestSize.height);
+        setPictureSize(parameters); //Picture size and preview size must have equal aspect ratio
 
         setFocusMode(parameters, focusMode);
 
@@ -138,7 +142,34 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         params.height = w > h ? Math.min(bestSize.width, bestSize.height) : Math.max(bestSize.width, bestSize.height);
         params.gravity = Gravity.CENTER;
         this.setLayoutParams(params);
+        notifySize(params.width, params.height);
+    }
 
+    private void setPictureSize(Camera.Parameters parameters) {
+        if (parameters == null) return;
+        List<android.hardware.Camera.Size> sizes = parameters.getSupportedPictureSizes();
+        if (sizes == null) return;
+        Camera.Size currentSize = null;
+        for (Camera.Size size : sizes) {
+            if (currentSize == null) {
+                currentSize = size;
+                continue;
+            }
+
+            if (ratioIsEqual(size, parameters.getPreviewSize()) && size.width > currentSize.width)
+                currentSize = size;
+        }
+
+        parameters.setPictureSize(currentSize.width, currentSize.height);
+    }
+
+    private boolean ratioIsEqual(Camera.Size size, Camera.Size previewSize) {
+        return Math.abs(size.height / (float) size.width - previewSize.height / (float) previewSize.width) < 0.000001;
+    }
+
+    private void notifySize(int width, int height) {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().onSizeChanged(width, height);
     }
 
     private void setFocusMode(Camera.Parameters parameters, String mode) {

@@ -9,6 +9,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -145,6 +146,14 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         @Override
         public void setLastFrameVisibility(boolean isVisible) {
             ivLastFrame.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        }
+
+        @Override
+        public void setLastFrameSize(int width, int height) {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivLastFrame.getLayoutParams();
+            params.width = width;
+            params.height = height;
+            ivLastFrame.setLayoutParams(params);
         }
     }
 
