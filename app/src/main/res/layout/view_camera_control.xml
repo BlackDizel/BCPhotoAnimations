@@ -1,0 +1,24 @@
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/ivCapture"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:src="@drawable/ic_add_white_40dp" />
+
+    <ImageView
+        android:id="@+id/ivLastFrameShow"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|end"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="12dp"
+        tools:src="@drawable/ic_filter_white_24dp" />
+
+</FrameLayout>

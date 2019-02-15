@@ -54,7 +54,6 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         view.findViewById(R.id.ivCapture).setOnClickListener(this);
-        view.findViewById(R.id.ivSettings).setOnClickListener(this);
     }
 
     @Override
@@ -67,8 +66,6 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
     public void onClick(View view) {
         if (view.getId() == R.id.ivCapture)
             presenterCamera.takePicture();
-        if (view.getId() == R.id.ivSettings)
-            presenterCamera.onClickSettings();
         if (view.getId() == R.id.ivLastFrameShow)
             presenterCamera.onClickLastFrameShow();
     }
