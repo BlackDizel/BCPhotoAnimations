@@ -5,11 +5,12 @@ import android.content.Context;
 
 import com.android.billingclient.api.BillingClient;
 
+import org.byters.billingapi.ILibDataPlayBilling;
 import org.byters.dataplaybilling.controller.data.device.ICacheBilling;
 import org.byters.dataplaybilling.controller.data.device.RepositoryBuy;
 import org.byters.dataplaybilling.controller.data.device.RepositoryPurchasesCurrent;
 import org.byters.dataplaybilling.controller.data.device.RepositorySkuList;
-import org.byters.dataplaybilling.controller.data.device.callback.ICacheBillingCallback;
+import org.byters.billingapi.controller.data.device.callback.ICacheBillingCallback;
 import org.byters.dataplaybilling.view.ILibNavigator;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import javax.inject.Inject;
 //todo implement INAPP
 //todo implement SKU LIST instead of single SKU
 
-public class LibDataPlayBilling {
+public class LibDataPlayBilling implements ILibDataPlayBilling {
 
     private static LibBillingComponent component;
 
@@ -55,7 +56,7 @@ public class LibDataPlayBilling {
         return component;
     }
 
-    public static String getTypeSubs() {
+    public String getTypeSubs() {
         return BillingClient.SkuType.SUBS;
     }
 
