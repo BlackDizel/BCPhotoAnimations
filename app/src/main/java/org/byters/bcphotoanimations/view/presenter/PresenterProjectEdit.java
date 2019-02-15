@@ -9,8 +9,8 @@ import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheStorage;
 import org.byters.bcphotoanimations.view.INavigator;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterProjectEditCallback;
-import org.byters.dataplaybilling.LibDataPlayBilling;
-import org.byters.dataplaybilling.controller.data.device.callback.ICacheBillingCallback;
+import org.byters.billingapi.ILibDataPlayBilling;
+import org.byters.billingapi.controller.data.device.callback.ICacheBillingCallback;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -20,9 +20,6 @@ import javax.inject.Inject;
 public class PresenterProjectEdit implements IPresenterProjectEdit {
 
     private static final String SKU_NAME = "subscription_project_export_unlimited_monthly";
-
-    private CacheBillingCallback listenerCacheBilling;
-
     @Inject
     ICacheProjectSelected cacheProjectSelected;
     @Inject
@@ -33,11 +30,9 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
     ICacheProjects cacheProjects;
     @Inject
     ICacheExportAttempts cacheExportAttempts;
-
     @Inject
-    LibDataPlayBilling libDataPlayBilling;
-
-
+    ILibDataPlayBilling libDataPlayBilling;
+    private CacheBillingCallback listenerCacheBilling;
     private WeakReference<IPresenterProjectEditCallback> refCallback;
 
     public PresenterProjectEdit() {
@@ -85,7 +80,7 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
     @Override
     public void onClickExport() {
         if (!cacheExportAttempts.isEnoughAttempts()) {
-            libDataPlayBilling.requestList(Arrays.asList(SKU_NAME),LibDataPlayBilling.getTypeSubs());
+            libDataPlayBilling.requestList(Arrays.asList(SKU_NAME), libDataPlayBilling.getTypeSubs());
             return;
         }
 

@@ -32,6 +32,7 @@ import org.byters.bcphotoanimations.view.presenter.PresenterCamera;
 import org.byters.bcphotoanimations.view.presenter.PresenterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterPreview;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectEdit;
+import org.byters.billingapi.ILibDataPlayBilling;
 import org.byters.dataplaybilling.LibDataPlayBilling;
 
 import java.lang.ref.WeakReference;
@@ -44,17 +45,17 @@ import dagger.Provides;
 @Module
 public class AppModule {
 
-    private LibDataPlayBilling libBilling;
+    private ILibDataPlayBilling libBilling;
     private WeakReference<Context> refContext;
 
-    public AppModule(Context context, LibDataPlayBilling libDataPlayBilling) {
+    public AppModule(Context context) {
         this.refContext = new WeakReference<>(context);
-        this.libBilling = libDataPlayBilling;
+        this.libBilling = new LibDataPlayBilling();
     }
 
     @Provides
     @Singleton
-    LibDataPlayBilling getLibBilling() {
+    ILibDataPlayBilling getLibBilling() {
         return libBilling;
     }
 
