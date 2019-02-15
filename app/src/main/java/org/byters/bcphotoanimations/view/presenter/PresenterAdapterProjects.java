@@ -78,6 +78,11 @@ public class PresenterAdapterProjects implements IPresenterAdapterProjects {
         return cacheProjects.getItemTitle(position);
     }
 
+    @Override
+    public void onClickSettings(int position) {
+        onClickLong(position);
+    }
+
     private class CacheCallback implements ICacheProjectsCallback {
         @Override
         public void onUpdate() {

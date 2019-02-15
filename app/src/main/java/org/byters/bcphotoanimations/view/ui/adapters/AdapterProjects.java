@@ -52,6 +52,7 @@ public class AdapterProjects extends AdapterBase {
             super(parent, R.layout.view_item_project);
 
             tvTitle = itemView.findViewById(R.id.tvTitle);
+            itemView.findViewById(R.id.ivSettings).setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
 
@@ -65,6 +66,14 @@ public class AdapterProjects extends AdapterBase {
         public boolean onLongClick(View v) {
             presenterAdapterProjects.onClickLong(getAdapterPosition());
             return true;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.ivSettings)
+                presenterAdapterProjects.onClickSettings(getAdapterPosition());
+            else
+                super.onClick(v);
         }
     }
 

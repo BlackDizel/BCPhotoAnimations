@@ -1,5 +1,6 @@
 package org.byters.bcphotoanimations.view.ui.fragment;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -34,12 +35,18 @@ public class FragmentProjects extends FragmentBase implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_projects, container, false);
 
         RecyclerView rvItems = view.findViewById(R.id.rvItems);
-        rvItems.setLayoutManager(new GridLayoutManager(getContext(), SPAN_NUM));
+        rvItems.setLayoutManager(new GridLayoutManager(getContext(), SPAN_NUM, getOrientation(), false));
         rvItems.setAdapter(new AdapterProjects());
 
         view.findViewById(R.id.ivAbout).setOnClickListener(this);
 
         return view;
+    }
+
+    private int getOrientation() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+                ? GridLayoutManager.VERTICAL
+                : GridLayoutManager.HORIZONTAL;
     }
 
     @Override

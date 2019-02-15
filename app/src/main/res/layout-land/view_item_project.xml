@@ -7,9 +7,9 @@
 
     <FrameLayout
         app:layout_aspectRatio="100%"
-        app:layout_widthPercent="100%">
+        app:layout_heightPercent="100%">
 
-        <include layout="@layout/view_item_project_content"/>
+        <include layout="@layout/view_item_project_content" />
 
     </FrameLayout>
 
