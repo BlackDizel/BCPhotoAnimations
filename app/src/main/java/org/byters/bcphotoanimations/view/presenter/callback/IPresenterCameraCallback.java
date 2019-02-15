@@ -19,4 +19,8 @@ public interface IPresenterCameraCallback {
     void setLastFrameVisibility(boolean isVisible);
 
     void setLastFrameSize(int width, int height);
+
+    void setFlashVisible(boolean isFlashSupported);
+
+    void setButtonFlashImage(int drawableRes);
 }

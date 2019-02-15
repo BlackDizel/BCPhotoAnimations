@@ -10,6 +10,7 @@ import android.view.View;
 
 import org.byters.bcphotoanimations.R;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheInterfaceState;
+import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterCameraCallback;
 
 import java.lang.ref.WeakReference;
@@ -25,6 +26,9 @@ abstract class PresenterCameraBase implements IPresenterCamera {
     @Inject
     ICacheInterfaceState cacheInterfaceState;
 
+    @Inject
+    ICacheProjectSelected cacheProjectSelected;
+
     @Override
     public void onActivityCreated(FragmentActivity activity) {
 
@@ -33,6 +37,7 @@ abstract class PresenterCameraBase implements IPresenterCamera {
     @Override
     public void onCreateView(View view) {
         setLastFrameState();
+        setButtonFlashState();
     }
 
     private void setLastFrameState() {
@@ -49,10 +54,23 @@ abstract class PresenterCameraBase implements IPresenterCamera {
         setLastFrameState();
     }
 
-
     @Override
     public void onClickSettings() {
+        //todo implement
     }
+
+    @Override
+    public void onClickFlash() {
+        cacheInterfaceState.changeStateFlash();
+        setButtonFlashState();
+    }
+
+    private void setButtonFlashState() {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().setButtonFlashImage(cacheInterfaceState.isFlashEnabled()
+                ? R.drawable.ic_flash_on_white_24dp : R.drawable.ic_flash_off_white_24dp);
+    }
+
 
     @Override
     public void setCallback(IPresenterCameraCallback callback) {
@@ -77,6 +95,18 @@ abstract class PresenterCameraBase implements IPresenterCamera {
         return true;
     }
 
+    void setShowLastFrame() {
+        if (!cacheInterfaceState.isShowLastFrame()) return;
+        if (refCallback == null || refCallback.get() == null) return;
+        String lastFramePath = cacheProjectSelected.getLastFramePreview();
+        refCallback.get().showLastFrame(lastFramePath);
+    }
+
+    void showFlash() {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().showFlash();
+    }
+
     abstract void onPermissionGranted(View view);
 
     void requestCameraPermission() {
@@ -97,5 +127,4 @@ abstract class PresenterCameraBase implements IPresenterCamera {
                 && ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
-    abstract void setShowLastFrame();
 }

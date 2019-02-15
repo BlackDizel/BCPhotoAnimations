@@ -23,6 +23,7 @@ import org.byters.bcphotoanimations.view.ui.fragment.FragmentPreview;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjectEdit;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjects;
 import org.byters.bcphotoanimations.view.ui.service.ServiceProjectExport;
+import org.byters.bcphotoanimations.view.ui.view.CameraPreview;
 
 import javax.inject.Singleton;
 
@@ -75,4 +76,6 @@ public interface AppComponent {
     void inject(CacheExportAttempts cacheExportAttempts);
 
     void inject(CachePreference cachePreference);
+
+    void inject(CameraPreview cameraPreview);
 }

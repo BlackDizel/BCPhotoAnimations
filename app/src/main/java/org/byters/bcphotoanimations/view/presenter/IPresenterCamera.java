@@ -1,7 +1,6 @@
 package org.byters.bcphotoanimations.view.presenter;
 
 
-import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
@@ -28,4 +27,6 @@ public interface IPresenterCamera {
     void onClickSettings();
 
     void onClickLastFrameShow();
+
+    void onClickFlash();
 }

@@ -42,4 +42,15 @@ public class CacheInterfaceState implements ICacheInterfaceState {
         saveData();
     }
 
+    @Override
+    public boolean isFlashEnabled() {
+        return getData().isFlashEnabled();
+    }
+
+    @Override
+    public void changeStateFlash() {
+        getData().setFlashEnabled(!isFlashEnabled());
+        saveData();
+    }
+
 }

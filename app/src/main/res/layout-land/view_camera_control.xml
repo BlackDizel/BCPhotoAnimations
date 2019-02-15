@@ -16,9 +16,21 @@
         android:id="@+id/ivLastFrameShow"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_gravity="end|bottom"
+        android:layout_gravity="end"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="12dp"
         tools:src="@drawable/ic_filter_white_24dp" />
+
+    <ImageView
+        android:id="@+id/ivFlash"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="end|bottom"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="12dp"
+        android:visibility="gone"
+
+        tools:src="@drawable/ic_flash_off_white_24dp"
+        tools:visibility="visible" />
 
 </FrameLayout>

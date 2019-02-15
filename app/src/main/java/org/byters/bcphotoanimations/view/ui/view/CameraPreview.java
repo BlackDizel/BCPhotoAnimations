@@ -9,22 +9,30 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.FrameLayout;
 
+import org.byters.bcphotoanimations.ApplicationStopMotion;
+import org.byters.bcphotoanimations.controller.data.memorycache.ICacheInterfaceState;
 import org.byters.bcphotoanimations.view.ui.view.callback.ICameraPreviewCallback;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
+
+    @Inject
+    ICacheInterfaceState cacheInterfaceState;
 
     private int cameraId;
     private SurfaceHolder holder;
     private Camera camera;
-
     private WeakReference<ICameraPreviewCallback> refCallback;
 
     public CameraPreview(Context context, Camera camera, int cameraId) {
         super(context);
+        ApplicationStopMotion.getComponent().inject(this);
+
         this.camera = camera;
         this.cameraId = cameraId;
 
@@ -104,8 +112,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         int h = getResources().getDisplayMetrics().heightPixels;
         if (w == 0 || h == 0) return;
 
-        //FIXME на highscreen высота превью равна высоте экрана, ширина превью больше ширины экрана
-
         int maxPreviewWidth = Math.max(w, h);
         int maxPreviewHeight = Math.min(w, h);
 
@@ -134,6 +140,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         setFocusMode(parameters, focusMode);
 
         parameters.setRotation(rotation);
+        parameters.setFlashMode(cacheInterfaceState.isFlashEnabled() ? "on" : "off");
 
         camera.setParameters(parameters);
 
@@ -142,7 +149,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         params.height = w > h ? Math.min(bestSize.width, bestSize.height) : Math.max(bestSize.width, bestSize.height);
         params.gravity = Gravity.CENTER;
         this.setLayoutParams(params);
+
         notifySize(params.width, params.height);
+        notifyFlashModes(parameters.getSupportedFlashModes());
+    }
+
+    private void notifyFlashModes(List<String> supportedFlashModes) {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().onFlashModesGet(supportedFlashModes);
     }
 
     private void setPictureSize(Camera.Parameters parameters) {

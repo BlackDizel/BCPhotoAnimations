@@ -7,24 +7,25 @@ import android.widget.FrameLayout;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
-import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.view.ui.view.CameraPreview;
 import org.byters.bcphotoanimations.view.ui.view.callback.ICameraPreviewCallback;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 public class PresenterCamera extends PresenterCameraBase {
     private static final int CAMERA_UNDEFINED = -1;
+    private static final String CAMERA_FLASH_ON = "on";
+    private static final String CAMERA_FLASH_OFF = "off";
 
-    @Inject
-    ICacheProjectSelected cacheProjectSelected;
     @Inject
     ICacheProjects cacheProjects;
 
-
     @Nullable
     private Camera camera;
+
     private CameraCallback cameraCallback;
     private Camera.PictureCallback pictureCallback;
 
@@ -44,6 +45,16 @@ public class PresenterCamera extends PresenterCameraBase {
             e.printStackTrace();
         }
         return c;
+    }
+
+    @Override
+    public void onClickFlash() {
+        super.onClickFlash();
+        if (camera != null) {
+            Camera.Parameters parameters =  camera.getParameters();
+            parameters.setFlashMode(cacheInterfaceState.isFlashEnabled() ? CAMERA_FLASH_ON : CAMERA_FLASH_OFF);
+            camera.setParameters(parameters);
+        }
     }
 
     private int getCameraId() {
@@ -83,11 +94,6 @@ public class PresenterCamera extends PresenterCameraBase {
         }
     }
 
-    private void showFlash() {
-        if (refCallback == null || refCallback.get() == null) return;
-        refCallback.get().showFlash();
-    }
-
     private void initCamera(View view) {
         if (view == null) return;
 
@@ -108,25 +114,10 @@ public class PresenterCamera extends PresenterCameraBase {
         preview.addView(cameraPreview);
     }
 
-
     @Override
     void onPermissionGranted(View view) {
         initCamera(view);
     }
-
-    @Override
-    public void onClickSettings() {
-        //todo implement
-    }
-
-    @Override
-    void setShowLastFrame() {
-        if (!cacheInterfaceState.isShowLastFrame()) return;
-        if (refCallback == null || refCallback.get() == null) return;
-        String lastFramePath = cacheProjectSelected.getLastFramePreview();
-        refCallback.get().showLastFrame(lastFramePath);
-    }
-
 
     private class CameraPictureCallback implements Camera.PictureCallback {
         @Override
@@ -151,6 +142,17 @@ public class PresenterCamera extends PresenterCameraBase {
         public void onSizeChanged(int width, int height) {
             if (refCallback == null || refCallback.get() == null) return;
             refCallback.get().setLastFrameSize(width, height);
+        }
+
+        @Override
+        public void onFlashModesGet(List<String> supportedFlashModes) {
+            if (refCallback == null || refCallback.get() == null) return;
+
+            boolean isFlashSupported = supportedFlashModes != null
+                    && supportedFlashModes.contains(CAMERA_FLASH_ON)
+                    && supportedFlashModes.contains(CAMERA_FLASH_OFF);
+
+            refCallback.get().setFlashVisible(isFlashSupported);
         }
     }
 }

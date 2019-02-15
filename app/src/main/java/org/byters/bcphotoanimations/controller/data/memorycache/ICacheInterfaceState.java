@@ -4,4 +4,8 @@ public interface ICacheInterfaceState {
     boolean isShowLastFrame();
 
     void setLastFrameShow(boolean isShow);
+
+    boolean isFlashEnabled();
+
+    void changeStateFlash();
 }

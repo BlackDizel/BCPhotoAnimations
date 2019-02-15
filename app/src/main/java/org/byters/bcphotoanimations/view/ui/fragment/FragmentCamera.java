@@ -32,6 +32,7 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
     private IPresenterCameraCallback presenterCallback;
     private ImageView ivCamera;
     private ImageView ivLastFrame;
+    private ImageView ivFlash;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
         ivCamera = view.findViewById(R.id.ivLastFrameShow);
         ivLastFrame = view.findViewById(R.id.ivLastFrame);
+        ivFlash = view.findViewById(R.id.ivFlash);
         ivCamera.setOnClickListener(this);
         presenterCamera.onCreateView(view);
 
@@ -55,6 +57,7 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         view.findViewById(R.id.ivCapture).setOnClickListener(this);
+        view.findViewById(R.id.ivFlash).setOnClickListener(this);
     }
 
     @Override
@@ -69,6 +72,8 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
             presenterCamera.takePicture();
         if (view.getId() == R.id.ivLastFrameShow)
             presenterCamera.onClickLastFrameShow();
+        if (view.getId() == R.id.ivFlash)
+            presenterCamera.onClickFlash();
     }
 
     @Override
@@ -103,7 +108,7 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
 
         @Override
         public void finishView() {
-            if (getActivity() == null) return;
+            if (!isAdded()) return;
             getActivity().onBackPressed();
         }
 
@@ -119,7 +124,7 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
 
         @Override
         public void showFlash() {
-            if (getView() == null) return;
+            if (!isAdded()) return;
             View view = getView().findViewById(R.id.vFlash);
             AlphaAnimation animation = new AlphaAnimation(1, 0);
             animation.setDuration(250);
@@ -130,7 +135,7 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
 
         @Override
         public void showLastFrame(String path) {
-            if (getView() == null || getContext() == null) return;
+            if (!isAdded()) return;
             if (TextUtils.isEmpty(path))
                 ivLastFrame.setImageDrawable(null);
             else Glide.with(getContext())
@@ -140,20 +145,35 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
 
         @Override
         public void setLastFrameShowDrawable(int drawableRes) {
+            if (!isAdded()) return;
             ivCamera.setImageResource(drawableRes);
         }
 
         @Override
         public void setLastFrameVisibility(boolean isVisible) {
+            if (!isAdded()) return;
             ivLastFrame.setVisibility(isVisible ? View.VISIBLE : View.GONE);
         }
 
         @Override
         public void setLastFrameSize(int width, int height) {
+            if (!isAdded()) return;
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivLastFrame.getLayoutParams();
             params.width = width;
             params.height = height;
             ivLastFrame.setLayoutParams(params);
+        }
+
+        @Override
+        public void setFlashVisible(boolean isFlashSupported) {
+            if (!isAdded()) return;
+            ivFlash.setVisibility(isFlashSupported ? View.VISIBLE : View.GONE);
+        }
+
+        @Override
+        public void setButtonFlashImage(int drawableRes) {
+            if (!isAdded()) return;
+            ivFlash.setImageResource(drawableRes);
         }
     }
 

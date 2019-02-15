@@ -1,7 +1,7 @@
-<FrameLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/ivCapture"
@@ -20,5 +20,17 @@
         android:background="?selectableItemBackgroundBorderless"
         android:padding="12dp"
         tools:src="@drawable/ic_filter_white_24dp" />
+
+    <ImageView
+        android:id="@+id/ivFlash"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="12dp"
+        android:visibility="gone"
+
+        tools:src="@drawable/ic_flash_on_white_24dp"
+        tools:visibility="visible" />
 
 </FrameLayout>
