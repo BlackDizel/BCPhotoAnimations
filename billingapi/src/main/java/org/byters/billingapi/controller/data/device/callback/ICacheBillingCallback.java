@@ -1,4 +1,4 @@
-package org.byters.dataplaybilling.controller.data.device.callback;
+package org.byters.billingapi.controller.data.device.callback;
 
 public interface ICacheBillingCallback {
     void onUpdatePurchases();
