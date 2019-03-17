@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">BC Фото анимации</string>
+    <string name="project_new">новый проект</string>
+    <string name="save">Сохранить</string>
+    <string name="error_title_empty">укажите название проекта</string>
+    <string name="remove">удалить</string>
+    <string name="button_frames_select_cancel">отмена</string>
+    <string name="button_frames_select_range">Выбор…</string>
+    <string name="button_frames_copy">копия</string>
+    <string name="button_frames_move">перенос</string>
+    <string name="button_frames_revert">реверс</string>
+    <string name="button_frames_remove">удаление</string>
+    <string name="dialog_from">от</string>
+    <string name="dialog_to">до</string>
+    <string name="dialog_range_title">Выберите кадры</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">отмена</string>
+    <string name="dialog_position_title">Выберите позицию</string>
+    <string name="label_fps" formatted="false">%sfps</string>
+    <string name="export">Экспорт</string>
+    <string name="export_project_format" formatted="false">Экспорт проекта %s</string>
+    <string name="export_project_error">Ошибка экспорта проекта</string>
+    <string name="export_project_success_format" formatted="false">Проект %s экспортирован в папку: %s</string>
+    <string name="action_open_folder">Открыть папку</string>
+    <string name="notification_project_export_title_format">Экспорт проекта %s</string>
+    <string name="notification_project_export_title_progress_format">Проект %s. Кадр %d копируется</string>
+    <string name="notification_project_export_channel_name">Фото анимации</string>
+    <string name="notification_project_export_channel_description">Уведомления приложения созданий фото анимаций</string>
+    <string name="export_project_success_success">Экспорт проекта завершен. Сохранено в %s</string>
+    <string name="export_attempts_remaining" formatted="false">Количестве бесплатных экспортов %d</string>
+    <string name="export_attempts_not_enough">Нажмите для покупки</string>
+    <string name="about_title">Создано Byters</string>
+    <string name="about_feedback">Напишите нам</string>
+    <string name="about_message">Хотите отправить отзыв?</string>
+    <string name="email_app_error_no_found">Приложение для отправки писем не найдено</string>
+    <string name="email_support_title">Photo animation поддержка</string>
+    <string name="email_support_message">Добрый день</string>
+    <string name="project_create_hint">Нажмите на + для создания анимации</string>
+    <string name="button_review">Отправить отзыв</string>
+    <string name="message_project_title_edit">Введите название анимации</string>
+    <string name="hint_frame_add">Нажите на + для захвата кадра</string>
+</resources>
