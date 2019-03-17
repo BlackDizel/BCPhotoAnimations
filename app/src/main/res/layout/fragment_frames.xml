@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/ivPlay"
@@ -13,14 +14,20 @@
         android:padding="8dp"
         android:src="@drawable/ic_play_circle_outline_white_40dp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/hint_frame_add"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvItems"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="56dp"
-        android:clipToPadding="false"
-        android:paddingBottom="56dp" />
-
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <include
         layout="@layout/view_frames_actions"
@@ -28,4 +35,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom" />
 
-</FrameLayout>
+</LinearLayout>

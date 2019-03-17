@@ -38,4 +38,6 @@
     <string name="email_support_message">Hi!</string>
     <string name="project_create_hint">Tap on + to create new animation</string>
     <string name="button_review">Send feeback</string>
+    <string name="message_project_title_edit">Input project title</string>
+    <string name="hint_frame_add">Tap on + to capture frame</string>
 </resources>
