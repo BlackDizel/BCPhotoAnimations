@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
+import org.byters.bcphotoanimations.BuildConfig;
 import org.byters.bcphotoanimations.R;
 import org.byters.bcphotoanimations.view.INavigator;
 
@@ -35,6 +37,7 @@ public class FragmentAbout extends FragmentBase implements View.OnClickListener 
 
     private void initViews(View view) {
         view.findViewById(R.id.tvFeedback).setOnClickListener(this);
+        ((TextView) view.findViewById(R.id.tvVersion)).setText(String.format("%s(%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
     }
 
     @Override
