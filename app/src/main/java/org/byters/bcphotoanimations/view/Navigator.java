@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
 import org.byters.bcphotoanimations.R;
+import org.byters.bcphotoanimations.view.ui.activity.ActivityBase;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentAbout;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentCamera;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentFrames;
@@ -27,10 +28,12 @@ public class Navigator implements INavigator {
     public static final String TAG_PROJECT_EDIT = "TAG_PROJECT_EDIT";
     private WeakReference<FragmentManager> refFragmentManager;
     private int rootViewRes;
+    private WeakReference<ActivityBase> refActivityBase;
 
     @Override
-    public void setData(FragmentManager fragmentManager, int flContent) {
+    public void setData(ActivityBase activityBase, FragmentManager fragmentManager, int flContent) {
         this.refFragmentManager = new WeakReference<>(fragmentManager);
+        this.refActivityBase = new WeakReference<>(activityBase);
         this.rootViewRes = flContent;
     }
 
@@ -151,6 +154,18 @@ public class Navigator implements INavigator {
             return;
         }
         context.startActivity(intentSend);
+    }
+
+    @Override
+    public void navigateGooglePlay() {
+        if (refActivityBase == null || refActivityBase.get() == null) return;
+        ActivityBase activityBase = refActivityBase.get();
+        Uri uri = Uri.parse("market://details?id=" + activityBase.getPackageName());
+        Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
+
+
+        if (myAppLinkToMarket.resolveActivity(activityBase.getPackageManager()) != null)
+            activityBase.startActivity(myAppLinkToMarket);
     }
 
     @NonNull

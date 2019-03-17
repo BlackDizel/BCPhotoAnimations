@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
+import org.byters.bcphotoanimations.view.ui.activity.ActivityBase;
+
 import javax.inject.Singleton;
 
 @Singleton
 public interface INavigator {
 
-    void setData(FragmentManager fragmentManager, int flContent);
+    void setData(ActivityBase activity, FragmentManager fragmentManager, int flContent);
 
     void navigateProjectsList();
 
@@ -34,4 +36,6 @@ public interface INavigator {
     void startExportService(Context context, String projectSelectedId);
 
     void navigateFeedback(Context context);
+
+    void navigateGooglePlay();
 }

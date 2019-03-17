@@ -36,4 +36,6 @@
     <string name="email_app_error_no_found">No email app found</string>
     <string name="email_support_title">Photo animation support</string>
     <string name="email_support_message">Hi!</string>
+    <string name="project_create_hint">Tap on + to create new animation</string>
+    <string name="button_review">Send feeback</string>
 </resources>

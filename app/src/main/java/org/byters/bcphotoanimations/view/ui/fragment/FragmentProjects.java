@@ -34,13 +34,18 @@ public class FragmentProjects extends FragmentBase implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_projects, container, false);
 
+        initViews(view);
+
+        return view;
+    }
+
+    private void initViews(View view) {
         RecyclerView rvItems = view.findViewById(R.id.rvItems);
         rvItems.setLayoutManager(new GridLayoutManager(getContext(), SPAN_NUM, getOrientation(), false));
         rvItems.setAdapter(new AdapterProjects());
 
         view.findViewById(R.id.ivAbout).setOnClickListener(this);
-
-        return view;
+        view.findViewById(R.id.tvFeedback).setOnClickListener(this);
     }
 
     private int getOrientation() {
@@ -51,6 +56,9 @@ public class FragmentProjects extends FragmentBase implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        navigator.navigateAbout();
+        if (v.getId() == R.id.ivAbout)
+            navigator.navigateAbout();
+        if (v.getId() == R.id.tvFeedback)
+            navigator.navigateGooglePlay();
     }
 }

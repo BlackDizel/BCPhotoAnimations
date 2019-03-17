@@ -21,7 +21,7 @@ public class ActivityMain extends ActivityBase {
 
         ApplicationStopMotion.getComponent().inject(this);
 
-        navigator.setData(getSupportFragmentManager(), R.id.flContent);
+        navigator.setData(this, getSupportFragmentManager(), R.id.flContent);
     }
 
 
