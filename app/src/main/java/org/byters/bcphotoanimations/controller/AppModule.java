@@ -28,6 +28,7 @@ import org.byters.bcphotoanimations.view.presenter.IPresenterPreview;
 import org.byters.bcphotoanimations.view.presenter.IPresenterProjectCreate;
 import org.byters.bcphotoanimations.view.presenter.IPresenterProjectEdit;
 import org.byters.bcphotoanimations.view.presenter.IPresenterProjectExportJCodec;
+import org.byters.bcphotoanimations.view.presenter.IPresenterProjectExportMediaCodec;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.PresenterCamera;
@@ -36,6 +37,7 @@ import org.byters.bcphotoanimations.view.presenter.PresenterPreview;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectCreate;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectEdit;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectExportJCodec;
+import org.byters.bcphotoanimations.view.presenter.PresenterProjectExportMediaCodec;
 import org.byters.bcphotoanimations.view.util.HelperDialog;
 import org.byters.bcphotoanimations.view.util.IHelperDialog;
 import org.byters.bcphotoanimations.view.util.IHelperPopup;
@@ -142,6 +144,12 @@ public class AppModule {
     @Singleton
     IPresenterProjectExportJCodec presenterProjectExportMJPEG() {
         return new PresenterProjectExportJCodec();
+    }
+
+    @Provides
+    @Singleton
+    IPresenterProjectExportMediaCodec presenterProjectExportMediaCodec() {
+        return new PresenterProjectExportMediaCodec();
     }
 
     @Provides

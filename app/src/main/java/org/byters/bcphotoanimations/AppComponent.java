@@ -16,10 +16,12 @@ import org.byters.bcphotoanimations.view.presenter.PresenterPreview;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectCreate;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectEdit;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectExportJCodec;
+import org.byters.bcphotoanimations.view.presenter.PresenterProjectExportMediaCodec;
 import org.byters.bcphotoanimations.view.ui.activity.ActivityMain;
 import org.byters.bcphotoanimations.view.ui.adapters.AdapterFrames;
 import org.byters.bcphotoanimations.view.ui.adapters.AdapterProjects;
 import org.byters.bcphotoanimations.view.ui.dialog.DialogExportJCodec;
+import org.byters.bcphotoanimations.view.ui.dialog.DialogExportMediaCodec;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentAbout;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentCamera;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentFrames;
@@ -30,6 +32,7 @@ import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjects;
 import org.byters.bcphotoanimations.view.ui.service.ServiceProjectExport;
 import org.byters.bcphotoanimations.view.ui.view.CameraPreview;
 import org.byters.bcphotoanimations.view.util.AsyncTaskExportMP4_JCodec;
+import org.byters.bcphotoanimations.view.util.AsyncTaskExportMP4_MediaCodec;
 
 import javax.inject.Singleton;
 
@@ -96,4 +99,10 @@ public interface AppComponent {
     void inject(PresenterProjectExportJCodec presenterProjectExportMJPEG);
 
     void inject(PresenterProjectCreate presenterProjectCreate);
+
+    void inject(PresenterProjectExportMediaCodec presenterProjectExportMediaCodec);
+
+    void inject(AsyncTaskExportMP4_MediaCodec asyncTaskExportMP4_mediaCodec);
+
+    void inject(DialogExportMediaCodec dialogExportMediaCodec);
 }
