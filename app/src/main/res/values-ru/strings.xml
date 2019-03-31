@@ -17,7 +17,7 @@
     <string name="dialog_cancel">отмена</string>
     <string name="dialog_position_title">Выберите позицию</string>
     <string name="label_fps" formatted="false">%sfps</string>
-    <string name="export_images">Экспорт как изображения</string>
+    <string name="export_images">Экспорт кадров</string>
     <string name="export_project_format" formatted="false">Экспорт проекта %s</string>
     <string name="export_project_error">Ошибка экспорта проекта</string>
     <string name="export_project_success_format" formatted="false">Проект %s экспортирован в папку: %s</string>
@@ -49,4 +49,6 @@
     <string name="hint_width">ширина кадра</string>
     <string name="hint_height">высота кадра</string>
     <string name="error_export_mjpeg_meta">все значение должны быть больше 0</string>
+    <string name="export_video_mp4">Экспорт видео (MediaCodec)</string>
+    <string name="error_export_video_os_version">Доступно только для android 4.4+</string>
 </resources>
