@@ -9,6 +9,7 @@ import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.callback.ICacheFramesSelectedCallback;
 import org.byters.bcphotoanimations.view.INavigator;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterAdapterFramesCallback;
+import org.byters.bcphotoanimations.view.util.IHelperDialog;
 
 import java.lang.ref.WeakReference;
 
@@ -31,6 +32,9 @@ public class PresenterAdapterFrames implements IPresenterAdapterFrames {
 
     @Inject
     ICacheFramesSelected cacheFramesSelected;
+
+    @Inject
+    IHelperDialog helperDialog;
 
     private WeakReference<IPresenterAdapterFramesCallback> refCallback;
 
@@ -71,7 +75,10 @@ public class PresenterAdapterFrames implements IPresenterAdapterFrames {
 
     @Override
     public void onClickItem(int position) {
-        if (!cacheFramesSelected.isModeSelect()) return;
+        if (!cacheFramesSelected.isModeSelect()) {
+            helperDialog.showDialogFrame(cacheProjects.getItemImagePreview(cacheProjectSelected.getProjectSelectedId(), position));
+            return;
+        }
         onLongClickItem(position);
     }
 

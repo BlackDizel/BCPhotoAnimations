@@ -6,4 +6,6 @@ public interface IHelperDialog {
     void set(ActivityBase activityBase);
 
     void showDialogExportJCodec();
+
+    void showDialogFrame(String frameUrl);
 }

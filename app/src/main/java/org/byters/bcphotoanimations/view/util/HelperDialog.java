@@ -2,6 +2,8 @@ package org.byters.bcphotoanimations.view.util;
 
 import org.byters.bcphotoanimations.view.ui.activity.ActivityBase;
 import org.byters.bcphotoanimations.view.ui.dialog.DialogExportJCodec;
+import org.byters.bcphotoanimations.view.ui.dialog.DialogExportMediaCodec;
+import org.byters.bcphotoanimations.view.ui.dialog.DialogFramePreview;
 import org.byters.bcphotoanimations.view.ui.dialog.IDialog;
 
 import java.lang.ref.WeakReference;
@@ -19,6 +21,12 @@ public class HelperDialog implements IHelperDialog {
     public void showDialogExportJCodec() {
         if (refContext == null || refContext.get() == null) return;
         showDialog(new DialogExportJCodec(refContext.get()));
+    }
+
+    @Override
+    public void showDialogFrame(String frameUrl) {
+        if (refContext == null || refContext.get() == null) return;
+        showDialog(new DialogFramePreview(refContext.get(), frameUrl));
     }
 
     private void showDialog(IDialog dialog) {
