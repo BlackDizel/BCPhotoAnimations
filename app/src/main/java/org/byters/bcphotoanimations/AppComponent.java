@@ -7,23 +7,29 @@ import org.byters.bcphotoanimations.controller.data.memorycache.CacheInterfaceSt
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.CacheStorage;
+import org.byters.bcphotoanimations.view.Navigator;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.PresenterCamera;
 import org.byters.bcphotoanimations.view.presenter.PresenterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterPreview;
+import org.byters.bcphotoanimations.view.presenter.PresenterProjectCreate;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectEdit;
+import org.byters.bcphotoanimations.view.presenter.PresenterProjectExportJCodec;
 import org.byters.bcphotoanimations.view.ui.activity.ActivityMain;
 import org.byters.bcphotoanimations.view.ui.adapters.AdapterFrames;
 import org.byters.bcphotoanimations.view.ui.adapters.AdapterProjects;
+import org.byters.bcphotoanimations.view.ui.dialog.DialogExportJCodec;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentAbout;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentCamera;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentFrames;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentPreview;
+import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjectCreate;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjectEdit;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjects;
 import org.byters.bcphotoanimations.view.ui.service.ServiceProjectExport;
 import org.byters.bcphotoanimations.view.ui.view.CameraPreview;
+import org.byters.bcphotoanimations.view.util.AsyncTaskExportMP4_JCodec;
 
 import javax.inject.Singleton;
 
@@ -78,4 +84,16 @@ public interface AppComponent {
     void inject(CachePreference cachePreference);
 
     void inject(CameraPreview cameraPreview);
+
+    void inject(AsyncTaskExportMP4_JCodec runnableConvert);
+
+    void inject(FragmentProjectCreate fragmentProjectCreate);
+
+    void inject(Navigator navigator);
+
+    void inject(DialogExportJCodec dialogExportMJPEG);
+
+    void inject(PresenterProjectExportJCodec presenterProjectExportMJPEG);
+
+    void inject(PresenterProjectCreate presenterProjectCreate);
 }

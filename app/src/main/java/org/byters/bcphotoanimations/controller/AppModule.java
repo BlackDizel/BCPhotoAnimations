@@ -25,13 +25,21 @@ import org.byters.bcphotoanimations.view.presenter.IPresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.IPresenterCamera;
 import org.byters.bcphotoanimations.view.presenter.IPresenterFrames;
 import org.byters.bcphotoanimations.view.presenter.IPresenterPreview;
+import org.byters.bcphotoanimations.view.presenter.IPresenterProjectCreate;
 import org.byters.bcphotoanimations.view.presenter.IPresenterProjectEdit;
+import org.byters.bcphotoanimations.view.presenter.IPresenterProjectExportJCodec;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterAdapterProjects;
 import org.byters.bcphotoanimations.view.presenter.PresenterCamera;
 import org.byters.bcphotoanimations.view.presenter.PresenterFrames;
 import org.byters.bcphotoanimations.view.presenter.PresenterPreview;
+import org.byters.bcphotoanimations.view.presenter.PresenterProjectCreate;
 import org.byters.bcphotoanimations.view.presenter.PresenterProjectEdit;
+import org.byters.bcphotoanimations.view.presenter.PresenterProjectExportJCodec;
+import org.byters.bcphotoanimations.view.util.HelperDialog;
+import org.byters.bcphotoanimations.view.util.IHelperDialog;
+import org.byters.bcphotoanimations.view.util.IHelperPopup;
+import org.byters.bcphotoanimations.view.util.ViewPopup;
 import org.byters.billingapi.ILibDataPlayBilling;
 import org.byters.dataplaybilling.LibDataPlayBilling;
 
@@ -126,6 +134,18 @@ public class AppModule {
 
     @Provides
     @Singleton
+    IPresenterProjectCreate presenterProjectCreate() {
+        return new PresenterProjectCreate();
+    }
+
+    @Provides
+    @Singleton
+    IPresenterProjectExportJCodec presenterProjectExportMJPEG() {
+        return new PresenterProjectExportJCodec();
+    }
+
+    @Provides
+    @Singleton
     IPresenterFrames getPresenterFrames() {
         return new PresenterFrames();
     }
@@ -152,5 +172,17 @@ public class AppModule {
     @Singleton
     ICachePreference getCachePreference() {
         return new CachePreference();
+    }
+
+    @Provides
+    @Singleton
+    IHelperPopup viewPopup() {
+        return new ViewPopup();
+    }
+
+    @Provides
+    @Singleton
+    IHelperDialog helperDialog() {
+        return new HelperDialog();
     }
 }
