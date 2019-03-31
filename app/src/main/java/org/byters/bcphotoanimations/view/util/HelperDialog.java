@@ -16,7 +16,7 @@ public class HelperDialog implements IHelperDialog {
     }
 
     @Override
-    public void showDialogExportMJPEG() {
+    public void showDialogExportJCodec() {
         if (refContext == null || refContext.get() == null) return;
         showDialog(new DialogExportJCodec(refContext.get()));
     }
