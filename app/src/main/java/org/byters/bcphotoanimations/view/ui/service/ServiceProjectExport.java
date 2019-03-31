@@ -22,10 +22,12 @@ import org.byters.bcphotoanimations.R;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheExportAttempts;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheStorage;
+import org.byters.bcphotoanimations.view.ui.activity.ActivityBase;
 import org.byters.bcphotoanimations.view.ui.activity.ActivityMain;
 import org.byters.bcphotoanimations.view.ui.utils.AsyncTaskProjectExport;
 import org.byters.bcphotoanimations.view.ui.utils.AsyncTaskProjectExportListener;
 import org.byters.bcphotoanimations.view.util.AsyncTaskExportMP4_JCodec;
+import org.byters.bcphotoanimations.view.util.AsyncTaskExportMP4_MediaCodec;
 
 import javax.inject.Inject;
 
@@ -39,6 +41,7 @@ public class ServiceProjectExport extends Service {
     private static final int EXPORT_TYPE_UNKNOWN = 0;
     private static final int EXPORT_TYPE_IMAGES = 1;
     private static final int EXPORT_TYPE_MJPEG = 2;
+    private static final int EXPORT_TYPE_MEDIACODEC = 3;
     private static final String EXTRA_EXPORT_FPS = "video_fps";
     private static final String EXTRA_EXPORT_FRAME_WIDTH = "video_width";
     private static final String EXTRA_EXPORT_FRAME_HEIGHT = "video_height";
@@ -75,6 +78,17 @@ public class ServiceProjectExport extends Service {
         context.startService(intent);
     }
 
+    public static void startExportMediaCodec(ActivityBase context, String projectId, int w, int h, int fps) {
+        Intent intent = new Intent(context, ServiceProjectExport.class);
+
+        intent.putExtra(EXTRA_PROJECT_ID, projectId);
+        intent.putExtra(EXTRA_EXPORT_TYPE, EXPORT_TYPE_MEDIACODEC);
+        intent.putExtra(EXTRA_EXPORT_FPS, fps);
+        intent.putExtra(EXTRA_EXPORT_FRAME_WIDTH, w);
+        intent.putExtra(EXTRA_EXPORT_FRAME_HEIGHT, h);
+        context.startService(intent);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -104,6 +118,11 @@ public class ServiceProjectExport extends Service {
             exportImages(projectId);
         if (type == EXPORT_TYPE_MJPEG)
             exportVideo(projectId,
+                    intent.getIntExtra(EXTRA_EXPORT_FPS, 0),
+                    intent.getIntExtra(EXTRA_EXPORT_FRAME_WIDTH, 0),
+                    intent.getIntExtra(EXTRA_EXPORT_FRAME_HEIGHT, 0));
+        if (type == EXPORT_TYPE_MEDIACODEC)
+            exportVideoMediaCodec(projectId,
                     intent.getIntExtra(EXTRA_EXPORT_FPS, 0),
                     intent.getIntExtra(EXTRA_EXPORT_FRAME_WIDTH, 0),
                     intent.getIntExtra(EXTRA_EXPORT_FRAME_HEIGHT, 0));
@@ -161,6 +180,15 @@ public class ServiceProjectExport extends Service {
         if (worker != null) worker.cancel(true);
 
         worker = new AsyncTaskExportMP4_JCodec(projectId, fps, w, h,
+                listenerExportTask);
+        worker.execute();
+    }
+
+
+    private void exportVideoMediaCodec(String projectId, int fps, int w, int h) {
+        if (worker != null) worker.cancel(true);
+
+        worker = new AsyncTaskExportMP4_MediaCodec(projectId, fps, w, h,
                 listenerExportTask);
         worker.execute();
     }
