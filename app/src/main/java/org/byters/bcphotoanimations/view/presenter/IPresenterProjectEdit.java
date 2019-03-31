@@ -23,4 +23,8 @@ public interface IPresenterProjectEdit {
     void onClickExport();
 
     void onClickExportJCodec();
+
+    void onClickExportMediaCodec();
+
+    void onCreateView();
 }

@@ -15,4 +15,6 @@ public interface IPresenterProjectEditCallback {
     void setExportAttemptsUnlimited();
 
     void setExportAttemptsNotEnough();
+
+    void setExportMediaCodecVisibility(boolean isVisible);
 }

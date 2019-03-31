@@ -1,9 +1,11 @@
 package org.byters.bcphotoanimations.view.presenter;
 
+import android.os.Build;
 import android.text.TextUtils;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.BuildConfig;
+import org.byters.bcphotoanimations.R;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheExportAttempts;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
@@ -11,6 +13,7 @@ import org.byters.bcphotoanimations.controller.data.memorycache.ICacheStorage;
 import org.byters.bcphotoanimations.view.INavigator;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterProjectEditCallback;
 import org.byters.bcphotoanimations.view.util.IHelperDialog;
+import org.byters.bcphotoanimations.view.util.IHelperPopup;
 import org.byters.billingapi.ILibDataPlayBilling;
 import org.byters.billingapi.controller.data.device.callback.ICacheBillingCallback;
 
@@ -43,6 +46,9 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
 
     @Inject
     IHelperDialog helperDialog;
+
+    @Inject
+    IHelperPopup helperPopup;
 
     private CacheBillingCallback listenerCacheBilling;
     private WeakReference<IPresenterProjectEditCallback> refCallback;
@@ -110,6 +116,25 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
     @Override
     public void onClickExportJCodec() {
         helperDialog.showDialogExportJCodec();
+    }
+
+    @Override
+    public void onClickExportMediaCodec() {
+        if (!isMediaCodecAvailable()) {
+            helperPopup.showMessage(R.string.error_export_video_os_version);
+            return;
+        }
+        helperDialog.showDialogExportMediaCodec();
+    }
+
+    private boolean isMediaCodecAvailable() {
+        return android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
+    }
+
+    @Override
+    public void onCreateView() {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().setExportMediaCodecVisibility(isMediaCodecAvailable());
     }
 
     @Override

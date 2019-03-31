@@ -29,6 +29,7 @@ public class FragmentProjectEdit extends FragmentBase
     private PresenterCallback presenterCallback;
     private TextView etTitle;
     private TextChangeListener textChangeListener;
+    private View vExportMediaCodec;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +45,14 @@ public class FragmentProjectEdit extends FragmentBase
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_edit, container, false);
 
+        initViews(view);
+        presenterProjectEdit.onCreateView();
+        return view;
+    }
+
+    private void initViews(View view) {
         etTitle = view.findViewById(R.id.etTitle);
+        vExportMediaCodec = view.findViewById(R.id.tvExportVideoMediaCodec);
 
         view.setOnClickListener(this);
         view.findViewById(R.id.ivClose).setOnClickListener(this);
@@ -52,7 +60,7 @@ public class FragmentProjectEdit extends FragmentBase
         view.findViewById(R.id.tvRemove).setOnClickListener(this);
         view.findViewById(R.id.llExport).setOnClickListener(this);
         view.findViewById(R.id.tvExportVideoJCodec).setOnClickListener(this);
-        return view;
+        view.findViewById(R.id.tvExportVideoMediaCodec).setOnClickListener(this);
     }
 
     @Override
@@ -81,6 +89,9 @@ public class FragmentProjectEdit extends FragmentBase
 
         if (v.getId() == R.id.tvExportVideoJCodec)
             presenterProjectEdit.onClickExportJCodec();
+
+        if (v.getId() == R.id.tvExportVideoMediaCodec)
+            presenterProjectEdit.onClickExportMediaCodec();
 
         if (v == getView())
             presenterProjectEdit.onClickRoot();
@@ -145,21 +156,27 @@ public class FragmentProjectEdit extends FragmentBase
 
         @Override
         public void setExportAttemptsUnlimited() {
-            if (getView() == null) return;
+            if (!isAdded()) return;
             TextView tvAttempts = getView().findViewById(R.id.tvExportAttempts);
             tvAttempts.setText("Unlimited");
         }
 
         @Override
         public void setExportAttemptsNotEnough() {
-            if (getView() == null) return;
+            if (!isAdded()) return;
             TextView tvAttempts = getView().findViewById(R.id.tvExportAttempts);
             tvAttempts.setText(R.string.export_attempts_not_enough);
         }
 
         @Override
+        public void setExportMediaCodecVisibility(boolean isVisible) {
+            if (!isAdded()) return;
+            vExportMediaCodec.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        }
+
+        @Override
         public void setExportAttempts(int attempts) {
-            if (getView() == null) return;
+            if (!isAdded()) return;
             TextView tvAttempts = getView().findViewById(R.id.tvExportAttempts);
             tvAttempts.setText(attempts > 0 ? String.format(getString(R.string.export_attempts_remaining), attempts) : getString(R.string.export_attempts_not_enough));
         }
