@@ -38,4 +38,6 @@ public interface INavigator {
     void navigateFeedback();
 
     void navigateGooglePlay();
+
+    void startExportServiceMediaCodec(String projectSelectedId, int width, int height, int fps);
 }

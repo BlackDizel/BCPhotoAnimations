@@ -175,6 +175,12 @@ public class Navigator implements INavigator {
     }
 
     @Override
+    public void startExportServiceMediaCodec(String projectSelectedId, int width, int height, int fps) {
+        if (refActivityBase == null || refActivityBase.get() == null) return;
+        ServiceProjectExport.startExportMediaCodec(refActivityBase.get(), projectSelectedId, width, height, fps);
+    }
+
+    @Override
     public void navigateFeedback() {
         if (refActivityBase == null || refActivityBase.get() == null) return;
         Context context = refActivityBase.get();
