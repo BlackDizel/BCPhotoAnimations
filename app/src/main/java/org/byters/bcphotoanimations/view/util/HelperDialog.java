@@ -24,6 +24,12 @@ public class HelperDialog implements IHelperDialog {
     }
 
     @Override
+    public void showDialogExportMediaCodec() {
+        if (refContext == null || refContext.get() == null) return;
+        showDialog(new DialogExportMediaCodec(refContext.get()));
+    }
+
+    @Override
     public void showDialogFrame(String frameUrl) {
         if (refContext == null || refContext.get() == null) return;
         showDialog(new DialogFramePreview(refContext.get(), frameUrl));

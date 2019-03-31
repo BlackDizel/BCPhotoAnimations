@@ -8,4 +8,6 @@ public interface IHelperDialog {
     void showDialogExportJCodec();
 
     void showDialogFrame(String frameUrl);
+
+    void showDialogExportMediaCodec();
 }
