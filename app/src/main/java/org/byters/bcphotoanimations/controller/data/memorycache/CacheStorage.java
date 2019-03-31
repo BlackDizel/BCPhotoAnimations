@@ -159,7 +159,7 @@ public class CacheStorage implements ICacheStorage {
         String fileUrl = cacheProjects.getFrameUrl(projectId, i);
         if (TextUtils.isEmpty(fileUrl)) return;
 
-        String format = "%0" + String.valueOf(framesNum + 1).length() + "d";
+        String format = "%0" + String.valueOf(framesNum / 10 + 1).length() + "d";
         copyFile(fileUrl, folder + File.separator + String.format(format, i + 1) + getImageExt());
     }
 
