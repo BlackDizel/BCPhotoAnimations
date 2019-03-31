@@ -42,6 +42,6 @@ public class FragmentAbout extends FragmentBase implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        navigator.navigateFeedback(getContext());
+        navigator.navigateFeedback();
     }
 }
