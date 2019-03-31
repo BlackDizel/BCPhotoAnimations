@@ -3,12 +3,14 @@ package org.byters.bcphotoanimations.view.presenter;
 import android.text.TextUtils;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
+import org.byters.bcphotoanimations.BuildConfig;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheExportAttempts;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheStorage;
 import org.byters.bcphotoanimations.view.INavigator;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterProjectEditCallback;
+import org.byters.bcphotoanimations.view.util.IHelperDialog;
 import org.byters.billingapi.ILibDataPlayBilling;
 import org.byters.billingapi.controller.data.device.callback.ICacheBillingCallback;
 
@@ -20,23 +22,37 @@ import javax.inject.Inject;
 public class PresenterProjectEdit implements IPresenterProjectEdit {
 
     private static final String SKU_NAME = "subscription_project_export_unlimited_monthly";
+
     @Inject
     ICacheProjectSelected cacheProjectSelected;
+
     @Inject
     INavigator navigator;
+
     @Inject
     ICacheStorage cacheStorage;
+
     @Inject
     ICacheProjects cacheProjects;
+
     @Inject
     ICacheExportAttempts cacheExportAttempts;
+
     @Inject
     ILibDataPlayBilling libDataPlayBilling;
+
+    @Inject
+    IHelperDialog helperDialog;
+
     private CacheBillingCallback listenerCacheBilling;
     private WeakReference<IPresenterProjectEditCallback> refCallback;
 
     public PresenterProjectEdit() {
         ApplicationStopMotion.getComponent().inject(this);
+
+        if (BuildConfig.DEBUG)
+            cacheExportAttempts.setAttemptsUnlimited();
+
         libDataPlayBilling.addListener(listenerCacheBilling = new CacheBillingCallback());
     }
 
@@ -86,8 +102,14 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
 
         if (refCallback != null && refCallback.get() != null) {
             refCallback.get().showDialogProgressExport(cacheProjectSelected.getProjectTitle());
-            refCallback.get().exportProject(cacheProjectSelected.getProjectSelectedId());
+
+            navigator.startExportServiceImages(cacheProjectSelected.getProjectSelectedId());
         }
+    }
+
+    @Override
+    public void onClickExportJCodec() {
+        helperDialog.showDialogExportJCodec();
     }
 
     @Override
@@ -108,7 +130,6 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
 
         if (refCallback != null && refCallback.get() != null) {
             refCallback.get().setTitle(cacheProjectSelected.getProjectTitleEdit());
-            refCallback.get().setProjectEditVisibility(cacheProjectSelected.isEdit());
         }
     }
 

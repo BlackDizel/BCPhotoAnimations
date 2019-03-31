@@ -8,11 +8,7 @@ public interface IPresenterProjectEditCallback {
 
     void hideKeyboard();
 
-    void setProjectEditVisibility(boolean isVisible);
-
     void showDialogProgressExport(String projectTitle);
-
-    void exportProject(String projectSelectedId);
 
     void setExportAttempts(int attempts);
 

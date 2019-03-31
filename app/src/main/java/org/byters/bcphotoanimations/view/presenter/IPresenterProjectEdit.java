@@ -21,4 +21,6 @@ public interface IPresenterProjectEdit {
     void onClickRemove();
 
     void onClickExport();
+
+    void onClickExportJCodec();
 }

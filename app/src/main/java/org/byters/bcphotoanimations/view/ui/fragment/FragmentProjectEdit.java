@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.R;
-import org.byters.bcphotoanimations.view.INavigator;
 import org.byters.bcphotoanimations.view.presenter.IPresenterProjectEdit;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterProjectEditCallback;
 
@@ -26,8 +25,6 @@ public class FragmentProjectEdit extends FragmentBase
 
     @Inject
     IPresenterProjectEdit presenterProjectEdit;
-    @Inject
-    INavigator navigator;
 
     private PresenterCallback presenterCallback;
     private TextView etTitle;
@@ -54,6 +51,7 @@ public class FragmentProjectEdit extends FragmentBase
         view.findViewById(R.id.tvSave).setOnClickListener(this);
         view.findViewById(R.id.tvRemove).setOnClickListener(this);
         view.findViewById(R.id.llExport).setOnClickListener(this);
+        view.findViewById(R.id.tvExportVideoJCodec).setOnClickListener(this);
         return view;
     }
 
@@ -80,6 +78,9 @@ public class FragmentProjectEdit extends FragmentBase
         if (v.getId() == R.id.llExport) {
             presenterProjectEdit.onClickExport();
         }
+
+        if (v.getId() == R.id.tvExportVideoJCodec)
+            presenterProjectEdit.onClickExportJCodec();
 
         if (v == getView())
             presenterProjectEdit.onClickRoot();
@@ -138,20 +139,8 @@ public class FragmentProjectEdit extends FragmentBase
         }
 
         @Override
-        public void setProjectEditVisibility(boolean isVisible) {
-            if (getView() == null) return;
-            getView().findViewById(R.id.tvRemove).setVisibility(isVisible ? View.VISIBLE : View.GONE);
-            getView().findViewById(R.id.llExport).setVisibility(isVisible ? View.VISIBLE : View.GONE);
-        }
-
-        @Override
         public void showDialogProgressExport(String projectTitle) {
             Toast.makeText(getContext(), String.format(getString(R.string.export_project_format), projectTitle), Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void exportProject(String projectSelectedId) {
-            navigator.startExportService(getContext(), projectSelectedId);
         }
 
         @Override
