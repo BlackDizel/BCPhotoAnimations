@@ -29,5 +29,6 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
     implementation project(path: ':billingstub')
 
-    compile 'org.jcodec:jcodec-android:0.2.3'
+    implementation 'org.jcodec:jcodec-android:0.2.3'
+    implementation 'com.github.blackdizel:Bitmp4:0.4'
 }
