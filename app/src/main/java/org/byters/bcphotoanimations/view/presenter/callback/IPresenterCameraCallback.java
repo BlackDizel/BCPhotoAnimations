@@ -8,8 +8,6 @@ public interface IPresenterCameraCallback {
 
     int getScreenRotation();
 
-    int getScreenOrientation();
-
     void showFlash();
 
     void showLastFrame(String path);
@@ -24,5 +22,5 @@ public interface IPresenterCameraCallback {
 
     void setButtonFlashImage(int drawableRes);
 
-    void setPictureSize(int width, int height);
+    void showPictureSize(String message);
 }

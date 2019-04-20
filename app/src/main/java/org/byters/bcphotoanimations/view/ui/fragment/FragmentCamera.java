@@ -122,11 +122,6 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         }
 
         @Override
-        public int getScreenOrientation() {
-            return getResources().getConfiguration().orientation;
-        }
-
-        @Override
         public void showFlash() {
             if (!isAdded()) return;
             View view = getView().findViewById(R.id.vFlash);
@@ -181,9 +176,9 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         }
 
         @Override
-        public void setPictureSize(int width, int height) {
+        public void showPictureSize(String message) {
             if (!isAdded()) return;
-            tvCameraPictureSize.setText(String.format("%sx%s", width, height));
+            tvCameraPictureSize.setText(message);
         }
     }
 

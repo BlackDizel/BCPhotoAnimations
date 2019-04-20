@@ -1,5 +1,6 @@
 package org.byters.bcphotoanimations.view.presenter;
 
+import android.content.Context;
 import android.hardware.Camera;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -11,6 +12,7 @@ import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.view.ui.view.CameraPreview;
 import org.byters.bcphotoanimations.view.ui.view.callback.ICameraPreviewCallback;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,6 +24,9 @@ public class PresenterCamera extends PresenterCameraBase {
 
     @Inject
     ICacheProjects cacheProjects;
+
+    @Inject
+    WeakReference<Context> refContext;
 
     @Nullable
     private Camera camera;
@@ -156,9 +161,17 @@ public class PresenterCamera extends PresenterCameraBase {
         }
 
         @Override
-        public void onGetPictureSize(int width, int height) {
+        public void onGetPictureSize(Camera.Size previewSize, Camera.Size photoSize) {
             if (refCallback == null || refCallback.get() == null) return;
-            refCallback.get().setPictureSize(width, height);
+
+            String message = previewSize == null || photoSize == null || refContext == null || refContext.get() == null
+                    ? ""
+                    : String.format(refContext.get().getString(R.string.format_message_preview),
+                    previewSize.width,
+                    previewSize.height,
+                    photoSize.width,
+                    photoSize.height);
+            refCallback.get().showPictureSize(message);
         }
     }
 }

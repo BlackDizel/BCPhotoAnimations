@@ -1,5 +1,7 @@
 package org.byters.bcphotoanimations.view.ui.view.callback;
 
+import android.hardware.Camera;
+
 import java.util.List;
 
 public interface ICameraPreviewCallback {
@@ -10,5 +12,5 @@ public interface ICameraPreviewCallback {
 
     void onFlashModesGet(List<String> supportedFlashModes);
 
-    void onGetPictureSize(int width, int height);
+    void onGetPictureSize(Camera.Size previewSize, Camera.Size photoSize);
 }

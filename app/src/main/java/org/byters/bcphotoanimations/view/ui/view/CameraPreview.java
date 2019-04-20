@@ -57,17 +57,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        updateView(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        updateView(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE, w, h);
     }
 
-    private void updateView(String focusMode) {
+    private void updateView(String focusMode, int w, int h) {
         if (this.holder.getSurface() == null)
             return;
 
         try {
             camera.stopPreview();
             int rotation = checkCameraOrientation();
-            checkPreviewSize(rotation, focusMode);
+            checkPreviewSize(rotation, focusMode, w, h);
             camera.setPreviewDisplay(this.holder);
             camera.startPreview();
 
@@ -104,12 +104,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         return result;
     }
 
-    private void checkPreviewSize(int rotation, String focusMode) {
+    private void checkPreviewSize(int rotation, String focusMode, int w, int h) {
         if (refCallback == null || refCallback.get() == null)
             return;
 
-        int w = getResources().getDisplayMetrics().widthPixels;
-        int h = getResources().getDisplayMetrics().heightPixels;
         if (w == 0 || h == 0) return;
 
         int maxPreviewWidth = Math.max(w, h);
@@ -135,7 +133,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         Camera.Parameters parameters = camera.getParameters();
         parameters.setPreviewSize(bestSize.width, bestSize.height);
-        setPictureSize(parameters); //Picture size and preview size must have equal aspect ratio
+        Camera.Size pictureSize = setPictureSize(parameters); //Picture size and preview size must have equal aspect ratio
 
         setFocusMode(parameters, focusMode);
 
@@ -152,6 +150,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         notifySize(params.width, params.height);
         notifyFlashModes(parameters.getSupportedFlashModes());
+        notifyPictureSize(bestSize, pictureSize);
     }
 
     private void notifyFlashModes(List<String> supportedFlashModes) {
@@ -159,10 +158,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         refCallback.get().onFlashModesGet(supportedFlashModes);
     }
 
-    private void setPictureSize(Camera.Parameters parameters) {
-        if (parameters == null) return;
+    private Camera.Size setPictureSize(Camera.Parameters parameters) {
+        if (parameters == null) return null;
         List<android.hardware.Camera.Size> sizes = parameters.getSupportedPictureSizes();
-        if (sizes == null) return;
+        if (sizes == null) return null;
         Camera.Size currentSize = null;
         for (Camera.Size size : sizes) {
             if (currentSize == null) {
@@ -174,16 +173,16 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 currentSize = size;
         }
 
-        if (currentSize == null) return;
+        if (currentSize == null) return null;
 
         parameters.setPictureSize(currentSize.width, currentSize.height);
-        notifyPictureSize(currentSize.width, currentSize.height);
+        return currentSize;
     }
 
-    private void notifyPictureSize(int width, int height) {
+    private void notifyPictureSize(Camera.Size previewSize, Camera.Size photoSize) {
         if (refCallback == null || refCallback.get() == null)
             return;
-        refCallback.get().onGetPictureSize(width, height);
+        refCallback.get().onGetPictureSize(previewSize, photoSize);
     }
 
     private boolean ratioIsEqual(Camera.Size size, Camera.Size previewSize) {
