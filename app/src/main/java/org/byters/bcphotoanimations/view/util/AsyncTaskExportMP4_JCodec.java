@@ -79,7 +79,7 @@ public class AsyncTaskExportMP4_JCodec extends AsyncTask<Void, Integer, Boolean>
             encoder.finish();
 
 
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             return false;
         } finally {
             NIOUtils.closeQuietly(out);
