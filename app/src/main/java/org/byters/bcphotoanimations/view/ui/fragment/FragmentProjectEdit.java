@@ -36,7 +36,9 @@ public class FragmentProjectEdit extends FragmentBase
         super.onCreate(savedInstanceState);
 
         ApplicationStopMotion.getComponent().inject(this);
-        presenterCallback = new PresenterCallback();
+
+        presenterProjectEdit.setCallback(presenterCallback = new PresenterCallback());
+
         textChangeListener = new TextChangeListener();
     }
 
@@ -66,7 +68,6 @@ public class FragmentProjectEdit extends FragmentBase
     @Override
     public void onStart() {
         super.onStart();
-        presenterProjectEdit.setCallback(presenterCallback);
         presenterProjectEdit.onStart();
     }
 
@@ -151,6 +152,7 @@ public class FragmentProjectEdit extends FragmentBase
 
         @Override
         public void showDialogProgressExport(String projectTitle) {
+            if (!isAdded()) return;
             Toast.makeText(getContext(), String.format(getString(R.string.export_project_format), projectTitle), Toast.LENGTH_SHORT).show();
         }
 
