@@ -101,7 +101,13 @@ public class ServiceProjectExport extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        String projectId = intent.getExtras().getString(EXTRA_PROJECT_ID);
+        String projectId = intent.getExtras() == null ? null : intent.getExtras().getString(EXTRA_PROJECT_ID);
+
+        if (projectId == null) {
+            stopSelf();
+            return START_NOT_STICKY;
+        }
+
         String title = cacheProjects.getItemTitleById(projectId);
 
         initNotificationBuilder(title);
