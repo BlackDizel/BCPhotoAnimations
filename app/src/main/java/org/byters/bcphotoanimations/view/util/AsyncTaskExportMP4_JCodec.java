@@ -59,13 +59,22 @@ public class AsyncTaskExportMP4_JCodec extends AsyncTask<Void, Integer, Boolean>
             AndroidSequenceEncoder encoder = new AndroidSequenceEncoder(out, Rational.R(fps, 1));
 
             for (int i = 0; i < num; ++i) {
+                int success = 1;
                 String fileUrl = cacheProjects.getFrameUrl(projectId, i);
                 Bitmap bmp = BitmapFactory.decodeFile(fileUrl);
-                bmp = bmpScale(bmp, w, h);
-                bmp = bmpOrientation(bmp, fileUrl);
-                encoder.encodeImage(bmp);
-                bmp.recycle();
-                onProgressUpdate(num, i, 1);
+
+                if (bmp == null)
+                    success = 0;
+                else {
+                    bmp = bmpScale(bmp, w, h);
+                    bmp = bmpOrientation(bmp, fileUrl);
+                    encoder.encodeImage(bmp);
+                    bmp.recycle();
+
+                }
+
+                onProgressUpdate(num, i, success);
+
             }
             encoder.finish();
 
