@@ -46,6 +46,7 @@ public class FragmentProjects extends FragmentBase implements View.OnClickListen
 
         view.findViewById(R.id.ivAbout).setOnClickListener(this);
         view.findViewById(R.id.tvFeedback).setOnClickListener(this);
+        view.findViewById(R.id.tvDiscord).setOnClickListener(this);
     }
 
     private int getOrientation() {
@@ -60,5 +61,7 @@ public class FragmentProjects extends FragmentBase implements View.OnClickListen
             navigator.navigateAbout();
         if (v.getId() == R.id.tvFeedback)
             navigator.navigateGooglePlay();
+        if (v.getId() == R.id.tvDiscord)
+            navigator.navigateDiscord();
     }
 }

@@ -181,6 +181,17 @@ public class Navigator implements INavigator {
     }
 
     @Override
+    public void navigateDiscord() {
+        if (refActivityBase == null || refActivityBase.get() == null) return;
+        ActivityBase activityBase = refActivityBase.get();
+        Uri uri = Uri.parse("https://discord.gg/6V6RNHm");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
+        if (intent.resolveActivity(activityBase.getPackageManager()) != null)
+            activityBase.startActivity(intent);
+    }
+
+    @Override
     public void navigateFeedback() {
         if (refActivityBase == null || refActivityBase.get() == null) return;
         Context context = refActivityBase.get();

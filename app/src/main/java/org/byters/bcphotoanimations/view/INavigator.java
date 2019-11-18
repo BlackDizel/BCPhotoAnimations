@@ -40,4 +40,6 @@ public interface INavigator {
     void navigateGooglePlay();
 
     void startExportServiceMediaCodec(String projectSelectedId, int width, int height, int fps);
+
+    void navigateDiscord();
 }
