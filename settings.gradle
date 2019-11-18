@@ -1,1 +1,1 @@
-include ':app', ':dataplaybilling', ':billingstub', ':billingapi'
+include ':app', ':billingstub', ':billingapi'
