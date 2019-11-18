@@ -192,6 +192,12 @@ public class CacheProjects implements ICacheProjects {
     }
 
     @Override
+    public String getFrameLastPreview2(String projectSelectedId) {
+        ProjectObject item = getItemById(projectSelectedId);
+        return item == null ? null : item.getFrameLastPreview2();
+    }
+
+    @Override
     public String getFrameUrl(String projectSelectedId, int position) {
         ProjectObject item = getItemById(projectSelectedId);
         return item == null ? null : item.getFrameUrl(position);

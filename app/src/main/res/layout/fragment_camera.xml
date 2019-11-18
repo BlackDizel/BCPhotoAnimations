@@ -16,6 +16,16 @@
         android:layout_gravity="center"
         android:alpha="0.5" />
 
+    <ImageView
+        android:id="@+id/ivLastFrame2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:alpha="0.2" />
+
+
+    <include layout="@layout/view_camera_grid"/>
+
     <View
         android:id="@+id/vFlash"
         android:layout_width="match_parent"

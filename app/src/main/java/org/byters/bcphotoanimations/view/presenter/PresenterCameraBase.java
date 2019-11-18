@@ -20,6 +20,7 @@ import javax.inject.Inject;
 abstract class PresenterCameraBase implements IPresenterCamera {
 
     private static final int REQUEST_CAMERA_PERMISSION = 1;
+    private static final int MAX_FRAMES_SHOW = 2;
 
     WeakReference<IPresenterCameraCallback> refCallback;
 
@@ -38,25 +39,53 @@ abstract class PresenterCameraBase implements IPresenterCamera {
     public void onCreateView(View view) {
         setLastFrameState();
         setButtonFlashState();
+        setGridState();
+        setSettingsVisibility();
     }
 
     private void setLastFrameState() {
         if (refCallback == null || refCallback.get() == null) return;
-        refCallback.get().setLastFrameShowDrawable(cacheInterfaceState.isShowLastFrame() ? R.drawable.ic_filter_white_24dp : R.drawable.ic_image_white_24dp);
-        refCallback.get().setLastFrameVisibility(cacheInterfaceState.isShowLastFrame());
-        if (cacheInterfaceState.isShowLastFrame())
-            setShowLastFrame();
+        int framesNum = cacheInterfaceState.getShowLastFrameNum();
+        refCallback.get().setLastFrameShowDrawable(
+                framesNum == 0
+                        ? R.drawable.ic_image_white_24dp
+                        : framesNum == 1
+                        ? R.drawable.ic_filter_white_24dp
+                        : framesNum == 2
+                        ? R.drawable.ic_filter2_white_24
+                        : R.drawable.ic_image_white_24dp);
+        setShowLastFrame();
     }
 
     @Override
     public void onClickLastFrameShow() {
-        cacheInterfaceState.setLastFrameShow(!cacheInterfaceState.isShowLastFrame());
+        cacheInterfaceState.setLastFrameShow((cacheInterfaceState.getShowLastFrameNum() + 1) % (MAX_FRAMES_SHOW + 1));
         setLastFrameState();
     }
 
     @Override
+    public void onClickGrid() {
+        cacheInterfaceState.changeStateGrid();
+        setGridState();
+    }
+
+    private void setGridState() {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().setButtonGridImage(cacheInterfaceState.isGridEnabled()
+                ? R.drawable.ic_grid_on_white_24dp : R.drawable.ic_grid_off_white_24dp);
+
+        refCallback.get().setButtonGridVisible(cacheInterfaceState.isGridEnabled());
+    }
+
+    @Override
     public void onClickSettings() {
-        //todo implement
+        cacheInterfaceState.changeSettingsVisible();
+        setSettingsVisibility();
+    }
+
+    private void setSettingsVisibility() {
+        if (refCallback == null || refCallback.get() == null) return;
+        refCallback.get().setSettingsVisibility(cacheInterfaceState.isSettingsVisible());
     }
 
     @Override
@@ -96,10 +125,11 @@ abstract class PresenterCameraBase implements IPresenterCamera {
     }
 
     void setShowLastFrame() {
-        if (!cacheInterfaceState.isShowLastFrame()) return;
         if (refCallback == null || refCallback.get() == null) return;
         String lastFramePath = cacheProjectSelected.getLastFramePreview();
-        refCallback.get().showLastFrame(lastFramePath);
+        String lastFramePath2 = cacheProjectSelected.getLastFramePreview2();
+        refCallback.get().showLastFrame(cacheInterfaceState.getShowLastFrameNum() > 0 ? lastFramePath : null);
+        refCallback.get().showLastFrame2(cacheInterfaceState.getShowLastFrameNum() > 1 ? lastFramePath2 : null);
     }
 
     void showFlash() {

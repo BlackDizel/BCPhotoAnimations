@@ -28,56 +28,76 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
     //todo show camera settings (frame size, flash)
 
     @Inject
-    IPresenterCamera presenterCamera;
+    IPresenterCamera presenter;
 
     private IPresenterCameraCallback presenterCallback;
 
-    private ImageView ivCamera;
-    private ImageView ivLastFrame;
-    private ImageView ivFlash;
+    private ImageView ivLastFrame, ivLastFrame2;
+    private ImageView ivFlash, ivGrid, ivFramesOverlay;
     private TextView tvCameraPictureSize;
+    private View vGrid;
+    private View flSettings;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ApplicationStopMotion.getComponent().inject(this);
-        presenterCamera.setCallback(presenterCallback = new PresenterCallback());
+        presenter.setCallback(presenterCallback = new PresenterCallback());
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
-        ivCamera = view.findViewById(R.id.ivLastFrameShow);
-        ivLastFrame = view.findViewById(R.id.ivLastFrame);
+
+        ivFramesOverlay = view.findViewById(R.id.ivLastFrameShow);
         ivFlash = view.findViewById(R.id.ivFlash);
         tvCameraPictureSize = view.findViewById(R.id.tvCameraPictureSize);
-        presenterCamera.onCreateView(view);
-        ivCamera.setOnClickListener(this);
+        ivGrid = view.findViewById(R.id.ivGrid);
+
+        ivLastFrame = view.findViewById(R.id.ivLastFrame);
+        ivLastFrame2 = view.findViewById(R.id.ivLastFrame2);
+
+        vGrid = view.findViewById(R.id.flGrid);
+
+        flSettings = view.findViewById(R.id.flSettings);
+
+        presenter.onCreateView(view);
 
         return view;
     }
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+
         view.findViewById(R.id.ivCapture).setOnClickListener(this);
-        view.findViewById(R.id.ivFlash).setOnClickListener(this);
+        view.findViewById(R.id.ivSettings).setOnClickListener(this);
+        flSettings.setOnClickListener(this);
+
+        ivFramesOverlay.setOnClickListener(this);
+        ivFlash.setOnClickListener(this);
+        ivGrid.setOnClickListener(this);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        presenterCamera.onActivityCreated(getActivity());
+        presenter.onActivityCreated(getActivity());
     }
 
     @Override
     public void onClick(View view) {
+        if (view.getId() == R.id.ivSettings
+                || view.getId() == R.id.flSettings)
+            presenter.onClickSettings();
         if (view.getId() == R.id.ivCapture)
-            presenterCamera.takePicture();
+            presenter.takePicture();
         if (view.getId() == R.id.ivLastFrameShow)
-            presenterCamera.onClickLastFrameShow();
+            presenter.onClickLastFrameShow();
         if (view.getId() == R.id.ivFlash)
-            presenterCamera.onClickFlash();
+            presenter.onClickFlash();
+        if (view.getId() == R.id.ivGrid)
+            presenter.onClickGrid();
     }
 
     @Override
@@ -88,18 +108,18 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        presenterCamera.onResume(getView());
+        presenter.onResume(getView());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        presenterCamera.onPause();
+        presenter.onPause();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (!presenterCamera.onRequestPermissionsResult(getView(), requestCode, permissions, grantResults))
+        if (!presenter.onRequestPermissionsResult(getView(), requestCode, permissions, grantResults))
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
@@ -134,24 +154,32 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
 
         @Override
         public void showLastFrame(String path) {
+            imageInto(ivLastFrame, path);
+        }
+
+        private void imageInto(ImageView view, String path) {
             if (!isAdded()) return;
+
+            view.setVisibility(TextUtils.isEmpty(path) ? View.GONE : View.VISIBLE);
+
             if (TextUtils.isEmpty(path))
-                ivLastFrame.setImageDrawable(null);
+                view.setImageDrawable(null);
+
             else Glide.with(getContext())
                     .load(path)
-                    .into(ivLastFrame);
+                    .into(view);
+        }
+
+
+        @Override
+        public void showLastFrame2(String path) {
+            imageInto(ivLastFrame2, path);
         }
 
         @Override
         public void setLastFrameShowDrawable(int drawableRes) {
             if (!isAdded()) return;
-            ivCamera.setImageResource(drawableRes);
-        }
-
-        @Override
-        public void setLastFrameVisibility(boolean isVisible) {
-            if (!isAdded()) return;
-            ivLastFrame.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+            ivFramesOverlay.setImageResource(drawableRes);
         }
 
         @Override
@@ -179,6 +207,21 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         public void showPictureSize(String message) {
             if (!isAdded()) return;
             tvCameraPictureSize.setText(message);
+        }
+
+        @Override
+        public void setButtonGridImage(int drawableRes) {
+            ivGrid.setImageResource(drawableRes);
+        }
+
+        @Override
+        public void setButtonGridVisible(boolean gridEnabled) {
+            vGrid.setVisibility(gridEnabled ? View.VISIBLE : View.GONE);
+        }
+
+        @Override
+        public void setSettingsVisibility(boolean settingsVisible) {
+            flSettings.setVisibility(settingsVisible ? View.VISIBLE : View.GONE);
         }
     }
 

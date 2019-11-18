@@ -29,4 +29,6 @@ public interface IPresenterCamera {
     void onClickLastFrameShow();
 
     void onClickFlash();
+
+    void onClickGrid();
 }

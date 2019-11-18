@@ -19,7 +19,7 @@ public class CacheInterfaceState implements ICacheInterfaceState {
 
 
     @Override
-    public boolean isShowLastFrame() {
+    public int getShowLastFrameNum() {
         return getData().isShowLastFrame();
     }
 
@@ -37,8 +37,8 @@ public class CacheInterfaceState implements ICacheInterfaceState {
     }
 
     @Override
-    public void setLastFrameShow(boolean isShow) {
-        getData().setShowLastFrame(isShow);
+    public void setLastFrameShow(int num) {
+        getData().setShowLastFrame(num);
         saveData();
     }
 
@@ -51,6 +51,27 @@ public class CacheInterfaceState implements ICacheInterfaceState {
     public void changeStateFlash() {
         getData().setFlashEnabled(!isFlashEnabled());
         saveData();
+    }
+
+    @Override
+    public void changeStateGrid() {
+        getData().setGridEnabled(!isGridEnabled());
+        saveData();
+    }
+
+    @Override
+    public void changeSettingsVisible() {
+        getData().setSettingsVisible(!isSettingsVisible());
+    }
+
+    @Override
+    public boolean isGridEnabled() {
+        return getData().isGridEnabled();
+    }
+
+    @Override
+    public boolean isSettingsVisible() {
+        return getData().isSettingsVisible();
     }
 
 }

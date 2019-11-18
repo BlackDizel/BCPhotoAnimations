@@ -90,6 +90,12 @@ public class ProjectObject extends ProjectObjectBase implements Serializable {
         return frames == null || frames.size() == 0 ? null : frames.get(frames.size() - 1).getPreview();
     }
 
+    public String getFrameLastPreview2() {
+        return frames == null
+                || frames.size() < 2
+                ? null : frames.get(frames.size() - 2).getPreview();
+    }
+
     public String getFrameUrl(int position) {
         return frames == null || position >= frames.size() || position < 0 ? null : frames.get(position).getFileUrl();
     }

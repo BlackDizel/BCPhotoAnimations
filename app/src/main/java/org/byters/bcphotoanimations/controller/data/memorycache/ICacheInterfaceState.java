@@ -1,11 +1,19 @@
 package org.byters.bcphotoanimations.controller.data.memorycache;
 
 public interface ICacheInterfaceState {
-    boolean isShowLastFrame();
+    void setLastFrameShow(int num);
 
-    void setLastFrameShow(boolean isShow);
+    void changeStateFlash();
+
+    void changeStateGrid();
+
+    void changeSettingsVisible();
+
+    int getShowLastFrameNum();
 
     boolean isFlashEnabled();
 
-    void changeStateFlash();
+    boolean isGridEnabled();
+
+    boolean isSettingsVisible();
 }

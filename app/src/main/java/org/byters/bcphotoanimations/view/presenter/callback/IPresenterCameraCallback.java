@@ -14,8 +14,6 @@ public interface IPresenterCameraCallback {
 
     void setLastFrameShowDrawable(int drawableRes);
 
-    void setLastFrameVisibility(boolean isVisible);
-
     void setLastFrameSize(int width, int height);
 
     void setFlashVisible(boolean isFlashSupported);
@@ -23,4 +21,12 @@ public interface IPresenterCameraCallback {
     void setButtonFlashImage(int drawableRes);
 
     void showPictureSize(String message);
+
+    void setButtonGridImage(int drawableRes);
+
+    void setButtonGridVisible(boolean gridEnabled);
+
+    void setSettingsVisibility(boolean settingsVisible);
+
+    void showLastFrame2(String path);
 }

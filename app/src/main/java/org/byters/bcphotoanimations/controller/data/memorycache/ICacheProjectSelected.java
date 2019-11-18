@@ -42,4 +42,6 @@ public interface ICacheProjectSelected {
     int getProjectSelectedFramesNum();
 
     String getProjectTitle();
+
+    String getLastFramePreview2();
 }

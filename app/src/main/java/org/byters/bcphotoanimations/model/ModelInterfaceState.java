@@ -3,15 +3,17 @@ package org.byters.bcphotoanimations.model;
 import java.io.Serializable;
 
 public class ModelInterfaceState implements Serializable {
-    private boolean showLastFrame;
+    private int showLastFrame;
     private boolean isFlashEnabled;
+    private boolean isGridEnabled;
+    private boolean isSettingsVisible;
 
-    public boolean isShowLastFrame() {
+    public int isShowLastFrame() {
         return showLastFrame;
     }
 
-    public void setShowLastFrame(boolean isShow) {
-        showLastFrame = isShow;
+    public void setShowLastFrame(int num) {
+        showLastFrame = num;
     }
 
     public boolean isFlashEnabled() {
@@ -20,5 +22,21 @@ public class ModelInterfaceState implements Serializable {
 
     public void setFlashEnabled(boolean isEnabled) {
         isFlashEnabled = isEnabled;
+    }
+
+    public boolean isGridEnabled() {
+        return isGridEnabled;
+    }
+
+    public void setGridEnabled(boolean isEnabled) {
+        isGridEnabled = isEnabled;
+    }
+
+    public boolean isSettingsVisible() {
+        return isSettingsVisible;
+    }
+
+    public void setSettingsVisible(boolean isVisible) {
+        this.isSettingsVisible = isVisible;
     }
 }
