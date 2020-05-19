@@ -62,14 +62,29 @@ public class PresenterCamera extends PresenterCameraBase {
         }
     }
 
+    @Override
+    public void onClickCameraType(View view) {
+        int cameraTypeCurrent = cacheInterfaceState.getCameraType();
+        int cameraTypeOther = cameraTypeCurrent == Camera.CameraInfo.CAMERA_FACING_BACK
+                ? Camera.CameraInfo.CAMERA_FACING_FRONT
+                : Camera.CameraInfo.CAMERA_FACING_BACK;
+        cacheInterfaceState.setCameraType(cameraTypeOther);
+        initCamera(view);
+    }
+
     private int getCameraId() {
         int numberOfCameras = Camera.getNumberOfCameras();
+        int cameraId = getCurrentCameraId(numberOfCameras, cacheInterfaceState.getCameraType());
+        if (cameraId == CAMERA_UNDEFINED)
+            cameraId = getCurrentCameraId(numberOfCameras, Camera.CameraInfo.CAMERA_FACING_BACK);
+        return cameraId;
+    }
+
+    private int getCurrentCameraId(int numberOfCameras, int cameraType) {
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         for (int i = 0; i < numberOfCameras; i++) {
             Camera.getCameraInfo(i, cameraInfo);
-            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                return i;
-            }
+            if (cameraInfo.facing == cameraType) return i;
         }
         return CAMERA_UNDEFINED;
     }
@@ -84,6 +99,10 @@ public class PresenterCamera extends PresenterCameraBase {
     public void onPause() {
         cacheProjects.storeCache();
 
+        releaseCamera();
+    }
+
+    private void releaseCamera() {
         if (camera == null) return;
         camera.release();
         camera = null;
@@ -111,6 +130,7 @@ public class PresenterCamera extends PresenterCameraBase {
         preview.removeAllViews();
 
         int cameraId = getCameraId();
+        releaseCamera();
         camera = getCameraInstance(cameraId);
         if (camera == null) return;
 

@@ -7,6 +7,7 @@ public class ModelInterfaceState implements Serializable {
     private boolean isFlashEnabled;
     private boolean isGridEnabled;
     private boolean isSettingsVisible;
+    private int cameraType;
 
     public int isShowLastFrame() {
         return showLastFrame;
@@ -38,5 +39,13 @@ public class ModelInterfaceState implements Serializable {
 
     public void setSettingsVisible(boolean isVisible) {
         this.isSettingsVisible = isVisible;
+    }
+
+    public int getCameraType() {
+        return cameraType;
+    }
+
+    public void setCameraType(int cameraType) {
+        this.cameraType = cameraType;
     }
 }

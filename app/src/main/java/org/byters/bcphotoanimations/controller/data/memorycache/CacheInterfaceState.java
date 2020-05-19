@@ -74,4 +74,15 @@ public class CacheInterfaceState implements ICacheInterfaceState {
         return getData().isSettingsVisible();
     }
 
+    @Override
+    public int getCameraType() {
+        return getData().getCameraType();
+    }
+
+    @Override
+    public void setCameraType(int cameraType) {
+        getData().setCameraType(cameraType);
+        saveData();
+    }
+
 }

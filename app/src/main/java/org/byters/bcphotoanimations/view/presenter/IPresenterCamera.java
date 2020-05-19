@@ -31,4 +31,6 @@ public interface IPresenterCamera {
     void onClickFlash();
 
     void onClickGrid();
+
+    void onClickCameraType(View view);
 }

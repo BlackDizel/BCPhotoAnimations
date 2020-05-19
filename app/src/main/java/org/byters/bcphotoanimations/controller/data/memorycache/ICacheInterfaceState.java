@@ -16,4 +16,8 @@ public interface ICacheInterfaceState {
     boolean isGridEnabled();
 
     boolean isSettingsVisible();
+
+    int getCameraType();
+
+    void setCameraType(int cameraType);
 }

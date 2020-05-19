@@ -37,10 +37,6 @@
                 android:padding="12dp"
                 tools:src="@drawable/ic_filter_white_24dp" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="64dp" />
-
             <ImageView
                 android:id="@+id/ivGrid"
                 android:layout_width="48dp"
@@ -48,10 +44,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:padding="12dp"
                 tools:src="@drawable/ic_grid_on_white_24dp" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="64dp" />
 
             <ImageView
                 android:id="@+id/ivFlash"
@@ -62,6 +54,14 @@
                 android:visibility="gone"
                 tools:src="@drawable/ic_flash_on_white_24dp"
                 tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/ivCameraType"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="12dp"
+                android:src="@drawable/ic_cached_white_24dp" />
 
         </LinearLayout>
     </LinearLayout>

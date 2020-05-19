@@ -24,16 +24,13 @@ import javax.inject.Inject;
 
 public class FragmentCamera extends FragmentBase implements View.OnClickListener {
 
-    //todo show frame num
-    //todo show camera settings (frame size, flash)
-
     @Inject
     IPresenterCamera presenter;
 
     private IPresenterCameraCallback presenterCallback;
 
     private ImageView ivLastFrame, ivLastFrame2;
-    private ImageView ivFlash, ivGrid, ivFramesOverlay;
+    private ImageView ivFlash, ivGrid, ivFramesOverlay, ivCameraType;
     private TextView tvCameraPictureSize;
     private View vGrid;
     private View flSettings;
@@ -54,6 +51,7 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         ivFlash = view.findViewById(R.id.ivFlash);
         tvCameraPictureSize = view.findViewById(R.id.tvCameraPictureSize);
         ivGrid = view.findViewById(R.id.ivGrid);
+        ivCameraType = view.findViewById(R.id.ivCameraType);
 
         ivLastFrame = view.findViewById(R.id.ivLastFrame);
         ivLastFrame2 = view.findViewById(R.id.ivLastFrame2);
@@ -77,6 +75,7 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         ivFramesOverlay.setOnClickListener(this);
         ivFlash.setOnClickListener(this);
         ivGrid.setOnClickListener(this);
+        ivCameraType.setOnClickListener(this);
     }
 
     @Override
@@ -98,6 +97,8 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
             presenter.onClickFlash();
         if (view.getId() == R.id.ivGrid)
             presenter.onClickGrid();
+        if (view.getId() == R.id.ivCameraType)
+            presenter.onClickCameraType(getView());
     }
 
     @Override
