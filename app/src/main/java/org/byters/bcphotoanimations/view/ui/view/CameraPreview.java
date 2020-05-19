@@ -1,7 +1,6 @@
 package org.byters.bcphotoanimations.view.ui.view;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.hardware.Camera;
 import android.view.Gravity;
 import android.view.Surface;
@@ -57,17 +56,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        updateView(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE, w, h);
+        updateView(w, h);
     }
 
-    private void updateView(String focusMode, int w, int h) {
+    private void updateView(int w, int h) {
         if (this.holder.getSurface() == null)
             return;
 
         try {
             camera.stopPreview();
             int rotation = checkCameraOrientation();
-            checkPreviewSize(rotation, focusMode, w, h);
+            checkPreviewSize(rotation, w, h);
             camera.setPreviewDisplay(this.holder);
             camera.startPreview();
 
@@ -106,53 +105,60 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         return result;
     }
 
-    private void checkPreviewSize(int rotation, String focusMode, int w, int h) {
+    private void checkPreviewSize(int rotation, int w, int h) {
         if (refCallback == null || refCallback.get() == null)
             return;
 
         if (w == 0 || h == 0) return;
 
-        int maxPreviewWidth = Math.max(w, h);
-        int maxPreviewHeight = Math.min(w, h);
-
-        Camera.Size bestSize = null;
-        for (Camera.Size item : camera.getParameters().getSupportedPreviewSizes()) {
-
-            Point point = new Point(
-                    Math.max(item.width, item.height),
-                    Math.min(item.width, item.height));
-
-            if (point.x > maxPreviewWidth || point.y > maxPreviewHeight)
-                continue;
-
-            if (bestSize == null
-                    || point.y > Math.min(bestSize.width, bestSize.height)
-                    || point.x > Math.max(bestSize.width, bestSize.height)) {
-                bestSize = item;
-            }
-        }
-        if (bestSize == null) return;
-
         Camera.Parameters parameters = camera.getParameters();
-        parameters.setPreviewSize(bestSize.width, bestSize.height);
-        Camera.Size pictureSize = setPictureSize(parameters); //Picture size and preview size must have equal aspect ratio
 
-        setFocusMode(parameters, focusMode);
+        Camera.Size pictureSize = getPictureSize(parameters); //Picture size and preview size must have equal aspect ratio
+        Camera.Size previewSize = getPreviewSize(pictureSize, w, h);
 
+        parameters.setPreviewSize(previewSize.width, previewSize.height);
+
+        setFocusMode(parameters, Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        parameters.setPictureSize(pictureSize.width, pictureSize.height);
         parameters.setRotation(rotation);
         parameters.setFlashMode(cacheInterfaceState.isFlashEnabled() ? "on" : "off");
 
         camera.setParameters(parameters);
 
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) this.getLayoutParams();
-        params.width = w > h ? Math.max(bestSize.width, bestSize.height) : Math.min(bestSize.width, bestSize.height);
-        params.height = w > h ? Math.min(bestSize.width, bestSize.height) : Math.max(bestSize.width, bestSize.height);
+        params.width = w > h ? Math.max(previewSize.width, previewSize.height) : Math.min(previewSize.width, previewSize.height);
+        params.height = w > h ? Math.min(previewSize.width, previewSize.height) : Math.max(previewSize.width, previewSize.height);
         params.gravity = Gravity.CENTER;
         this.setLayoutParams(params);
 
         notifySize(params.width, params.height);
         notifyFlashModes(parameters.getSupportedFlashModes());
-        notifyPictureSize(bestSize, pictureSize);
+        notifyPictureSize(previewSize, pictureSize);
+    }
+
+    private Camera.Size getPreviewSize(Camera.Size pictureSize, int w, int h) {
+
+        int maxDisplayDimension = Math.max(w, h);
+        int minDisplayDimension = Math.min(w, h);
+
+        Camera.Size result = null;
+        for (Camera.Size item : camera.getParameters().getSupportedPreviewSizes()) {
+
+            int maxPreviewDimension = Math.max(item.width, item.height);
+            int minPreviewDimension = Math.min(item.width, item.height);
+
+            if (maxPreviewDimension > maxDisplayDimension || minPreviewDimension > minDisplayDimension)
+                continue;
+
+            if (ratioIsEqual(item, pictureSize)
+                    && (result == null || isAreaMore(item, result)))
+                result = item;
+        }
+        return result;
+    }
+
+    private boolean isAreaMore(Camera.Size one, Camera.Size other) {
+        return one == null || other == null || one.height * one.width > other.height * other.width;
     }
 
     private void notifyFlashModes(List<String> supportedFlashModes) {
@@ -160,24 +166,24 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         refCallback.get().onFlashModesGet(supportedFlashModes);
     }
 
-    private Camera.Size setPictureSize(Camera.Parameters parameters) {
+    private Camera.Size getPictureSize(Camera.Parameters parameters) {
         if (parameters == null) return null;
         List<android.hardware.Camera.Size> sizes = parameters.getSupportedPictureSizes();
         if (sizes == null) return null;
+
         Camera.Size currentSize = null;
+
         for (Camera.Size size : sizes) {
             if (currentSize == null) {
                 currentSize = size;
                 continue;
             }
 
-            if (ratioIsEqual(size, parameters.getPreviewSize()) && size.width > currentSize.width)
-                currentSize = size;
+            if (size.width > currentSize.width) currentSize = size;
         }
 
         if (currentSize == null) return null;
 
-        parameters.setPictureSize(currentSize.width, currentSize.height);
         return currentSize;
     }
 
