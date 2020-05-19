@@ -190,6 +190,7 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
             params.width = width;
             params.height = height;
             ivLastFrame.setLayoutParams(params);
+            ivLastFrame2.setLayoutParams(params);
         }
 
         @Override
