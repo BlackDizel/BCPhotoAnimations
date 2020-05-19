@@ -191,6 +191,7 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
             params.height = height;
             ivLastFrame.setLayoutParams(params);
             ivLastFrame2.setLayoutParams(params);
+            vGrid.setLayoutParams(params);
         }
 
         @Override
