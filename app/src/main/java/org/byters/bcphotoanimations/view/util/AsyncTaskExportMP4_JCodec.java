@@ -49,7 +49,7 @@ public class AsyncTaskExportMP4_JCodec extends AsyncTask<Void, Integer, Boolean>
 
         int num = cacheProjects.getItemFramesNum(projectId);
 
-        File file = new File(cacheStorage.getProjectOutputFolder(cacheProjects.getItemTitleById(projectId) + EXT_MP4));
+        File file = new File(getFilePath());
 
         FileChannelWrapper out = null;
         try {
@@ -86,6 +86,10 @@ public class AsyncTaskExportMP4_JCodec extends AsyncTask<Void, Integer, Boolean>
         }
 
         return true;
+    }
+
+    private String getFilePath() {
+        return cacheStorage.getProjectOutputFolder(cacheProjects.getItemTitleById(projectId) + cacheStorage.getVideoExt());
     }
 
     private Bitmap bmpScale(Bitmap bmp, int w, int h) {
@@ -128,6 +132,6 @@ public class AsyncTaskExportMP4_JCodec extends AsyncTask<Void, Integer, Boolean>
         super.onPostExecute(aBoolean);
 
         if (refListener == null || refListener.get() == null) return;
-        refListener.get().onComplete(projectId);
+        refListener.get().onComplete(projectId, getFilePath());
     }
 }

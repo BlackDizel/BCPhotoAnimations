@@ -7,6 +7,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
@@ -119,6 +121,8 @@ public class ServiceProjectExport extends Service {
 
         startForeground(SERVICE_NOTIFICATION_ID, notificationBuilder.build());
 
+        //todo cancel current export
+
         int type = intent.getIntExtra(EXTRA_EXPORT_TYPE, EXPORT_TYPE_UNKNOWN);
         if (type == EXPORT_TYPE_IMAGES)
             exportImages(projectId);
@@ -174,10 +178,7 @@ public class ServiceProjectExport extends Service {
 
     private void exportImages(String projectId) {
         if (worker != null) worker.cancel(true);
-        worker = new AsyncTaskProjectExport(projectId,
-                cacheProjects,
-                cacheStorage,
-                listenerExportTask);
+        worker = new AsyncTaskProjectExport(projectId, listenerExportTask);
         worker.execute();
     }
 
@@ -203,6 +204,17 @@ public class ServiceProjectExport extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    private void saveToMediaStore(String path) {
+        //fixme leaked
+        MediaScannerConnection.scanFile(
+                this, new String[]{path}, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                    }
+                });
+
     }
 
     private class ListenerExportTask implements AsyncTaskProjectExportListener {
@@ -231,15 +243,28 @@ public class ServiceProjectExport extends Service {
         }
 
         @Override
-        public void onComplete(String projectId) {
-            String title = cacheProjects.getItemTitleById(projectId);
-            if (!TextUtils.isEmpty(title))
-                Toast.makeText(ServiceProjectExport.this,
-                        String.format(getString(R.string.export_project_success_success), cacheStorage.getProjectOutputFolder(title)),
-                        Toast.LENGTH_LONG)
-                        .show();
+        public void onComplete(String projectId, String filepath) {
+
+            saveToMediaStore(filepath);
+            //todo show notification with click action open file
+            complete(filepath);
+
+        }
+
+        @Override
+        public void onCompleteFolder(String projectId, String folder) {
+            complete(folder);
+        }
+
+        private void complete(String filepath) {
+
+            Toast.makeText(ServiceProjectExport.this,
+                    String.format(getString(R.string.export_project_success_success), filepath),
+                    Toast.LENGTH_LONG)
+                    .show();
             cacheExportAttempts.decreaseAttempts();
             completeNotification();
+
             stopService();
         }
 

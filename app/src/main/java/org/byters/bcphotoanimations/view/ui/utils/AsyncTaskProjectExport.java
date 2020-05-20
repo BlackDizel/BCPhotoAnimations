@@ -2,36 +2,40 @@ package org.byters.bcphotoanimations.view.ui.utils;
 
 import android.os.AsyncTask;
 
+import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheStorage;
 
 import java.lang.ref.WeakReference;
 
+import javax.inject.Inject;
+
 public class AsyncTaskProjectExport extends AsyncTask<Void, Integer, Boolean> {
 
+    @Inject
+    ICacheProjects cacheProjects;
+
+    @Inject
+    ICacheStorage cacheStorage;
     private String projectId;
     private WeakReference<AsyncTaskProjectExportListener> refListener;
-    private WeakReference<ICacheProjects> refCacheProjects;
-    private WeakReference<ICacheStorage> refCacheStorage;
 
     public AsyncTaskProjectExport(String projectId,
-                                  ICacheProjects cacheProjects,
-                                  ICacheStorage cacheStorage,
                                   AsyncTaskProjectExportListener listener) {
+        ApplicationStopMotion.getComponent().inject(this);
+
         this.projectId = projectId;
-        this.refCacheProjects = new WeakReference<>(cacheProjects);
-        this.refCacheStorage = new WeakReference<>(cacheStorage);
         this.refListener = new WeakReference<>(listener);
     }
 
     @Override
     protected Boolean doInBackground(Void... voids) {
 
-        int framesNum = refCacheProjects.get().getItemFramesNum(projectId);
+        int framesNum = cacheProjects.getItemFramesNum(projectId);
 
-        refCacheStorage.get().removeFolder(refCacheProjects.get(), projectId);
+        cacheStorage.removeFolder(cacheProjects, projectId);
         for (int i = 0; i < framesNum; ++i) {
-            refCacheStorage.get().copyFrame(refCacheProjects.get(), projectId, i, framesNum);
+            cacheStorage.copyFrame(cacheProjects, projectId, i, framesNum);
             onProgressUpdate(framesNum, i);
         }
 
@@ -50,7 +54,9 @@ public class AsyncTaskProjectExport extends AsyncTask<Void, Integer, Boolean> {
         super.onPostExecute(aBoolean);
 
         if (refListener == null || refListener.get() == null) return;
-        refListener.get().onComplete(projectId);
+
+        String title = cacheProjects.getItemTitleById(projectId);
+        refListener.get().onCompleteFolder(projectId, cacheStorage.getProjectOutputFolder(title));
     }
 
 }

@@ -22,6 +22,7 @@ import java.util.HashMap;
 public class CacheStorage implements ICacheStorage {
 
     private final String EXT_JPG = ".jpg";
+    private final String EXT_MP4 = ".mp4";
 
     @Override
     public void writeObjectToFile(byte[] data, String path) {
@@ -190,6 +191,11 @@ public class CacheStorage implements ICacheStorage {
 
         }
 
+    }
+
+    @Override
+    public String getVideoExt() {
+        return EXT_MP4;
     }
 
     @Override

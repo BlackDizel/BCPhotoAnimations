@@ -30,6 +30,7 @@ import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjectCreate;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjectEdit;
 import org.byters.bcphotoanimations.view.ui.fragment.FragmentProjects;
 import org.byters.bcphotoanimations.view.ui.service.ServiceProjectExport;
+import org.byters.bcphotoanimations.view.ui.utils.AsyncTaskProjectExport;
 import org.byters.bcphotoanimations.view.ui.view.CameraPreview;
 import org.byters.bcphotoanimations.view.util.AsyncTaskExportMP4_JCodec;
 import org.byters.bcphotoanimations.view.util.AsyncTaskExportMP4_MediaCodec;
@@ -105,4 +106,6 @@ public interface AppComponent {
     void inject(AsyncTaskExportMP4_MediaCodec asyncTaskExportMP4_mediaCodec);
 
     void inject(DialogExportMediaCodec dialogExportMediaCodec);
+
+    void inject(AsyncTaskProjectExport asyncTaskProjectExport);
 }

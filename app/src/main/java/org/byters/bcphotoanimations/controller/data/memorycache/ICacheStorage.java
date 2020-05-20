@@ -35,4 +35,6 @@ public interface ICacheStorage {
     void removeFolder(ICacheProjects cacheProjects, String projectId);
 
     void writeExif(String path, HashMap<String,String> params);
+
+    String getVideoExt();
 }

@@ -22,8 +22,6 @@ import javax.inject.Inject;
 
 public final class AsyncTaskExportMP4_MediaCodec extends AsyncTask<Void, Integer, Boolean> {
 
-    private static final String EXT_MP4 = ".mp4";
-
     private final String projectId;
     private final WeakReference<AsyncTaskProjectExportListener> refListener;
     private final int fps, w, h;
@@ -52,7 +50,7 @@ public final class AsyncTaskExportMP4_MediaCodec extends AsyncTask<Void, Integer
         int num = cacheProjects.getItemFramesNum(projectId);
 
         MP4Encoder encoder = new MP4Encoder();
-        encoder.setOutputFilePath(cacheStorage.getProjectOutputFolder(cacheProjects.getItemTitleById(projectId) + EXT_MP4));
+        encoder.setOutputFilePath(getFilePath());
         encoder.setOutputSize(w, h);
         encoder.setFrameRate(fps);
         encoder.setEncodeFinishListener(new ListenerFinish());
@@ -70,6 +68,10 @@ public final class AsyncTaskExportMP4_MediaCodec extends AsyncTask<Void, Integer
         }
         encoder.notifyLastFrameAdded();
         return true;
+    }
+
+    private String getFilePath() {
+        return cacheStorage.getProjectOutputFolder(cacheProjects.getItemTitleById(projectId) + cacheStorage.getVideoExt());
     }
 
     private Bitmap bmpScale(Bitmap bmp, int w, int h) {
@@ -136,7 +138,7 @@ public final class AsyncTaskExportMP4_MediaCodec extends AsyncTask<Void, Integer
         @Override
         public void run() {
             if (refListener == null || refListener.get() == null) return;
-            refListener.get().onComplete(projectId);
+            refListener.get().onComplete(projectId, getFilePath());
         }
     }
 }
