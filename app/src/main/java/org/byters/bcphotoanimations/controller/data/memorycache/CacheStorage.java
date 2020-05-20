@@ -1,6 +1,7 @@
 package org.byters.bcphotoanimations.controller.data.memorycache;
 
 
+import android.media.ExifInterface;
 import android.os.Environment;
 import android.text.TextUtils;
 
@@ -16,6 +17,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 
 public class CacheStorage implements ICacheStorage {
 
@@ -171,6 +173,23 @@ public class CacheStorage implements ICacheStorage {
 
         String projectFolder = getProjectOutputFolder(title);
         removeFolder(projectFolder);
+    }
+
+    @Override
+    public void writeExif(String path, HashMap<String, String> params) {
+        if (params == null || params.isEmpty()) return;
+
+        try {
+            ExifInterface exif = new ExifInterface(path);
+
+            for (String key : params.keySet())
+                exif.setAttribute(key, params.get(key));
+
+            exif.saveAttributes();
+        } catch (IOException e) {
+
+        }
+
     }
 
     @Override

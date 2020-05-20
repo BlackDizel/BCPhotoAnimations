@@ -1,11 +1,14 @@
 package org.byters.bcphotoanimations.controller.data.memorycache;
 
+import android.media.ExifInterface;
 import android.text.TextUtils;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.model.FrameObject;
+import org.byters.bcphotoanimations.view.util.ExifUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.UUID;
 
@@ -76,7 +79,7 @@ public class CacheProjectSelected implements ICacheProjectSelected {
     }
 
     @Override
-    public void addFrame(byte[] data) {
+    public void addFrame(byte[] data, int cameraRotation, int cameraType) {
         FrameObject frameObject = new FrameObject();
 
         String path = cacheStorage.getProjectFolderFile(projectSelectedId, UUID.randomUUID().toString(), cacheStorage.getImageExt());
@@ -85,8 +88,12 @@ public class CacheProjectSelected implements ICacheProjectSelected {
 
         cacheProjects.addFrame(projectSelectedId, frameObject);
 
-        cacheStorage.writeObjectToFile(data, path);
+        HashMap<String, String> params = new HashMap<>();
+        params.put(ExifInterface.TAG_ORIENTATION, String.valueOf(ExifUtil.toOrientation(cameraRotation)));
+        params.put(ExifInterface.TAG_MAKER_NOTE, String.valueOf(cameraType));
 
+        cacheStorage.writeObjectToFile(data, path);
+        cacheStorage.writeExif(path, params);
     }
 
     @Override

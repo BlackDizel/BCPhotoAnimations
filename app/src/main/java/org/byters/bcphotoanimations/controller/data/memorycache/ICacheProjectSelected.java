@@ -15,7 +15,7 @@ public interface ICacheProjectSelected {
 
     String getProjectSelectedId();
 
-    void addFrame(byte[] data);
+    void addFrame(byte[] data, int cameraRotation, int cameraType);
 
     boolean isEdit();
 

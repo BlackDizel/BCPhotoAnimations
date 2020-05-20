@@ -31,6 +31,8 @@ public class PresenterCamera extends PresenterCameraBase {
     @Nullable
     private Camera camera;
 
+    private int cameraOrientation;
+
     private CameraCallback cameraCallback;
     private Camera.PictureCallback pictureCallback;
 
@@ -147,7 +149,7 @@ public class PresenterCamera extends PresenterCameraBase {
     private class CameraPictureCallback implements Camera.PictureCallback {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            cacheProjectSelected.addFrame(data);
+            cacheProjectSelected.addFrame(data, cameraOrientation, cacheInterfaceState.getCameraType());
             setShowLastFrame();
 
             try {
@@ -158,6 +160,7 @@ public class PresenterCamera extends PresenterCameraBase {
     }
 
     private class CameraCallback implements ICameraPreviewCallback {
+
         @Override
         public int requestRotation() {
             return refCallback != null && refCallback.get() != null ? refCallback.get().getScreenRotation() : 0;
@@ -192,6 +195,11 @@ public class PresenterCamera extends PresenterCameraBase {
                     photoSize.width,
                     photoSize.height);
             refCallback.get().showPictureSize(message);
+        }
+
+        @Override
+        public void onGetOrientation(int rotation) {
+            cameraOrientation = rotation;
         }
     }
 }

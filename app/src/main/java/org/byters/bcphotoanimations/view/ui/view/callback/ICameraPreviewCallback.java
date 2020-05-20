@@ -13,4 +13,6 @@ public interface ICameraPreviewCallback {
     void onFlashModesGet(List<String> supportedFlashModes);
 
     void onGetPictureSize(Camera.Size previewSize, Camera.Size photoSize);
+
+    void onGetOrientation(int rotation);
 }

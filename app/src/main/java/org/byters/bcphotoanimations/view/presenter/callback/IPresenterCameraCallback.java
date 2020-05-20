@@ -10,7 +10,9 @@ public interface IPresenterCameraCallback {
 
     void showFlash();
 
-    void showLastFrame(String path);
+    void showLastFrame(String path, boolean isFace);
+
+    void showLastFrame2(String path, boolean isFace);
 
     void setLastFrameShowDrawable(int drawableRes);
 
@@ -28,5 +30,4 @@ public interface IPresenterCameraCallback {
 
     void setSettingsVisibility(boolean settingsVisible);
 
-    void showLastFrame2(String path);
 }

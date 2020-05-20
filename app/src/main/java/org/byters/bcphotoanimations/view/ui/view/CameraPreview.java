@@ -102,6 +102,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 : (info.orientation - degrees + 360) % 360;
 
         camera.setDisplayOrientation(result);
+
+        notifyOrientation(info.orientation);
+
         return result;
     }
 
@@ -120,7 +123,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         setFocusMode(parameters, Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
         parameters.setPictureSize(pictureSize.width, pictureSize.height);
-        parameters.setRotation(rotation);
         parameters.setFlashMode(cacheInterfaceState.isFlashEnabled() ? "on" : "off");
 
         camera.setParameters(parameters);
@@ -191,6 +193,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if (refCallback == null || refCallback.get() == null)
             return;
         refCallback.get().onGetPictureSize(previewSize, photoSize);
+    }
+
+    private void notifyOrientation(int rotation) {
+        if (refCallback == null || refCallback.get() == null)
+            return;
+        refCallback.get().onGetOrientation(rotation);
     }
 
     private boolean ratioIsEqual(Camera.Size size, Camera.Size previewSize) {

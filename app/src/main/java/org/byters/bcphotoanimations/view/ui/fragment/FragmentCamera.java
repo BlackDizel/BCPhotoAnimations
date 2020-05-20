@@ -154,11 +154,16 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
         }
 
         @Override
-        public void showLastFrame(String path) {
-            imageInto(ivLastFrame, path);
+        public void showLastFrame(String path, boolean isFace) {
+            imageInto(ivLastFrame, path, isFace);
         }
 
-        private void imageInto(ImageView view, String path) {
+        @Override
+        public void showLastFrame2(String path, boolean isFace) {
+            imageInto(ivLastFrame2, path, isFace);
+        }
+
+        private void imageInto(ImageView view, String path, boolean isFace) {
             if (!isAdded()) return;
 
             view.setVisibility(TextUtils.isEmpty(path) ? View.GONE : View.VISIBLE);
@@ -166,15 +171,14 @@ public class FragmentCamera extends FragmentBase implements View.OnClickListener
             if (TextUtils.isEmpty(path))
                 view.setImageDrawable(null);
 
-            else Glide.with(getContext())
-                    .load(path)
-                    .into(view);
-        }
+            else {
+                Glide.with(getContext())
+                        .load(path)
+                        .into(view);
 
+                view.setScaleX(isFace ? -1 : 1);
+            }
 
-        @Override
-        public void showLastFrame2(String path) {
-            imageInto(ivLastFrame2, path);
         }
 
         @Override

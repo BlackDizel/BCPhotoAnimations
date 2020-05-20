@@ -1,7 +1,11 @@
 package org.byters.bcphotoanimations.controller.data.memorycache;
 
 
+import android.util.Pair;
+
 import org.byters.bcphotoanimations.model.PreferenceHelperEnum;
+
+import java.util.HashMap;
 
 public interface ICacheStorage {
     void writeObjectToFile(byte[] data, String path);
@@ -29,4 +33,6 @@ public interface ICacheStorage {
     void copyFrame(ICacheProjects cacheProjects, String projectId, int position, int framesNum);
 
     void removeFolder(ICacheProjects cacheProjects, String projectId);
+
+    void writeExif(String path, HashMap<String,String> params);
 }

@@ -3,9 +3,12 @@ package org.byters.bcphotoanimations.view.presenter;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.Camera;
+import android.media.ExifInterface;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 
 import org.byters.bcphotoanimations.R;
@@ -13,6 +16,7 @@ import org.byters.bcphotoanimations.controller.data.memorycache.ICacheInterfaceS
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjectSelected;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterCameraCallback;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
@@ -128,8 +132,22 @@ abstract class PresenterCameraBase implements IPresenterCamera {
         if (refCallback == null || refCallback.get() == null) return;
         String lastFramePath = cacheProjectSelected.getLastFramePreview();
         String lastFramePath2 = cacheProjectSelected.getLastFramePreview2();
-        refCallback.get().showLastFrame(cacheInterfaceState.getShowLastFrameNum() > 0 ? lastFramePath : null);
-        refCallback.get().showLastFrame2(cacheInterfaceState.getShowLastFrameNum() > 1 ? lastFramePath2 : null);
+        boolean lastFrameFlip = isImageFace(lastFramePath);
+        boolean lastFrameFlip2 = isImageFace(lastFramePath2);
+
+        refCallback.get().showLastFrame(cacheInterfaceState.getShowLastFrameNum() > 0 ? lastFramePath : null, lastFrameFlip);
+        refCallback.get().showLastFrame2(cacheInterfaceState.getShowLastFrameNum() > 1 ? lastFramePath2 : null, lastFrameFlip2);
+    }
+
+    private boolean isImageFace(String filePath) {
+        if (TextUtils.isEmpty(filePath)) return false;
+        try {
+            ExifInterface exif = new ExifInterface(filePath);
+            return exif.getAttribute(ExifInterface.TAG_MAKER_NOTE)
+                    .equals(String.valueOf(Camera.CameraInfo.CAMERA_FACING_FRONT));
+        } catch (IOException e) {
+        }
+        return false;
     }
 
     void showFlash() {
