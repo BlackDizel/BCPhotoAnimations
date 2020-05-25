@@ -4,7 +4,9 @@ import org.byters.bcphotoanimations.view.ui.activity.ActivityBase;
 import org.byters.bcphotoanimations.view.ui.dialog.DialogExportJCodec;
 import org.byters.bcphotoanimations.view.ui.dialog.DialogExportMediaCodec;
 import org.byters.bcphotoanimations.view.ui.dialog.DialogFramePreview;
+import org.byters.bcphotoanimations.view.ui.dialog.DialogProjectRemove;
 import org.byters.bcphotoanimations.view.ui.dialog.IDialog;
+import org.byters.bcphotoanimations.view.ui.dialog.listener.IDialogProjectRemoveListener;
 
 import java.lang.ref.WeakReference;
 
@@ -27,6 +29,12 @@ public class HelperDialog implements IHelperDialog {
     public void showDialogExportMediaCodec() {
         if (refContext == null || refContext.get() == null) return;
         showDialog(new DialogExportMediaCodec(refContext.get()));
+    }
+
+    @Override
+    public void showDialogProjectRemove(String title, IDialogProjectRemoveListener listener) {
+        if (refContext == null || refContext.get() == null) return;
+        showDialog(new DialogProjectRemove(refContext.get(), title, listener));
     }
 
     @Override

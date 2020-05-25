@@ -58,4 +58,6 @@
     <string name="format_message_preview" formatted="false">preview: %dx%d, frame: %dx%d</string>
     <string name="button_discord" translatable="false">Discord</string>
     <string name="notification_video_open_title_format" formatted="false">Open video %s</string>
+    <string name="hint_project_title">Input here</string>
+    <string name="title_project_remove_format" formatted="false">To remove project input %s</string>
 </resources>

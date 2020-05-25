@@ -12,6 +12,7 @@ import org.byters.bcphotoanimations.controller.data.memorycache.ICacheProjects;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheStorage;
 import org.byters.bcphotoanimations.view.INavigator;
 import org.byters.bcphotoanimations.view.presenter.callback.IPresenterProjectEditCallback;
+import org.byters.bcphotoanimations.view.ui.dialog.listener.IDialogProjectRemoveListener;
 import org.byters.bcphotoanimations.view.util.IHelperDialog;
 import org.byters.bcphotoanimations.view.util.IHelperPopup;
 import org.byters.billingapi.ILibDataPlayBilling;
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 public class PresenterProjectEdit implements IPresenterProjectEdit {
 
     private static final String SKU_NAME = "subscription_project_export_unlimited_monthly";
+    private final IDialogProjectRemoveListener listenerDialogProjectRemove;
 
     @Inject
     ICacheProjectSelected cacheProjectSelected;
@@ -60,6 +62,7 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
             cacheExportAttempts.setAttemptsUnlimited();
 
         libDataPlayBilling.addListener(listenerCacheBilling = new CacheBillingCallback());
+        listenerDialogProjectRemove = new ListenerDialogProjectRemove();
     }
 
     @Override
@@ -93,10 +96,7 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
 
     @Override
     public void onClickRemove() {
-        cacheProjectSelected.removeProject();
-        navigator.closeProjectEdit();
-        if (refCallback != null && refCallback.get() != null)
-            refCallback.get().hideKeyboard();
+        helperDialog.showDialogProjectRemove(cacheProjectSelected.getProjectTitle(), listenerDialogProjectRemove);
     }
 
     @Override
@@ -212,6 +212,16 @@ public class PresenterProjectEdit implements IPresenterProjectEdit {
         public void onUpdateSkuList(boolean isSingle) {
             if (isSingle)
                 libDataPlayBilling.requestBuy();
+        }
+    }
+
+    private class ListenerDialogProjectRemove implements IDialogProjectRemoveListener {
+        @Override
+        public void onRemove() {
+            cacheProjectSelected.removeProject();
+            navigator.closeProjectEdit();
+            if (refCallback != null && refCallback.get() != null)
+                refCallback.get().hideKeyboard();
         }
     }
 }
