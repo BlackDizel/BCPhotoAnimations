@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_fps"
             android:inputType="number"
+            android:text="@string/default_fps"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1" />
 
     </android.support.design.widget.TextInputLayout>

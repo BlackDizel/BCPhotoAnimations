@@ -52,6 +52,7 @@
     <string name="error_export_mjpeg_meta">all values must be more than 0</string>
     <string name="default_frame_height" translatable="false">720</string>
     <string name="default_frame_width" translatable="false">1280</string>
+    <string name="default_fps" translatable="false">5</string>
     <string name="export_video_mp4">Export video (MediaCodec)</string>
     <string name="error_export_video_os_version">Available only for android 4.4+</string>
     <string name="format_message_preview" formatted="false">preview: %dx%d, frame: %dx%d</string>
