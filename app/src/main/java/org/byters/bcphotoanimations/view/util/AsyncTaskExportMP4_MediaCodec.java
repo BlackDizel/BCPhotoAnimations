@@ -2,7 +2,9 @@ package org.byters.bcphotoanimations.view.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.media.ExifInterface;
@@ -44,6 +46,55 @@ public final class AsyncTaskExportMP4_MediaCodec extends AsyncTask<Void, Integer
         handler = new Handler();
     }
 
+    private static Bitmap bmpTransform(int screenWidth, int screenHeight, String fileUrl) {
+
+        Bitmap background = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
+
+        Bitmap originalImage = BitmapFactory.decodeFile(fileUrl);
+
+        int rotate = getRotate(fileUrl);
+
+        float sourceWidth = isRotate(rotate) ? originalImage.getHeight() : originalImage.getWidth();
+        float sourceHeight = isRotate(rotate) ? originalImage.getWidth() : originalImage.getHeight();
+
+        float scale = Math.min(screenWidth / sourceWidth, screenHeight / sourceHeight); //100,100  -> 1000,2000
+
+        float dX = (screenWidth - originalImage.getWidth()) / 2f;
+        float dY = (screenHeight - originalImage.getHeight()) / 2f;
+
+        Matrix transformation = new Matrix();
+        transformation.postTranslate(dX, dY);
+        transformation.postScale(scale, scale, screenWidth / 2f, screenHeight / 2f);
+        transformation.postRotate(rotate, screenWidth / 2f, screenHeight / 2f);
+
+        Paint paint = new Paint();
+        paint.setFilterBitmap(true);
+
+        new Canvas(background).drawBitmap(originalImage, transformation, paint);
+
+        return background;
+    }
+
+    private static boolean isRotate(int rotate) {
+        return rotate == 90 || rotate == 270;
+    }
+
+    private static int getRotate(String fileUrl) {
+        ExifInterface exif;
+        try {
+            exif = new ExifInterface(fileUrl);
+        } catch (IOException e) {
+            return 0;
+        }
+
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+        return orientation == ExifInterface.ORIENTATION_ROTATE_90 ? 90
+                : orientation == ExifInterface.ORIENTATION_ROTATE_180 ? 180
+                : orientation == ExifInterface.ORIENTATION_ROTATE_270 ? 270
+                : 0;
+    }
+
     @Override
     protected Boolean doInBackground(Void... voids) {
 
@@ -60,10 +111,7 @@ public final class AsyncTaskExportMP4_MediaCodec extends AsyncTask<Void, Integer
 
         for (int i = 0; i < num; ++i) {
             String fileUrl = cacheProjects.getFrameUrl(projectId, i);
-            Bitmap bmp = BitmapFactory.decodeFile(fileUrl);
-            bmp = bmpScale(bmp, w, h);
-            bmp = bmpOrientation(bmp, fileUrl);
-
+            Bitmap bmp = bmpTransform(w, h, fileUrl);
             encoder.addFrame(bmp);
         }
         encoder.notifyLastFrameAdded();
@@ -72,34 +120,6 @@ public final class AsyncTaskExportMP4_MediaCodec extends AsyncTask<Void, Integer
 
     private String getFilePath() {
         return cacheStorage.getProjectOutputFolder(cacheProjects.getItemTitleById(projectId) + cacheStorage.getVideoExt());
-    }
-
-    private Bitmap bmpScale(Bitmap bmp, int w, int h) {
-        return Bitmap.createScaledBitmap(bmp, w, h, true);
-    }
-
-    private Bitmap bmpOrientation(Bitmap bmp, String fileUrl) {
-
-        ExifInterface exif;
-        try {
-            exif = new ExifInterface(fileUrl);
-        } catch (IOException e) {
-            return bmp;
-        }
-
-        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
-        Matrix matrix = new Matrix();
-
-        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            matrix.postRotate(90);
-        } else if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            matrix.postRotate(180);
-        } else if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            matrix.postRotate(270);
-        } else return bmp;
-
-        return Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
     }
 
     @Override
