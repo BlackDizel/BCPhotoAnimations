@@ -34,6 +34,7 @@ import org.byters.bcphotoanimations.view.ui.utils.AsyncTaskProjectExport;
 import org.byters.bcphotoanimations.view.ui.view.CameraPreview;
 import org.byters.bcphotoanimations.view.util.AsyncTaskExportMP4_JCodec;
 import org.byters.bcphotoanimations.view.util.AsyncTaskExportMP4_MediaCodec;
+import org.byters.bcphotoanimations.view.util.NotificationExportComplete;
 
 import javax.inject.Singleton;
 
@@ -108,4 +109,6 @@ public interface AppComponent {
     void inject(DialogExportMediaCodec dialogExportMediaCodec);
 
     void inject(AsyncTaskProjectExport asyncTaskProjectExport);
+
+    void inject(NotificationExportComplete notificationExportComplete);
 }

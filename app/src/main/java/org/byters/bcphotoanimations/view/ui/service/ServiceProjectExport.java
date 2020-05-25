@@ -30,14 +30,15 @@ import org.byters.bcphotoanimations.view.ui.utils.AsyncTaskProjectExport;
 import org.byters.bcphotoanimations.view.ui.utils.AsyncTaskProjectExportListener;
 import org.byters.bcphotoanimations.view.util.AsyncTaskExportMP4_JCodec;
 import org.byters.bcphotoanimations.view.util.AsyncTaskExportMP4_MediaCodec;
+import org.byters.bcphotoanimations.view.util.NotificationExportComplete;
 
 import javax.inject.Inject;
 
 public class ServiceProjectExport extends Service {
     public static final int PROGRESS_MAX = 100;
+    public static final int SERVICE_NOTIFICATION_ID_OPEN_VIDEO = 1433;
+    public static final String SERVICE_NOTIFICATION_CHANNEL_ID = "service_notification";
     private static final int SERVICE_NOTIFICATION_ID = 1432;
-    private static final String SERVICE_NOTIFICATION_CHANNEL_ID = "service_notification";
-
     private static final String EXTRA_PROJECT_ID = "project_id";
     private static final String EXTRA_EXPORT_TYPE = "export_type";
     private static final int EXPORT_TYPE_UNKNOWN = 0;
@@ -246,7 +247,8 @@ public class ServiceProjectExport extends Service {
         public void onComplete(String projectId, String filepath) {
 
             saveToMediaStore(filepath);
-            //todo show notification with click action open file
+            new NotificationExportComplete(filepath, projectId).show(ServiceProjectExport.this);
+
             complete(filepath);
 
         }

@@ -30,6 +30,16 @@
 
         <service android:name=".view.ui.service.ServiceProjectExport" />
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="org.byters.bcphotoanimations.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
     </application>
 
 </manifest>

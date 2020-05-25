@@ -52,4 +52,5 @@
     <string name="export_video_mp4">Экспорт видео (MediaCodec)</string>
     <string name="error_export_video_os_version">Доступно только для android 4.4+</string>
     <string name="format_message_preview" formatted="false">превью: %dx%d, кадр: %dx%d</string>
+    <string name="notification_video_open_title_format" formatted="false">Открыть видео %s</string>
 </resources>
