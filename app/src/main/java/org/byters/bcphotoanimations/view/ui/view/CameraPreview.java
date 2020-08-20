@@ -3,17 +3,22 @@ package org.byters.bcphotoanimations.view.ui.view;
 import android.content.Context;
 import android.hardware.Camera;
 import android.view.Gravity;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.FrameLayout;
 
 import org.byters.bcphotoanimations.ApplicationStopMotion;
 import org.byters.bcphotoanimations.controller.data.memorycache.ICacheInterfaceState;
+import org.byters.bcphotoanimations.model.CameraSize;
+import org.byters.bcphotoanimations.view.ui.utils.CameraSizeComparator;
+import org.byters.bcphotoanimations.view.ui.utils.CameraUtils;
 import org.byters.bcphotoanimations.view.ui.view.callback.ICameraPreviewCallback;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,6 +42,20 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         holder = getHolder();
         holder.addCallback(this);
+    }
+
+    private static List<CameraSize> getCameraSizes(android.hardware.Camera camera, Camera.Parameters parameters) {
+        List<CameraSize> result = new ArrayList<>();
+
+        List<android.hardware.Camera.Size> pictureSizes = parameters.getSupportedPictureSizes();
+        for (Camera.Size size : pictureSizes) {
+            CameraSize item = new CameraSize();
+            item.pictureSize = size;
+            item.previewSize = CameraUtils.getPreviewSize(size, camera.getParameters().getSupportedPreviewSizes());
+            if (item.previewSize != null) result.add(item);
+        }
+
+        return result;
     }
 
     public void setCallback(ICameraPreviewCallback callback) {
@@ -80,22 +99,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         android.hardware.Camera.getCameraInfo(cameraId, info);
 
         int rotation = refCallback != null && refCallback.get() != null ? refCallback.get().requestRotation() : 0;
-        int degrees = 0;
-
-        switch (rotation) {
-            case Surface.ROTATION_0:
-                degrees = 0;
-                break;
-            case Surface.ROTATION_90:
-                degrees = 90;
-                break;
-            case Surface.ROTATION_180:
-                degrees = 180;
-                break;
-            case Surface.ROTATION_270:
-                degrees = 270;
-                break;
-        }
+        int degrees = CameraUtils.getDegrees(rotation); //0..360
 
         int result = info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT
                 ? (360 - ((info.orientation + degrees) % 360)) % 360
@@ -116,51 +120,44 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         Camera.Parameters parameters = camera.getParameters();
 
-        Camera.Size pictureSize = getPictureSize(parameters); //Picture size and preview size must have equal aspect ratio
-        Camera.Size previewSize = getPreviewSize(pictureSize, w, h);
+        List<CameraSize> sizes = getCameraSizes(camera, parameters);
+        Collections.sort(sizes, new CameraSizeComparator());
+        Collections.reverse(sizes);
 
-        parameters.setPreviewSize(previewSize.width, previewSize.height);
+        CameraSize size = sizes.get(0); //todo check sizes length>0
 
-        setFocusMode(parameters, Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-        parameters.setPictureSize(pictureSize.width, pictureSize.height);
+        parameters.setPictureSize(size.pictureSize.width, size.pictureSize.height);
+        parameters.setPreviewSize(size.previewSize.width, size.previewSize.height);
         parameters.setFlashMode(cacheInterfaceState.isFlashEnabled() ? "on" : "off");
+        setFocusMode(parameters, Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
 
         camera.setParameters(parameters);
 
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) this.getLayoutParams();
-        params.width = w > h ? Math.max(previewSize.width, previewSize.height) : Math.min(previewSize.width, previewSize.height);
-        params.height = w > h ? Math.min(previewSize.width, previewSize.height) : Math.max(previewSize.width, previewSize.height);
-        params.gravity = Gravity.CENTER;
-        this.setLayoutParams(params);
+        FrameLayout.LayoutParams params = setViewSize(w, h, size, rotation);
 
         notifySize(params.width, params.height);
         notifyFlashModes(parameters.getSupportedFlashModes());
-        notifyPictureSize(previewSize, pictureSize);
+        notifyPictureSize(size.previewSize, size.pictureSize);
     }
 
-    private Camera.Size getPreviewSize(Camera.Size pictureSize, int w, int h) {
+    @NotNull
+    private FrameLayout.LayoutParams setViewSize(int w, int h, CameraSize size, int rotation) {
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) this.getLayoutParams();
 
-        int maxDisplayDimension = Math.max(w, h);
-        int minDisplayDimension = Math.min(w, h);
+        boolean isRotated = (rotation / 90) % 2 == 1;
 
-        Camera.Size result = null;
-        for (Camera.Size item : camera.getParameters().getSupportedPreviewSizes()) {
+        int previewWidth = (isRotated ? size.previewSize.height : size.previewSize.width);
+        int previewHeight = (isRotated ? size.previewSize.width : size.previewSize.height);
 
-            int maxPreviewDimension = Math.max(item.width, item.height);
-            int minPreviewDimension = Math.min(item.width, item.height);
+        float factor = Math.min(w / (float) previewWidth, h / (float) previewHeight);
 
-            if (maxPreviewDimension > maxDisplayDimension || minPreviewDimension > minDisplayDimension)
-                continue;
+        params.width = (int) (previewWidth * factor);
+        params.height = (int) (previewHeight * factor);
 
-            if (ratioIsEqual(item, pictureSize)
-                    && (result == null || isAreaMore(item, result)))
-                result = item;
-        }
-        return result;
-    }
+        params.gravity = Gravity.CENTER;
 
-    private boolean isAreaMore(Camera.Size one, Camera.Size other) {
-        return one == null || other == null || one.height * one.width > other.height * other.width;
+        this.setLayoutParams(params);
+        return params;
     }
 
     private void notifyFlashModes(List<String> supportedFlashModes) {
@@ -168,41 +165,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         refCallback.get().onFlashModesGet(supportedFlashModes);
     }
 
-    private Camera.Size getPictureSize(Camera.Parameters parameters) {
-        if (parameters == null) return null;
-        List<android.hardware.Camera.Size> sizes = parameters.getSupportedPictureSizes();
-        if (sizes == null) return null;
-
-        Camera.Size currentSize = null;
-
-        for (Camera.Size size : sizes) {
-            if (currentSize == null) {
-                currentSize = size;
-                continue;
-            }
-
-            if (size.width > currentSize.width) currentSize = size;
-        }
-
-        if (currentSize == null) return null;
-
-        return currentSize;
-    }
-
     private void notifyPictureSize(Camera.Size previewSize, Camera.Size photoSize) {
-        if (refCallback == null || refCallback.get() == null)
-            return;
+        if (refCallback == null || refCallback.get() == null) return;
         refCallback.get().onGetPictureSize(previewSize, photoSize);
     }
 
     private void notifyOrientation(int rotation) {
-        if (refCallback == null || refCallback.get() == null)
-            return;
+        if (refCallback == null || refCallback.get() == null) return;
         refCallback.get().onGetOrientation(rotation);
-    }
-
-    private boolean ratioIsEqual(Camera.Size size, Camera.Size previewSize) {
-        return Math.abs(size.height / (float) size.width - previewSize.height / (float) previewSize.width) < 0.000001;
     }
 
     private void notifySize(int width, int height) {
