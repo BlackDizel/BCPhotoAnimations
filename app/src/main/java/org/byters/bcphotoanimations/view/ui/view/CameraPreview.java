@@ -13,7 +13,6 @@ import org.byters.bcphotoanimations.model.CameraSize;
 import org.byters.bcphotoanimations.view.ui.utils.CameraSizeComparator;
 import org.byters.bcphotoanimations.view.ui.utils.CameraUtils;
 import org.byters.bcphotoanimations.view.ui.view.callback.ICameraPreviewCallback;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -140,7 +139,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         notifyPictureSize(size.previewSize, size.pictureSize);
     }
 
-    @NotNull
     private FrameLayout.LayoutParams setViewSize(int w, int h, CameraSize size, int rotation) {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) this.getLayoutParams();
 
